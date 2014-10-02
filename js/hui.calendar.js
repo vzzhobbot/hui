@@ -23,7 +23,8 @@
             min: 0, //
             months: 2,
             hintText: 'panica!',
-            onSelect: function() {}
+            onSelect: function() {},
+            locale: null
         });
 
         function getParams() {
@@ -84,6 +85,10 @@
                 // correct date by timezone offset
                 config.value.setTime(config.value.getTime() + config.value.getTimezoneOffset() * 60 * 1000);
                 $i.datepicker('setDate', config.value);
+            }
+            // customize datepicker with locale
+            if(config.locale) {
+                $i.datepicker('option', $.datepicker.regional[config.locale]);
             }
 
             $i.on('focus', function() {
@@ -286,5 +291,156 @@
                 afterShow.apply((inst.input ? inst.input[0] : null));
         }
     });
+
+    $.datepicker.regional['ru-RU'] = {clearText: 'Удалить', clearStatus: '',
+        closeText: 'Закрыть', closeStatus: 'Закрыть без изменений',
+        prevText: '< Предыдущие', prevStatus: 'Посмотреть предыдущие месяцы',
+        nextText: 'Следующие >', nextStatus: 'Посмотреть следующие месяцы',
+        currentText: 'Текущий', currentStatus: 'Посмотреть текущий месяц',
+        monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+            'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+        monthNamesShort: ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+            'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'],
+        monthStatus: 'Посмотреть другой месяц', yearStatus: 'Посмотреть другой год',
+        weekHeader: 'Sm', weekStatus: '',
+        dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+        dayNamesShort: ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'],
+        dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+        dayStatus: 'Использовать DD как первый день недели', dateStatus: 'Выбрать DD, MM d',
+        dateFormat: 'd M, D', firstDay: 1,
+        initStatus: 'Выбрать дату', isRTL: false
+    };
+    $.datepicker.regional['en-US'] = {
+        closeText: 'Done',
+        prevText: 'Prev',
+        nextText: 'Next',
+        currentText: 'Today',
+        monthNames: ['January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'],
+        monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        dayNamesMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+        weekHeader: 'Wk',
+        dateFormat: 'D, MM d', firstDay: 0,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    };
+    $.datepicker.regional['en-GB'] = $.extend({}, $.datepicker.regional['en-US']);
+    $.datepicker.regional['en-CA'] = $.extend({}, $.datepicker.regional['en-US']);
+    $.datepicker.regional['en-IE'] = $.extend({}, $.datepicker.regional['en-US']);
+    $.datepicker.regional['en-AU'] = $.extend({}, $.datepicker.regional['en-US']);
+    $.datepicker.regional['fr-FR'] = {
+        closeText: 'Fermer',
+        prevText: 'Précédent',
+        nextText: 'Suivant',
+        currentText: 'Aujourd\'hui',
+        monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin',
+            'Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+        monthNamesShort: ['janvier','février','mars','avril','mai','juin',
+            'juillet','août','septembre','octobre','novembre','décembre'],
+        dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+        dayNamesShort: ['Dim.','Lun.','Mar.','Mer.','Jeu.','Ven.','Sam.'],
+        dayNamesMin: ['D','L','M','M','J','V','S'],
+        weekHeader: 'Sem.',
+        dateFormat: 'd M yy', firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    };
+    $.datepicker.regional['es-ES'] = {
+        closeText: 'Cerrar',
+        prevText: '&#x3C;Ant',
+        nextText: 'Sig&#x3E;',
+        currentText: 'Hoy',
+        monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+            'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+        monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
+            'Jul','Ago','Sep','Oct','Nov','Dic'],
+        dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+        weekHeader: 'Sm',
+        dateFormat: 'd MM yy', firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    };
+    $.datepicker.regional['de-DE'] = {
+        closeText: 'Schließen',
+        prevText: '&#x3C;Zurück',
+        nextText: 'Vor&#x3E;',
+        currentText: 'Heute',
+        monthNames: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
+            'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+        monthNamesShort: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+        dayNames: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+        dayNamesShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+        dayNamesMin: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+        weekHeader: 'KW',
+        dateFormat: 'd MM yy', firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    };
+    $.datepicker.regional['th-TH'] = {
+        closeText: 'ปิด',
+        prevText: '&#xAB;&#xA0;ย้อน',
+        nextText: 'ถัดไป&#xA0;&#xBB;',
+        currentText: 'วันนี้',
+        monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน',
+            'กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
+        monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.',
+            'ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'],
+        dayNames: ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'],
+        dayNamesShort: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
+        dayNamesMin: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
+        weekHeader: 'Wk',
+        dateFormat: 'd MM yy', firstDay: 0,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    };
+    $.datepicker.regional['it-IT'] = {
+        closeText: 'Chiudi',
+        prevText: '&#x3C;Prec',
+        nextText: 'Succ&#x3E;',
+        currentText: 'Oggi',
+        monthNames: ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno',
+            'Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'],
+        monthNamesShort: ['Gen','Feb','Mar','Apr','Mag','Giu',
+            'Lug','Ago','Set','Ott','Nov','Dic'],
+        dayNames: ['Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato'],
+        dayNamesShort: ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'],
+        dayNamesMin: ['Do','Lu','Ma','Me','Gi','Ve','Sa'],
+        weekHeader: 'Sm',
+        dateFormat: 'd MM yy', firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    };
+    $.datepicker.regional['pl-PL'] = {
+        closeText: 'Zamknij',
+        prevText: '&#x3C;Poprzedni',
+        nextText: 'Następny&#x3E;',
+        currentText: 'Dziś',
+        monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec',
+            'Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
+        monthNamesShort: ['stycznia','lutego','marca','kwietnia','maja','czerwca',
+            'lipca','sierpnia','września','października','listopada','grudnia'],
+        dayNames: ['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'],
+        dayNamesShort: ['Nie','Pn','Wt','Śr','Czw','Pt','So'],
+        dayNamesMin: ['N','Pn','Wt','Śr','Cz','Pt','So'],
+        weekHeader: 'Tydz',
+        dateFormat: 'd M yy', firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    };
+
+    $.datepicker.setDefaults($.datepicker.regional['en-US']);
 
 })(jQuery, _, hui);

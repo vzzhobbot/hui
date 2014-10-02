@@ -21,6 +21,7 @@ $(function() {
                     controls.checkOut.setDate(controls.checkIn.getDate(), 1);
                 }
             },
+            locale: 'ru-RU',
             min: -1
         }),
 
@@ -33,6 +34,7 @@ $(function() {
                     controls.checkIn.setDate(controls.checkOut.getDate(), -1);
                 }
             },
+            locale: 'ru-RU',
             min: 0
         }),
 
