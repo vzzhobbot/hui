@@ -51,6 +51,8 @@ $(function() {
             }
         }),
 
+        guests: hui.guests(),
+
         submit: hui.submit({
             text: 'go-go-go!'
         })
