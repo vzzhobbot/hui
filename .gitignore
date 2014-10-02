@@ -1,0 +1,9 @@
+sitemap*.xml
+.idea/
+.*.swp
+/data
+/build
+vendor
+node_modules
+.sass-cache
+yii
