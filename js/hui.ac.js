@@ -7,6 +7,8 @@
             $i = null, // input
             $h = null, // hint
             $l = null, // loader
+            $sc = null, // samples container
+            $sl = null, // samples links
             controls = {};
 
         config = _.defaults(config || {}, {
@@ -25,7 +27,9 @@
             avgPricesCalendars: [],
             avgPricesFormatter: function(v) {
                 return '' + Math.round(v);
-            }
+            },
+            samplesText: 'For example: {list}',
+            samplesList: []
         });
 
         function avgPricesRequest (id) {
@@ -117,6 +121,21 @@
             config.onReset();
         }
 
+        function select(type, id, text) {
+            config.type = type;
+            config.id = id;
+            if(text) {
+                $i.val(text);
+            }
+            avgPricesRequest(id);
+            config.onSelect(type, id);
+            if(config.onSelectShowCalendar) {
+                if(!controls[config.onSelectShowCalendar].getStamp()) {
+                    controls[config.onSelectShowCalendar].show();
+                }
+            }
+        }
+
         function draw(name, $f, c) {
             controls = c || {};
             $c = hui.getEl($f, 'ac', name);
@@ -132,15 +151,7 @@
             $i.reachAutocomplete({
                 source: source,
                 select: function(ev, data) {
-                    config.type = data.item.type;
-                    config.id = data.item.id;
-                    config.onSelect(data.item);
-                    if(config.onSelectShowCalendar) {
-                        if(!controls[config.onSelectShowCalendar].getStamp()) {
-                            controls[config.onSelectShowCalendar].show();
-                        }
-                    }
-                    avgPricesRequest(data.item.id);
+                    select(data.item.type, data.item.id);
                 },
                 minLength: 3
             });
@@ -167,6 +178,28 @@
                 $h.hide();
             });
 
+            if(config.samplesList.length) {
+
+                var links = _.map(config.samplesList, function(i) {
+                    return hui.getTpl('hui-input--ac-samples-link')(i);
+                });
+                var samples = hui.getTpl('hui-input--ac-samples')(
+                    _.defaults({
+                        samplesText: config.samplesText.replace('{list}', links.join(', '))
+                    }, config)
+                );
+                $c.append(samples);
+                $sc = hui.getEl($c, 'samples');
+                $sl = hui.getEl($sc, 'samples-link');
+
+                $sl.on('click', function() {
+                    var $this = $(this);
+                    select($this.data('type'), $this.data('id'), $this.data('text'));
+                    return false;
+                });
+
+            }
+
         }
 
         function getConfig() {
@@ -183,6 +216,7 @@
 
         return {
             draw: draw,
+            select: select,
             getParams: getParams,
             getConfig: getConfig,
             validate: validate

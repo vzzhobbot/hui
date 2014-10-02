@@ -4,12 +4,23 @@ $(function() {
         destination: hui.ac({
             url: 'http://yasen.hotellook.com/autocomplete?lang=en-us&limit=5',
             placeholder: 'Type location or hotel name...',
-            text: 'Moscow, Russia',
-            type: 'location',
-            id: 12153,
             onSelectShowCalendar: 'checkIn',
             avgPricesUrl: 'http://hotellook2.local/ajax/location-avg-prices.json?locationId={id}',
-            avgPricesCalendars: ['checkIn', 'checkOut']
+            avgPricesCalendars: ['checkIn', 'checkOut'],
+            samplesList: [
+                {
+                    id: 15542,
+                    text: 'Paris, France',
+                    type: 'location',
+                    sample: 'Paris'
+                },
+                {
+                    id: 12153,
+                    text: 'Moscow, Russia',
+                    type: 'location',
+                    sample: 'Moscow'
+                }
+            ]
         }),
 
         checkIn: hui.calendar({
