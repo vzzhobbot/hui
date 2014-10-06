@@ -78,6 +78,10 @@
             });
             update();
 
+            $s.on('click', function() {
+                $cc.toggleClass('hui-state--hidden');
+            });
+
             $ai.on('click', function() {
                 if(config.adults == ADULTS_MAX) {
                     return false;
@@ -110,8 +114,8 @@
                 if(config.children.length == 0) {
                     return false;
                 }
-                config.children.pop();
                 $chc[config.children.length - 1].remove();
+                config.children.pop();
                 $chc.pop();
                 $chiw.pop();
                 $chi.pop();
