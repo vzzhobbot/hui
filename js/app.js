@@ -71,5 +71,7 @@ $(function() {
             text: 'go-go-go!'
         })
 
+    }, {
+        aaa: 'sss'
     });
 });

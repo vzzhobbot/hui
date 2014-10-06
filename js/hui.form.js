@@ -1,7 +1,7 @@
 ;(function ($, _, hui) {
     'use strict';
 
-    hui.form = function (n, controls) {
+    hui.form = function (n, controls, params) {
 
         var $f = $('[hui-form="' + n +'"]');
 
@@ -25,10 +25,23 @@
                 return result;
             });
             if(result) {
-                // todo change to real thing
-                $('#url').text($f.attr('action') + '/?' + _.filter(_.map(controls, function(i) {
-                    return _.isFunction(i.getParams) ? i.getParams() : null;
-                }), function(i) {return i}).join('&'));
+
+                var url = $f.attr('action'),
+                    // collect controls data
+                    cd = _.map(controls, function(i) {
+                        return _.isFunction(i.getParams) ? i.getParams() : null;
+                    }),
+                    // make params list using controls data
+                    cp = _.filter(cd, function(i) {
+                        return i;
+                    }),
+                    // make additional params list if needed
+                    p = _.map(params || {}, function(v, k) {
+                        return k + '=' + v;
+                    });
+
+                url += '/?' + cp.concat(p).join('&');
+                $('#url').text(url);
                 return false;
             }
             return result;
