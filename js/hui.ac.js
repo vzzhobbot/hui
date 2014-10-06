@@ -12,6 +12,7 @@
             controls = {};
 
         config = _.defaults(config || {}, {
+            url: null,
             name: 'destination',
             text: '', // default input value
             type: '', // default type
@@ -78,8 +79,7 @@
             $.ajax({
                 dataType: 'jsonp',
                 type: 'get',
-                url: config.url,
-                data: {term: request.term},
+                url: config.url.replace('{term}', request.term),
                 jsonpCallback: 'hui_ac_callback',
                 success: function(data) {
                     var cities = _.map(data.cities, function(item) {

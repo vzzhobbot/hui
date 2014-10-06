@@ -2,7 +2,7 @@ $(function() {
     hui.form('form111', {
 
         destination: hui.ac({
-            url: 'http://yasen.hotellook.com/autocomplete?lang=en-us&limit=5',
+            url: 'http://yasen.hotellook.com/autocomplete?lang=en-us&limit=5&term={term}',
             placeholder: 'Type location or hotel name...',
             onSelectShowCalendar: 'checkIn',
             avgPricesUrl: 'http://hotellook2.local/ajax/location-avg-prices.json?locationId={id}',
