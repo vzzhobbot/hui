@@ -2,10 +2,24 @@
     'use strict';
     hui.guests = function (config) {
 
-        var $c = null,
+        var ADULTS_MAX = 4,
+            ADULTS_MIN = 1,
+            CHILDREN_MAX = 3,
+            CHILD_AGE_MAX = 17;
+
+        var $c = null, // container
+            $s = null, // summary
+            $cc = null, // controls container
+            $av = null, // adults value
+            $ai = null, // adults increment control
+            $ad = null, // adults decrement control
+            $cv = null, // children value
+            $ci = null, // children increment control
+            $cd = null, // children decrement control
             controls = {};
         config = _.defaults(config || {}, {
-            name: 'guests'
+            adults: 2,
+            children: []
         });
 
         /**
@@ -13,6 +27,9 @@
          * @returns {string|null}
          */
         function getParams() {
+            if(config.children.length && !_.filter(config.children, function(a) {return a === null}).length) {
+                return 'adults=' + config.adults + '&children=' + config.children.join(',');
+            }
             return null;
         }
 
@@ -26,6 +43,48 @@
             controls = c || {};
             $c = hui.getEl($f, 'guests', name);
             $c.html(hui.getTpl('hui-guests')(config));
+            $s = hui.getEl($c, 'summary');
+            $cc = hui.getEl($c, 'controls');
+            $av = hui.getEl($c, 'adults-val');
+            $ad = hui.getEl($c, 'adults-decrement');
+            $ai = hui.getEl($c, 'adults-increment');
+            $cv = hui.getEl($c, 'children-val');
+            $cd = hui.getEl($c, 'children-decrement');
+            $ci = hui.getEl($c, 'children-increment');
+            update();
+
+            $ai.on('click', function() {
+                if(config.adults++ == ADULTS_MAX) {
+                    config.adults--;
+                }
+                update();
+                return false;
+            });
+
+            $ad.on('click', function() {
+                if(config.adults-- == ADULTS_MIN) {
+                    config.adults++;
+                }
+                update();
+                return false;
+            });
+
+        }
+
+        function update() {
+            $s.html('Guests ' + (config.adults + config.children.length));
+            $av.html(config.adults);
+            $cv.html(config.children.length);
+            if(config.adults == ADULTS_MAX) {
+                $ai.addClass('hui-state--disabled');
+            } else {
+                $ai.removeClass('hui-state--disabled');
+            }
+            if(config.adults == ADULTS_MIN) {
+                $ad.addClass('hui-state--disabled');
+            } else {
+                $ad.removeClass('hui-state--disabled');
+            }
         }
 
         /**

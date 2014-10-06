@@ -62,7 +62,10 @@ $(function() {
             }
         }),
 
-        guests: hui.guests(),
+        guests: hui.guests({
+            adults: 1,
+            children: [9, 12]
+        }),
 
         submit: hui.submit({
             text: 'go-go-go!'

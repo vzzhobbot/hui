@@ -70,14 +70,25 @@
 </script>
 
 <script type="text/tpl" id="hui-submit">
-<button data-role="button"><%= text %></button>
+<button><%= text %></button>
 </script>
 
 <script type="text/tpl" id="hui-guests">
 <div class="hui-guests">
-    <div class="hui-guests-i"></div>
-    <div class="hui-guests-dd">
-        ффф
+    <div class="hui-guests-i" hui-role="summary"></div>
+    <div class="hui-guests-dd" hui-role="controls">
+        <div class="hui-guests-adults">
+            <div class="hui-guests-adults-title">Adults</div>
+            <div class="hui-guests-adults-val" hui-role="adults-val"></div>
+            <a href="#" hui-role="adults-decrement">-</a>
+            <a href="#" hui-role="adults-increment">+</a>
+        </div>
+        <div class="hui-guests-children">
+            <div class="hui-guests-children-title">Children</div>
+            <div class="hui-guests-children-val" hui-role="children-val"></div>
+            <a href="#" hui-role="children-decrement">-</a>
+            <a href="#" hui-role="children-increment">+</a>
+        </div>
     </div>
 </div>
 </script>
