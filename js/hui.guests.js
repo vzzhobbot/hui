@@ -16,11 +16,16 @@
             $cv = null, // children value
             $ci = null, // children increment control
             $cd = null, // children decrement control
-            $chHints = [], // children hints
+            $cl = null, // children list
+            $chc = [], // child containers
+            $chiw = [], // child input wraps
+            $chi = [], // child inputs
+            $chh = [], // child hints
             controls = {};
         config = _.defaults(config || {}, {
             adults: 2,
-            children: []
+            children: [],
+            childHintText: 'Check da age!'
         });
 
         /**
@@ -36,16 +41,17 @@
         }
 
         function validate() {
-            var e = _.filter(config.children, function(age, k) {
-                var r = (age === null || parseInt(age) < 0 || parseInt(age) > CHILD_AGE_MAX);
-                if(!r) {
-                    $chHints[k].show();
+            var r = _.filter(config.children, function(age, k) {
+                var e = (age === null || parseInt(age) < 0 || parseInt(age) > CHILD_AGE_MAX);
+                if(e) {
+                    $chi[k].focus();
+                    $chh[k].show();
                 } else {
-                    $chHints[k].hide();
+                    $chh[k].hide()
                 }
-                return r;
+                return e;
             });
-            return !e.length;
+            return !r.length;
         }
 
         /**
@@ -66,6 +72,10 @@
             $cv = hui.getEl($c, 'children-val');
             $cd = hui.getEl($c, 'children-decrement');
             $ci = hui.getEl($c, 'children-increment');
+            $cl = hui.getEl($c, 'children-list');
+            _.each(config.children, function(v, key) {
+                drawChild(key);
+            });
             update();
 
             $ai.on('click', function() {
@@ -91,6 +101,7 @@
                     return false;
                 }
                 config.children.push(null);
+                drawChild(config.children.length - 1);
                 update();
                 return false;
             });
@@ -100,10 +111,50 @@
                     return false;
                 }
                 config.children.pop();
+                $chc.pop();
+                $chiw.pop();
+                $chi.pop();
+                $chh.pop();
                 update();
                 return false;
             });
 
+        }
+
+        function drawChild(key) {
+
+            $cl.append(hui.getTpl('hui-guests-child')({
+                key: key,
+                age: config.children[key],
+                hintText: config.childHintText
+            }));
+
+            $chc[key] = hui.getEl($cl, 'child-container', key);
+            $chiw[key] = hui.getEl($chc[key], 'input-wrap');
+            $chi[key] = hui.getEl($chc[key], 'input');
+            $chh[key] = hui.getEl($chc[key], 'hint');
+
+
+            $chi[key].on('keyup', function() {
+                var val = $chi[key].val().trim();
+                if(!val.length || !_.isFinite(val)) {
+                    config.children[key] = null;
+                } else {
+                    config.children[key] = parseInt(val);
+                }
+            });
+
+            $chi[key].on('keydown', function(e) {
+                $chh[key].hide();
+            });
+
+            $chi[key].on('focus', function() {
+                $chh[key].hide();
+            });
+
+            $chh[key].on('click', function() {
+                $chh[key].hide();
+            });
         }
 
         function update() {
