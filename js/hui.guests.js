@@ -55,7 +55,7 @@
 
             $ai.on('click', function() {
                 if(config.adults++ == ADULTS_MAX) {
-                    config.adults--;
+                    config.adults = ADULTS_MAX;
                 }
                 update();
                 return false;
@@ -63,7 +63,7 @@
 
             $ad.on('click', function() {
                 if(config.adults-- == ADULTS_MIN) {
-                    config.adults++;
+                    config.adults = ADULTS_MIN;
                 }
                 update();
                 return false;
@@ -75,15 +75,15 @@
             $s.html('Guests ' + (config.adults + config.children.length));
             $av.html(config.adults);
             $cv.html(config.children.length);
+
+            $ai.removeClass('hui-state--disabled');
             if(config.adults == ADULTS_MAX) {
                 $ai.addClass('hui-state--disabled');
-            } else {
-                $ai.removeClass('hui-state--disabled');
             }
+
+            $ad.removeClass('hui-state--disabled');
             if(config.adults == ADULTS_MIN) {
                 $ad.addClass('hui-state--disabled');
-            } else {
-                $ad.removeClass('hui-state--disabled');
             }
         }
 
