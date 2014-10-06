@@ -111,6 +111,7 @@
                     return false;
                 }
                 config.children.pop();
+                $chc[config.children.length - 1].remove();
                 $chc.pop();
                 $chiw.pop();
                 $chi.pop();
