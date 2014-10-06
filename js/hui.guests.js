@@ -16,6 +16,7 @@
             $cv = null, // children value
             $ci = null, // children increment control
             $cd = null, // children decrement control
+            $chHints = [], // children hints
             controls = {};
         config = _.defaults(config || {}, {
             adults: 2,
@@ -27,10 +28,24 @@
          * @returns {string|null}
          */
         function getParams() {
-            if(config.children.length && !_.filter(config.children, function(a) {return a === null}).length) {
-                return 'adults=' + config.adults + '&children=' + config.children.join(',');
+            var str = 'adults=' + config.adults;
+            if(config.children.length) {
+                str += '&children=' + config.children.join(',');
             }
-            return null;
+            return str;
+        }
+
+        function validate() {
+            var e = _.filter(config.children, function(age, k) {
+                var r = (age === null || parseInt(age) < 0 || parseInt(age) > CHILD_AGE_MAX);
+                if(!r) {
+                    $chHints[k].show();
+                } else {
+                    $chHints[k].hide();
+                }
+                return r;
+            });
+            return !e.length;
         }
 
         /**
@@ -54,17 +69,37 @@
             update();
 
             $ai.on('click', function() {
-                if(config.adults++ == ADULTS_MAX) {
-                    config.adults = ADULTS_MAX;
+                if(config.adults == ADULTS_MAX) {
+                    return false;
                 }
+                config.adults++;
                 update();
                 return false;
             });
 
             $ad.on('click', function() {
-                if(config.adults-- == ADULTS_MIN) {
-                    config.adults = ADULTS_MIN;
+                if(config.adults == ADULTS_MIN) {
+                    return false;
                 }
+                config.adults--;
+                update();
+                return false;
+            });
+
+            $ci.on('click', function() {
+                if(config.children.length == CHILDREN_MAX) {
+                    return false;
+                }
+                config.children.push(null);
+                update();
+                return false;
+            });
+
+            $cd.on('click', function() {
+                if(config.children.length == 0) {
+                    return false;
+                }
+                config.children.pop();
                 update();
                 return false;
             });
@@ -98,7 +133,8 @@
         return {
             draw: draw,
             getParams: getParams,
-            getConfig: getConfig
+            getConfig: getConfig,
+            validate: validate
         };
 
     };
