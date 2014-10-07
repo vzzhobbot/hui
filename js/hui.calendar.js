@@ -26,10 +26,8 @@
             legendText: 'Days colored by average price for the night',
             onSelect: function() {},
             locale: null,
-            tpls: {
-                input: hui.getTpl('hui-input--calendar'),
-                legend: hui.getTpl('hui-input--calendar-legend')
-            }
+            tplInput: hui.getTpl('hui-input--calendar'),
+            tplLegend: hui.getTpl('hui-input--calendar-legend')
         });
 
         function getParams() {
@@ -55,7 +53,7 @@
         function draw(name, $f, c) {
             controls = c || {};
             $c = hui.getEl($f, 'calendar', name);
-            $c.html(config.tpls.input(config));
+            $c.html(config.tplInput(config));
             $iw = hui.getEl($c, 'input-wrap');
             $i = hui.getEl($c, 'input');
             $h = hui.getEl($c, 'hint');
@@ -78,7 +76,7 @@
                 afterShow: function() {
                     if(_.isArray(details.points) && details.points.length) {
                         $('.ui-datepicker-row-break').html(
-                            config.tpls.legend({
+                            config.tplLegend({
                                 legendText: config.legendText,
                                 'points': _.map(details.points, details.formatter)
                             })

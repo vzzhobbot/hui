@@ -9,15 +9,13 @@
 
         config = _.defaults(config || {}, {
             text: 'Submit',
-            tpls: {
-                button: hui.getTpl('hui-submit')
-            }
+            tplButton: hui.getTpl('hui-submit')
         });
 
         function draw(name, $f, c) {
             controls = c || {};
             $c = hui.getEl($f, 'submit', name);
-            $c.html(config.tpls.button(config));
+            $c.html(config.tplButton(config));
             $b = hui.getEl($f, 'button', name);
         }
 

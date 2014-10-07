@@ -30,10 +30,8 @@
             summary: function(adults, children) {
                 return (adults + children.length);
             },
-            tpls: {
-                container: hui.getTpl('hui-guests'),
-                child: hui.getTpl('hui-guests-child')
-            }
+            tplContainer: hui.getTpl('hui-guests'),
+            tplChild: hui.getTpl('hui-guests-child')
         });
 
         /**
@@ -78,7 +76,7 @@
         function draw(name, $f, c) {
             controls = c || {};
             $c = hui.getEl($f, 'guests', name);
-            $c.html(config.tpls.container(config));
+            $c.html(config.tplContainer(config));
             $s = hui.getEl($c, 'summary');
             $cc = hui.getEl($c, 'controls');
             $av = hui.getEl($c, 'adults-val');
@@ -143,7 +141,7 @@
 
         function drawChild(key) {
 
-            $cl.append(config.tpls.child({
+            $cl.append(config.tplChild({
                 key: key,
                 age: config.children[key],
                 hintText: config.childHintText
