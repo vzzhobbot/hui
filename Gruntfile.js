@@ -56,7 +56,13 @@ module.exports = function (grunt) {
                 files: [
                     'scss/*.scss'
                 ],
-                tasks: ['default']
+                tasks: ['dev']
+            },
+            js: {
+                files: [
+                    'js/*.js'
+                ],
+                tasks: ['dev']
             }
         }
 
@@ -91,6 +97,13 @@ module.exports = function (grunt) {
         'css',
         'concat',
         'uglify'
+    ]);
+
+    grunt.registerTask('dev', [
+        'clean',
+        'generate_assets_hash',
+        'css',
+        'concat'
     ]);
 
 };

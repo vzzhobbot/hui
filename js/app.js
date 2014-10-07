@@ -30,11 +30,7 @@ $(function() {
             required: true,
             placeholder: 'Check-in',
             name: 'checkIn',
-            onSelect: function(dateText, dateFormat, e, controls) {
-                if (!controls.checkOut.getStamp() || controls.checkIn.getStamp() >= controls.checkOut.getStamp()) {
-                    controls.checkOut.setDate(controls.checkIn.getDate(), 1);
-                }
-            },
+            lessThan: 'checkOut',
             locale: 'ru-RU',
             min: -1
         }),
@@ -43,11 +39,7 @@ $(function() {
             required: true,
             placeholder: 'Check-out',
             name: 'checkOut',
-            onSelect: function(dateText, dateFormat, e, controls) {
-                if(!controls.checkIn.getStamp() || controls.checkIn.getStamp() >= controls.checkOut.getStamp()) {
-                    controls.checkIn.setDate(controls.checkOut.getDate(), -1);
-                }
-            },
+            moreThan: 'checkIn',
             locale: 'ru-RU',
             min: 0
         }),

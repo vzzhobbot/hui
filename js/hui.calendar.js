@@ -26,6 +26,8 @@
             legendText: 'Days colored by average price for the night',
             onSelect: function() {},
             locale: null,
+            lessThan: null,
+            moreThan: null,
             tplInput: hui.getTpl('hui-input--calendar'),
             tplLegend: hui.getTpl('hui-input--calendar-legend')
         });
@@ -64,8 +66,20 @@
                 //showOn: 'both',
                 //buttonText: '',
                 onSelect: function(date, e) {
+
+                    var lessThanC = controls[config.lessThan];
+                    if(lessThanC && (!lessThanC.getStamp() || lessThanC.getStamp() <= getStamp())) {
+                        lessThanC.setDate(getDate(), 1);
+                    }
+
+                    var moreThanC = controls[config.moreThan];
+                    if(moreThanC && (!moreThanC.getStamp() || moreThanC.getStamp() >= getStamp())) {
+                        moreThanC.setDate(getDate(), -1);
+                    }
+
                     config.onSelect(date, $.datepicker.formatDate(config.format, getDate()), e);
                     $h.hide();
+
                 },
                 beforeShowDay: function(date) {
                     return getDayCfg(date);
