@@ -96,7 +96,12 @@
             }
 
             $i.on('focus', function() {
+                $iw.addClass('hui-state--focus');
                 $h.hide();
+            });
+
+            $i.on('blur', function() {
+                $iw.removeClass('hui-state--focus');
             });
 
             // todo doesnt work, fix it
