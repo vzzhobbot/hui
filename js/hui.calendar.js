@@ -15,7 +15,7 @@
         var details = {};
 
         config = _.defaults(config || {}, {
-            required: false, // todo
+            required: false,
             placeholder: 'Choose date...',
             name: 'date',
             value: null, // Date()
