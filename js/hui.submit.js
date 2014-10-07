@@ -8,13 +8,16 @@
             controls = {};
 
         config = _.defaults(config || {}, {
-            text: 'Submit'
+            text: 'Submit',
+            tpls: {
+                button: hui.getTpl('hui-submit')
+            }
         });
 
         function draw(name, $f, c) {
             controls = c || {};
             $c = hui.getEl($f, 'submit', name);
-            $c.html(hui.getTpl('hui-submit')(config));
+            $c.html(config.tpls.button(config));
             $b = hui.getEl($f, 'button', name);
         }
 

@@ -25,7 +25,11 @@
             hintText: 'panica!',
             legendText: 'Days colored by average price for the night',
             onSelect: function() {},
-            locale: null
+            locale: null,
+            tpls: {
+                input: hui.getTpl('hui-input--calendar'),
+                legend: hui.getTpl('hui-input--calendar-legend')
+            }
         });
 
         function getParams() {
@@ -51,7 +55,7 @@
         function draw(name, $f, c) {
             controls = c || {};
             $c = hui.getEl($f, 'calendar', name);
-            $c.html(hui.getTpl('hui-input--calendar')(config));
+            $c.html(config.tpls.input(config));
             $iw = hui.getEl($c, 'input-wrap');
             $i = hui.getEl($c, 'input');
             $h = hui.getEl($c, 'hint');
@@ -74,7 +78,7 @@
                 afterShow: function() {
                     if(_.isArray(details.points) && details.points.length) {
                         $('.ui-datepicker-row-break').html(
-                            hui.getTpl('hui-input--calendar-legend')({
+                            config.tpls.legend({
                                 legendText: config.legendText,
                                 'points': _.map(details.points, details.formatter)
                             })

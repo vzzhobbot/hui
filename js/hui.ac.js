@@ -30,7 +30,12 @@
                 return '' + Math.round(v);
             },
             samplesText: 'For example: {list}',
-            samplesList: []
+            samplesList: [],
+            tpls: {
+                input: hui.getTpl('hui-input--ac'),
+                samples: hui.getTpl('hui-input--ac-samples'),
+                samplesLink: hui.getTpl('hui-input--ac-samples-link')
+            }
         });
 
         function avgPricesRequest (id) {
@@ -140,7 +145,7 @@
         function draw(name, $f, c) {
             controls = c || {};
             $c = hui.getEl($f, 'ac', name);
-            $c.html(hui.getTpl('hui-input--ac')(config));
+            $c.html(config.tpls.input(config));
             $i = hui.getEl($c, 'input');
             $h = hui.getEl($c, 'hint');
             $l = hui.getEl($c, 'loader');
@@ -182,9 +187,9 @@
             if(config.samplesList.length) {
 
                 var links = _.map(config.samplesList, function(i) {
-                    return hui.getTpl('hui-input--ac-samples-link')(i);
+                    return config.tpls.samplesLink(i);
                 });
-                var samples = hui.getTpl('hui-input--ac-samples')(
+                var samples = config.tpls.samples(
                     _.defaults({
                         samplesText: config.samplesText.replace('{list}', links.join(', '))
                     }, config)

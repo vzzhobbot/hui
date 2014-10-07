@@ -29,6 +29,10 @@
             childHintText: 'Check da age!',
             summary: function(adults, children) {
                 return (adults + children.length);
+            },
+            tpls: {
+                container: hui.getTpl('hui-guests'),
+                child: hui.getTpl('hui-guests-child')
             }
         });
 
@@ -74,7 +78,7 @@
         function draw(name, $f, c) {
             controls = c || {};
             $c = hui.getEl($f, 'guests', name);
-            $c.html(hui.getTpl('hui-guests')(config));
+            $c.html(config.tpls.container(config));
             $s = hui.getEl($c, 'summary');
             $cc = hui.getEl($c, 'controls');
             $av = hui.getEl($c, 'adults-val');
@@ -139,7 +143,7 @@
 
         function drawChild(key) {
 
-            $cl.append(hui.getTpl('hui-guests-child')({
+            $cl.append(config.tpls.child({
                 key: key,
                 age: config.children[key],
                 hintText: config.childHintText

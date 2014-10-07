@@ -10,7 +10,10 @@
             text: 'Checkbox',
             onChange: function() {}, // fires on state change
             onOn: function() {}, // fires when checkbox set on
-            onOff: function() {} // fires when checkbox set off
+            onOff: function() {}, // fires when checkbox set off
+            tpls: {
+                input: hui.getTpl('hui-checkbox')
+            }
         });
 
         /**
@@ -33,7 +36,7 @@
         function draw(name, $f, c) {
             controls = c || {};
             $c = hui.getEl($f, 'checkbox', name);
-            $c.html(hui.getTpl('hui-checkbox')(config));
+            $c.html(config.tpls.input(config));
             $ch = hui.getEl($c, 'checkbox-input');
 
             $ch.on('change', function(e) {
