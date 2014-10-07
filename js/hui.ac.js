@@ -4,6 +4,7 @@
     hui.ac = function (config) {
 
         var $c = null, // container
+            $iw = null, // input wrap
             $i = null, // input
             $h = null, // hint
             $l = null, // loader
@@ -144,6 +145,7 @@
             controls = c || {};
             $c = hui.getEl($f, 'ac', name);
             $c.html(config.tplInput(config));
+            $iw = hui.getEl($c, 'input-wrap');
             $i = hui.getEl($c, 'input');
             $h = hui.getEl($c, 'hint');
             $l = hui.getEl($c, 'loader');
@@ -175,7 +177,12 @@
             });
 
             $i.on('focus', function() {
+                $iw.addClass('hui-state--focus');
                 $h.hide();
+            });
+
+            $i.on('blur', function() {
+                $iw.removeClass('hui-state--focus');
             });
 
             $h.on('click', function() {
