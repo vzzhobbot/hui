@@ -51,7 +51,7 @@
 </script>
 <script type="text/tpl" id="hui-input--calendar-legend">
 <div class="ui-datepicker-legend">
-    <div class="ui-datepicker-legend-head">Days colored by average price for the night</div>
+    <div class="ui-datepicker-legend-head"><%= legendText %></div>
     <div class="ui-datepicker-legend-points">
         <div class="ui-datepicker-legend-points-line"></div>
         <ul class="ui-datepicker-legend-points-list">
@@ -78,13 +78,13 @@
     <div class="hui-guests-i" hui-role="summary"></div>
     <div class="hui-guests-dd hui-state--hidden" hui-role="controls">
         <div class="hui-guests-adults">
-            <div class="hui-guests-adults-title">Adults</div>
+            <div class="hui-guests-adults-title"><%= adultsTitle %></div>
             <div class="hui-guests-adults-val" hui-role="adults-val"></div>
             <a href="#" hui-role="adults-decrement">-</a>
             <a href="#" hui-role="adults-increment">+</a>
         </div>
         <div class="hui-guests-children">
-            <div class="hui-guests-children-title">Children</div>
+            <div class="hui-guests-children-title"><%= childrenTitle %></div>
             <div class="hui-guests-children-val" hui-role="children-val"></div>
             <a href="#" hui-role="children-decrement">-</a>
             <a href="#" hui-role="children-increment">+</a>

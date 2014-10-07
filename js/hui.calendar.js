@@ -23,6 +23,7 @@
             min: 0, //
             months: 2,
             hintText: 'panica!',
+            legendText: 'Days colored by average price for the night',
             onSelect: function() {},
             locale: null
         });
@@ -74,6 +75,7 @@
                     if(_.isArray(details.points) && details.points.length) {
                         $('.ui-datepicker-row-break').html(
                             hui.getTpl('hui-input--calendar-legend')({
+                                legendText: config.legendText,
                                 'points': _.map(details.points, details.formatter)
                             })
                         );

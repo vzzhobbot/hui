@@ -25,7 +25,12 @@
         config = _.defaults(config || {}, {
             adults: 2,
             children: [],
-            childHintText: 'Check da age!'
+            adultsTitle: 'Adults',
+            childrenTitle: 'Children',
+            childHintText: 'Check da age!',
+            summary: function(adults, children) {
+                return (adults + children.length);
+            }
         });
 
         /**
@@ -41,17 +46,24 @@
         }
 
         function validate() {
+            // collect errors
             var r = _.filter(config.children, function(age, k) {
                 var e = (age === null || parseInt(age) < 0 || parseInt(age) > CHILD_AGE_MAX);
-                if(e) {
-                    $chi[k].focus();
-                    $chh[k].show();
-                } else {
-                    $chh[k].hide()
+                if(!e) {
+                    $chh[k].hide();
                 }
                 return e;
             });
-            return !r.length;
+            // show hint of first error
+            if(r.length) {
+                _.each(r, function(v, k) {
+                    $chi[k].focus();
+                    $chh[k].show();
+                    return false;
+                });
+                return false;
+            }
+            return true;
         }
 
         /**
@@ -163,7 +175,7 @@
         }
 
         function update() {
-            $s.html('Guests ' + (config.adults + config.children.length));
+            $s.html(config.summary(config.adults, config.children));
             $av.html(config.adults);
             $cv.html(config.children.length);
 

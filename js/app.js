@@ -2,6 +2,9 @@ $(function() {
     hui.form('form111', {
 
         destination: hui.ac({
+            id: 15542,
+            type: 'location',
+            text: 'Paris, France',
             url: 'http://yasen.hotellook.com/autocomplete?lang=en-us&limit=5&term={term}',
             placeholder: 'Type location or hotel name...',
             onSelectShowCalendar: 'checkIn',
@@ -63,8 +66,10 @@ $(function() {
         }),
 
         guests: hui.guests({
-            adults: 1,
-            children: [9, 12]
+            adults: 2,
+            summary: function(adults, children) {
+                return 'guests ' + (adults + children.length);
+            }
         }),
 
         submit: hui.submit({
@@ -72,6 +77,7 @@ $(function() {
         })
 
     }, {
-        aaa: 'sss'
+        language: 'ru-RU',
+        currency: 'RUB'
     });
 });

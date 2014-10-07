@@ -1,5 +1,45 @@
-.ui-datepicker-row-break {
-  font-size: 1em !important;
+.ui-datepicker {
+
+  .ui-datepicker-dayType--0 a {
+    color: #84c243;
+  }
+
+  .ui-datepicker-dayType--1 a {
+    color: #95a82f;
+  }
+
+  .ui-datepicker-dayType--2 a {
+    color: #f9bb34;
+  }
+
+  .ui-datepicker-dayType--3 a {
+    color: #eb9537;
+  }
+
+  .ui-datepicker-dayType--4 a {
+    color: #EB3E24;
+  }
+
+  .ui-datepicker-row-break {
+    font-size: 1em !important;
+  }
+
+  .ui-datepicker-legend-points-item {
+
+    &.ui-datepicker-legend-points-item--0 {
+      color: #84c243;
+    }
+
+    &.ui-datepicker-legend-points-item--1 {
+      color: #f9bb34;
+    }
+
+    &.ui-datepicker-legend-points-item--2 {
+      color: #EB3E24;
+    }
+
+  }
+
 }
 
 .hui-guests-dd.hui-state--hidden {
