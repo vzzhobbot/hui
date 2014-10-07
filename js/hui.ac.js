@@ -122,6 +122,7 @@
         }
 
         function select(type, id, text) {
+            $h.hide();
             config.type = type;
             config.id = id;
             if(text) {
