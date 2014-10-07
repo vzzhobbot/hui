@@ -211,6 +211,7 @@
             if(getParams()) {
                 return true;
             }
+            $i.focus();
             $h.show();
             return false;
         }
