@@ -28,6 +28,29 @@ module.exports = function (grunt) {
             ]
         },
 
+        concat: {
+            js: {
+                src: [
+                    'js/hui.js',
+                    'js/hui.form.js',
+                    'js/hui.ac.js',
+                    'js/hui.calendar.js',
+                    'js/hui.checkbox.js',
+                    'js/hui.guests.js',
+                    'js/hui.submit.js',
+                ],
+                dest: '<%= assets_path %>/js/hui.js'
+            }
+        },
+
+        uglify: {
+            all: {
+                files: {
+                    '<%= assets_path %>/js/hui.js': ['<%= assets_path %>/js/hui.js']
+                }
+            }
+        },
+
         watch: {
             css: {
                 files: [
@@ -43,6 +66,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.task.registerTask('generate_assets_hash', 'generate YII asets hash', function () {
         var fs = require('fs'),
@@ -63,7 +88,9 @@ module.exports = function (grunt) {
     grunt.registerTask('default', [
         'clean',
         'generate_assets_hash',
-        'css'
+        'css',
+        'concat',
+        'uglify'
     ]);
 
 };

@@ -77,7 +77,7 @@ $(function() {
         })
 
     }, {
-        language: 'ru-RU',
-        currency: 'RUB'
+        language: 'ru-ru',
+        currency: 'rub'
     });
 });
