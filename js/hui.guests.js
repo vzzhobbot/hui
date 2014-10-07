@@ -179,15 +179,26 @@
             $av.html(config.adults);
             $cv.html(config.children.length);
 
-            $ai.removeClass('hui-state--disabled');
-            if(config.adults == ADULTS_MAX) {
-                $ai.addClass('hui-state--disabled');
-            }
+            config.children.length
+                ? $cl.removeClass('hui-state--empty')
+                : $cl.addClass('hui-state--empty');
 
-            $ad.removeClass('hui-state--disabled');
-            if(config.adults == ADULTS_MIN) {
-                $ad.addClass('hui-state--disabled');
-            }
+            config.children.length == CHILDREN_MAX
+                ? $ci.addClass('hui-state--disabled')
+                : $ci.removeClass('hui-state--disabled');
+
+            !config.children.length
+                ? $cd.addClass('hui-state--disabled')
+                : $cd.removeClass('hui-state--disabled');
+
+            config.adults == ADULTS_MAX
+                ? $ai.addClass('hui-state--disabled')
+                : $ai.removeClass('hui-state--disabled');
+
+            config.adults == ADULTS_MIN
+                ? $ad.addClass('hui-state--disabled')
+                : $ad.removeClass('hui-state--disabled');
+
         }
 
         /**
