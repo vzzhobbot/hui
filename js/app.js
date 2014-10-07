@@ -13,14 +13,14 @@ $(function() {
             samplesList: [
                 {
                     id: 15542,
-                    text: 'Paris, France',
                     type: 'location',
+                    text: 'Paris, France',
                     sample: 'Paris'
                 },
                 {
                     id: 12153,
-                    text: 'Moscow, Russia',
                     type: 'location',
+                    text: 'Moscow, Russia',
                     sample: 'Moscow'
                 }
             ]
@@ -44,17 +44,9 @@ $(function() {
             min: 0
         }),
 
-        noDates: hui.checkbox({
-            name: 'noDates',
+        noDates: hui.noDates({
             text: 'No dates',
-            onOn: function(e, controls) {
-                controls.checkIn.disable();
-                controls.checkOut.disable();
-            },
-            onOff: function(e, controls) {
-                controls.checkIn.enable();
-                controls.checkOut.enable();
-            }
+            calendars: ['checkIn', 'checkOut']
         }),
 
         guests: hui.guests({

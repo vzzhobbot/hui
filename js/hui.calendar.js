@@ -45,7 +45,7 @@
 
         function disable() {
             $i.datepicker('option', 'disabled', true);
-            $h.hide();
+            $iw.removeClass('hui-state--error');
         }
 
         function enable() {
@@ -78,7 +78,7 @@
                     }
 
                     config.onSelect(date, $.datepicker.formatDate(config.format, getDate()), e);
-                    $h.hide();
+                    $iw.removeClass('hui-state--error');
 
                 },
                 beforeShowDay: function(date) {
@@ -111,7 +111,7 @@
 
             $i.on('focus', function() {
                 $iw.addClass('hui-state--focus');
-                $h.hide();
+                $iw.removeClass('hui-state--error');
             });
 
             $i.on('blur', function() {
@@ -120,7 +120,11 @@
 
             // todo doesnt work, fix it
             $i.on('change', function() {
-                $h.hide();
+                $iw.removeClass('hui-state--error');
+            });
+
+            $h.on('click', function() {
+                $iw.removeClass('hui-state--error');
             });
 
         }
@@ -175,7 +179,7 @@
             if(!config.required || $i.datepicker('option', 'disabled') || !!getParams()) {
                 return true;
             }
-            $h.show();
+            $iw.addClass('hui-state--error');
             return false;
         }
 

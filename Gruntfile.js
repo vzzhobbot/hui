@@ -35,9 +35,9 @@ module.exports = function (grunt) {
                     'js/hui.form.js',
                     'js/hui.ac.js',
                     'js/hui.calendar.js',
-                    'js/hui.checkbox.js',
+                    'js/hui.noDates.js',
                     'js/hui.guests.js',
-                    'js/hui.submit.js',
+                    'js/hui.submit.js'
                 ],
                 dest: '<%= assets_path %>/js/hui.js'
             }

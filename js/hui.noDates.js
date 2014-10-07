@@ -1,6 +1,6 @@
 ;(function ($, _, hui) {
     'use strict';
-    hui.checkbox = function (config) {
+    hui.noDates = function (config) {
 
         var $c = null,
             $chw = null,
@@ -8,12 +8,13 @@
             controls = {};
 
         config = _.defaults(config || {}, {
-            name: 'checkbox',
+            name: 'noDates',
             text: 'Checkbox',
             onChange: function() {}, // fires on state change
             onOn: function() {}, // fires when checkbox set on
             onOff: function() {}, // fires when checkbox set off
-            tplInput: hui.getTpl('hui-checkbox')
+            calendars: [],
+            tplInput: hui.getTpl('hui-noDates')
         });
 
         /**
@@ -35,12 +36,15 @@
          */
         function draw(name, $f, c) {
             controls = c || {};
-            $c = hui.getEl($f, 'checkbox', name);
+            $c = hui.getEl($f, 'noDates', name);
             $c.html(config.tplInput(config));
-            $chw = hui.getEl($c, 'checkbox-input-wrap');
-            $ch = hui.getEl($c, 'checkbox-input');
+            $chw = hui.getEl($c, 'noDates-input-wrap');
+            $ch = hui.getEl($c, 'noDates-input');
 
             $ch.on('change', function(e) {
+                _.each(config.calendars, function(name) {
+                    e.target.checked ? controls[name].disable() : controls[name].enable();
+                });
                 config.onChange(e);
                 e.target.checked ? config.onOn(e) : config.onOff(e);
             });

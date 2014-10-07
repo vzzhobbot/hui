@@ -18,7 +18,7 @@
         <li class="hui-form-item" hui-role="ac" hui-name="destination"></li>
         <li class="hui-form-item" hui-role="calendar" hui-name="checkIn"></li>
         <li class="hui-form-item" hui-role="calendar" hui-name="checkOut"></li>
-        <li class="hui-form-item" hui-role="checkbox" hui-name="noDates"></li>
+        <li class="hui-form-item" hui-role="noDates" hui-name="noDates"></li>
         <li class="hui-form-item" hui-role="guests" hui-name="guests"></li>
         <li class="hui-form-item" hui-role="submit" hui-name="submit"></li>
     </ul>
@@ -28,8 +28,8 @@
 <script type="text/tpl" id="hui-input--ac">
 <div class="hui-input hui-input--ac" hui-role="input-wrap">
     <input type="text" placeholder="<%= placeholder %>" value="<%= text %>" hui-role="input" />
-    <span hui-role="loader" style="display:none"><%= loadingText %></span>
-    <span hui-role="hint" style="display:none"><%= hintText %></span>
+    <div class="loader" hui-role="loader"></div>
+    <div class="hint" hui-role="hint"><%= hintText %></div>
 </div>
 </script>
 <script type="text/tpl" id="hui-input--ac-samples">
@@ -40,7 +40,7 @@
 <script type="text/tpl" id="hui-input--calendar">
 <div class="hui-input hui-input--calendar" hui-role="input-wrap">
     <input type="text" placeholder="<%= placeholder %>" hui-role="input" />
-    <span hui-role="hint" style="display:none"><%= hintText %></span>
+    <div class="hint" hui-role="hint"><%= hintText %></div>
 </div>
 </script>
 <script type="text/tpl" id="hui-input--calendar-legend">
@@ -57,9 +57,9 @@
 </div>
 </script>
 
-<script type="text/tpl" id="hui-checkbox">
-<label hui-role="checkbox-input-wrap">
-    <input type="checkbox" hui-role="checkbox-input"><%= text %>
+<script type="text/tpl" id="hui-noDates">
+<label hui-role="noDates-input-wrap">
+    <input type="checkbox" hui-role="noDates-input"><%= text %>
 </label>
 </script>
 
@@ -91,7 +91,7 @@
 <li class="hui-guests-children-item" hui-role="child-container" hui-name="<%= key %>">
     <div class="hui-input" hui-role="input-wrap">
         <input type="text" hui-role="input" value="<%= age %>" />
-        <span hui-role="hint" style="display:none"><%= hintText %></span>
+        <div class="hint" hui-role="hint"><%= hintText %></div>
     </div>
 </li>
 </script>

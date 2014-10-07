@@ -42,6 +42,40 @@
 
 }
 
-.hui-guests-dd.hui-state--hidden {
-  display: none;
+.hui-guests {
+
+  .hui-guests-dd {
+    &.hui-state--hidden {
+      display: none;
+    }
+  }
+
+}
+
+.hui-input {
+
+  .hint {
+    display: none;
+  }
+
+  &.hui-state--error {
+    .hint {
+      display: block;
+    }
+  }
+
+}
+
+.hui-input--ac {
+
+  .loader {
+    display: none;
+  }
+
+  &.hui-state--loading {
+    .loader {
+      display: block;
+    }
+  }
+
 }

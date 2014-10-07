@@ -19,7 +19,6 @@
             type: '', // default type
             id: 0, // default id
             limit: 5,
-            loadingText: 'loading',
             hintText: 'panic!',
             agvPricesUrl: null,
             onSelect: function() {},
@@ -79,7 +78,7 @@
         }
 
         function source(request, response) {
-            $l.show();
+            $iw.addClass('hui-state--loading');
             $.ajax({
                 dataType: 'jsonp',
                 type: 'get',
@@ -108,10 +107,10 @@
                         }
                     });
                     response(_.union(cities, hotels));
-                    $l.hide();
+                    $iw.removeClass('hui-state--loading');
                 },
                 error: function() {
-                    $l.hide();
+                    $iw.removeClass('hui-state--loading');
                 }
             });
         }
@@ -126,7 +125,7 @@
         }
 
         function select(type, id, text) {
-            $h.hide();
+            $iw.removeClass('hui-state--error');
             config.type = type;
             config.id = id;
             if(text) {
@@ -173,12 +172,12 @@
                     config.id = 0;
                     onReset();
                 }
-                $h.hide();
+                $iw.removeClass('hui-state--error');
             });
 
             $i.on('focus', function() {
                 $iw.addClass('hui-state--focus');
-                $h.hide();
+                $iw.removeClass('hui-state--error');
             });
 
             $i.on('blur', function() {
@@ -186,7 +185,7 @@
             });
 
             $h.on('click', function() {
-                $h.hide();
+                $iw.removeClass('hui-state--error');
             });
 
             if(config.samplesList.length) {
@@ -222,7 +221,7 @@
                 return true;
             }
             $i.focus();
-            $h.show();
+            $iw.addClass('hui-state--error');
             return false;
         }
 
