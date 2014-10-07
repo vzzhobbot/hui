@@ -2,11 +2,6 @@
     'use strict';
     hui.guests = function (config) {
 
-        var ADULTS_MAX = 4,
-            ADULTS_MIN = 1,
-            CHILDREN_MAX = 3,
-            CHILD_AGE_MAX = 17;
-
         var $c = null, // container
             $s = null, // summary
             $cc = null, // controls container
@@ -23,8 +18,12 @@
             $chh = [], // child hints
             controls = {};
         config = _.defaults(config || {}, {
+            adultsMax: 4,
+            adultsMin: 1,
             adults: 2,
             children: [],
+            childrenMax: 3,
+            childMaxAge: 17,
             adultsTitle: 'Adults',
             childrenTitle: 'Children',
             childHintText: 'Check da age!',
@@ -48,7 +47,7 @@
         function validate() {
             // collect errors
             var r = _.filter(config.children, function(age, k) {
-                var e = (age === null || parseInt(age) < 0 || parseInt(age) > CHILD_AGE_MAX);
+                var e = (age === null || parseInt(age) < 0 || parseInt(age) > config.childMaxAge);
                 if(!e) {
                     $chh[k].hide();
                 }
@@ -95,7 +94,7 @@
             });
 
             $ai.on('click', function() {
-                if(config.adults == ADULTS_MAX) {
+                if(config.adults == config.adultsMax) {
                     return false;
                 }
                 config.adults++;
@@ -104,7 +103,7 @@
             });
 
             $ad.on('click', function() {
-                if(config.adults == ADULTS_MIN) {
+                if(config.adults == config.adultsMin) {
                     return false;
                 }
                 config.adults--;
@@ -113,7 +112,7 @@
             });
 
             $ci.on('click', function() {
-                if(config.children.length == CHILDREN_MAX) {
+                if(config.children.length == config.childrenMax) {
                     return false;
                 }
                 config.children.push(null);
@@ -183,7 +182,7 @@
                 ? $cl.removeClass('hui-state--empty')
                 : $cl.addClass('hui-state--empty');
 
-            config.children.length == CHILDREN_MAX
+            config.children.length == config.childrenMax
                 ? $ci.addClass('hui-state--disabled')
                 : $ci.removeClass('hui-state--disabled');
 
@@ -191,11 +190,11 @@
                 ? $cd.addClass('hui-state--disabled')
                 : $cd.removeClass('hui-state--disabled');
 
-            config.adults == ADULTS_MAX
+            config.adults == config.adultsMax
                 ? $ai.addClass('hui-state--disabled')
                 : $ai.removeClass('hui-state--disabled');
 
-            config.adults == ADULTS_MIN
+            config.adults == config.adultsMin
                 ? $ad.addClass('hui-state--disabled')
                 : $ad.removeClass('hui-state--disabled');
 
