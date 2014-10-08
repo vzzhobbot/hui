@@ -31,13 +31,13 @@ module.exports = function (grunt) {
         concat: {
             js: {
                 src: [
-                    'js/hui.js',
-                    'js/hui.form.js',
-                    'js/hui.ac.js',
-                    'js/hui.calendar.js',
-                    'js/hui.noDates.js',
-                    'js/hui.guests.js',
-                    'js/hui.submit.js'
+                    'js/hui/hui.js',
+                    'js/hui/hui.form.js',
+                    'js/hui/hui.ac.js',
+                    'js/hui/hui.calendar.js',
+                    'js/hui/hui.noDates.js',
+                    'js/hui/hui.guests.js',
+                    'js/hui/hui.submit.js'
                 ],
                 dest: '<%= assets_path %>/js/hui.js'
             }
