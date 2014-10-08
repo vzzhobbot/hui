@@ -253,7 +253,7 @@
             this.widget().menu('option', 'items', '> :not(.ui-autocomplete-category)');
         },
         _renderMenu: function( ul, items ) {
-            ul.addClass('hl-ui-autocomplete');
+            ul.addClass('hui-ac');
             var that = this,
                 currentCategory = "";
             $.each( items, function( index, item ) {
