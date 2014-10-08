@@ -35,6 +35,7 @@ $(function() {
 
         checkIn: hui.calendar({
             required: true,
+            head: 'Дата заезда',
             placeholder: 'Дата заезда',
             hintEmpty: 'Нужно указать дату заезда и выезда',
             name: 'checkIn',
@@ -47,6 +48,7 @@ $(function() {
 
         checkOut: hui.calendar({
             required: true,
+            head: 'Дата выезда',
             placeholder: 'Дата выезда',
             hintEmpty: 'Нужно указать дату заезда и выезда',
             name: 'checkOut',

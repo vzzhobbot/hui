@@ -24,7 +24,8 @@
             months: 2, // num of months visible in datepicker
             hintEmpty: 'empty-panica!',
             hintPeriod: 'period-panica!',
-            legendText: 'Days colored by average price for the night',
+            head: null,
+            legend: 'Days colored by average price for the night',
             onSelect: function() {},
             onSelectShowCalendar: null,
             onSelectSetCalendar: null,
@@ -33,6 +34,7 @@
             relationSuperior: true, // 1 - superior, 0 - inferior
             relationAutoSet: false,
             tplInput: hui.getTpl('hui-input--calendar'),
+            tplHead: hui.getTpl('hui-input--calendar-head'),
             tplLegend: hui.getTpl('hui-input--calendar-legend')
         });
 
@@ -101,10 +103,15 @@
                     i.dpDiv.attr('__cheat', uid);
                 },
                 afterShow: function() {
+                    if(config.head) {
+                        $('#ui-datepicker-div').prepend(config.tplHead({
+                            head: config.head
+                        }));
+                    }
                     if(_.isArray(details.points) && details.points.length) {
                         $('.ui-datepicker-row-break').html(
                             config.tplLegend({
-                                legendText: config.legendText,
+                                'legend': config.legend,
                                 'points': _.map(details.points, details.formatter)
                             })
                         );
