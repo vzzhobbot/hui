@@ -13,12 +13,13 @@
             controls = {};
 
         config = _.defaults(config || {}, {
-            url: null,
+            url: 'http://yasen.hotellook.com/autocomplete',
             name: 'destination',
             text: '', // default input value
             type: '', // default type
             id: 0, // default id
             limit: 5,
+            locale: 'en-US',
             hintText: 'panic!',
             agvPricesUrl: null,
             onSelect: function() {},
@@ -82,7 +83,12 @@
             $.ajax({
                 dataType: 'jsonp',
                 type: 'get',
-                url: config.url.replace('{term}', request.term),
+                url: config.url,
+                data: {
+                    lang: config.locale,
+                    limit: config.limit,
+                    term: request.term
+                },
                 jsonpCallback: 'hui_ac_callback',
                 success: function(data) {
                     var cities = _.map(data.cities, function(item) {

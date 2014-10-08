@@ -5,7 +5,7 @@ $(function() {
             id: 15542,
             type: 'location',
             text: 'Paris, France',
-            url: 'http://yasen.hotellook.com/autocomplete?lang=en-us&limit=5&term={term}',
+            locale: 'ru-RU',
             placeholder: 'Type location or hotel name...',
             onSelectShowCalendar: 'checkIn',
             avgPricesUrl: 'http://hotellook2.local/ajax/location-avg-prices.json?locationId={id}',
