@@ -22,15 +22,13 @@
             format: 'yy-mm-dd', // getParams() format
             min: 0, // min selectable date (in days from today)
             months: 2, // num of months visible in datepicker
-            hintEmpty: 'empty-panica!',
-            hintPeriod: 'period-panica!',
-            head: null,
+            hintEmpty: 'empty-panica!', // hint text if required calendar field is empty
+            hintPeriod: 'period-panica!', // todo hint text if relation calendar date >30 days
+            head: null, // datepicker head text
             legend: 'Days colored by average price for the night',
             onSelect: function() {},
-            onSelectShowCalendar: null,
-            onSelectSetCalendar: null,
-            locale: null,
-            relationCalendar: null,
+            locale: 'en-US',
+            relationCalendar: null, // name of control
             relationSuperior: true, // 1 - superior, 0 - inferior
             relationAutoSet: false,
             tplInput: hui.getTpl('hui-input--calendar'),

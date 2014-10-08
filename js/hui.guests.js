@@ -21,8 +21,8 @@
         config = _.defaults(config || {}, {
             adultsMax: 4,
             adultsMin: 1,
-            adults: 2,
-            children: [],
+            adults: 2, // adults value
+            children: [], // children age
             childrenMax: 3,
             childMaxAge: 17,
             adultsTitle: 'Adults',

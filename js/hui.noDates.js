@@ -8,12 +8,12 @@
             controls = {};
 
         config = _.defaults(config || {}, {
-            name: 'noDates',
+            name: 'noDates', // getParams() param name
             text: 'Checkbox',
             onChange: function() {}, // fires on state change
             onOn: function() {}, // fires when checkbox set on
             onOff: function() {}, // fires when checkbox set off
-            calendars: [],
+            calendars: [], // calendar control names list
             tplInput: hui.getTpl('hui-noDates')
         });
 

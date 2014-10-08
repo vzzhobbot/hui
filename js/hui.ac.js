@@ -14,24 +14,24 @@
 
         config = _.defaults(config || {}, {
             url: 'http://yasen.hotellook.com/autocomplete',
-            name: 'destination',
+            name: 'destination', // getParams() param name in case
+                                 // you select nothing in autocomplete
             text: '', // default input value
             type: '', // default type
             id: 0, // default id
             limit: 5,
             locale: 'en-US',
-            hint: 'panic!',
-            agvPricesUrl: null,
+            hint: 'panic!', // this control always required, its hint text
             onSelect: function() {},
             onSelectShowCalendar: null,
             onReset: function() {},
-            avgPricesUrl: null,
-            avgPricesCalendars: [],
+            avgPricesUrl: null, // ex.: 'http://hotellook2.local/ajax/location-avg-prices.json?locationId={id}'
+            avgPricesCalendars: [], // names if controls
             avgPricesFormatter: function(v) {
                 return '' + Math.round(v);
             },
             samplesText: 'For example: {list}',
-            samplesList: [],
+            samplesList: [], // [{id: 15542, type: 'location', text: 'Paris, France', sample: 'Paris'}]
             tplInput: hui.getTpl('hui-input--ac'),
             tplSamples: hui.getTpl('hui-input--ac-samples'),
             tplSamplesLink: hui.getTpl('hui-input--ac-samples-link')
