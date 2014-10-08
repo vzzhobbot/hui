@@ -31,9 +31,9 @@
             relationCalendar: null, // name of control
             relationSuperior: true, // 1 - superior, 0 - inferior
             relationAutoSet: false,
-            tplInput: hui.getTpl('hui-input--calendar'),
-            tplHead: hui.getTpl('hui-input--calendar-head'),
-            tplLegend: hui.getTpl('hui-input--calendar-legend')
+            tplInput: _.template('<div class="hui-input hui-input--calendar" hui-role="input-wrap"><input type="text" placeholder="<%= placeholder %>" hui-role="input" /><div class="hint" hui-role="hint"></div></div>'),
+            tplHead: _.template('<div class="ui-datepicker-head"><%= head %></div>'),
+            tplLegend: _.template('<div class="ui-datepicker-legend"><div class="ui-datepicker-legend-head"><%= legend %></div><div class="ui-datepicker-legend-points"><div class="ui-datepicker-legend-points-line"></div><ul class="ui-datepicker-legend-points-list"><% _.each(points, function(point, i) { %><li class="ui-datepicker-legend-points-item ui-datepicker-legend-points-item--<%= i %>"><%= point %></li><% }); %></ul></div></div>')
         });
 
         function getParams() {

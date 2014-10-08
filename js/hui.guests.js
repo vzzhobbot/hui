@@ -31,8 +31,8 @@
             summary: function(adults, children) {
                 return (adults + children.length);
             },
-            tplContainer: hui.getTpl('hui-guests'),
-            tplChild: hui.getTpl('hui-guests-child')
+            tplContainer: _.template('<div class="hui-guests hui-state--closed" hui-role="guests"><div class="hui-guests-i" hui-role="summary"></div><div class="hui-guests-dd" hui-role="controls"><div class="hui-guests-adults"><div class="hui-guests-adults-title"><%= adultsTitle %></div><div class="hui-guests-adults-controls"><a href="#" hui-role="adults-decrement">-</a><div class="hui-guests-adults-val" hui-role="adults-val"></div><a href="#" hui-role="adults-increment">+</a></div></div><div class="hui-guests-children"><div class="hui-guests-children-title"><%= childrenTitle %></div><div class="hui-guests-children-controls"><a href="#" hui-role="children-decrement">-</a><div class="hui-guests-children-val" hui-role="children-val"></div><a href="#" hui-role="children-increment">+</a></div><ul class="hui-guests-children-list" hui-role="children-list"></ul></div></div></div>'),
+            tplChild: _.template('<li class="hui-guests-children-item" hui-role="child-container" hui-name="<%= key %>"><div class="hui-input" hui-role="input-wrap"><input type="text" hui-role="input" value="<%= age %>" /><div class="hint" hui-role="hint"><%= hint %></div></div></li>')
         });
 
         /**

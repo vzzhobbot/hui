@@ -32,9 +32,9 @@
             },
             samplesText: 'For example: {list}',
             samplesList: [], // [{id: 15542, type: 'location', text: 'Paris, France', sample: 'Paris'}]
-            tplInput: hui.getTpl('hui-input--ac'),
-            tplSamples: hui.getTpl('hui-input--ac-samples'),
-            tplSamplesLink: hui.getTpl('hui-input--ac-samples-link')
+            tplInput: _.template('<div class="hui-input hui-input--ac" hui-role="input-wrap"><input type="text" placeholder="<%= placeholder %>" value="<%= text %>" hui-role="input" /><div class="loader" hui-role="loader"></div><div class="hint" hui-role="hint"><%= hint %></div></div>'),
+            tplSamples: _.template('<div class="hui-input--ac-samples" hui-role="samples"><%= samplesText %></div>'),
+            tplSamplesLink: _.template('<a href="#" hui-role="samples-link" data-type="<%= type %>" data-id="<%= id %>" data-text="<%= text %>"><%= sample %></a>')
         });
 
         function avgPricesRequest (id) {

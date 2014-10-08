@@ -9,7 +9,7 @@
 
         config = _.defaults(config || {}, {
             text: 'Submit',
-            tplButton: hui.getTpl('hui-submit')
+            tplButton: _.template('<button><%= text %></button>')
         });
 
         function draw(name, $f, c) {

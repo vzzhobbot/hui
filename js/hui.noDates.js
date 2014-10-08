@@ -14,7 +14,7 @@
             onOn: function() {}, // fires when checkbox set on
             onOff: function() {}, // fires when checkbox set off
             calendars: [], // calendar control names list
-            tplInput: hui.getTpl('hui-noDates')
+            tplInput: _.template('<label hui-role="noDates-input-wrap"><input type="checkbox" hui-role="noDates-input"><%= text %></label>')
         });
 
         /**
