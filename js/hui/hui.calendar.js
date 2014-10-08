@@ -49,11 +49,13 @@
 
         function disable() {
             $i.datepicker('option', 'disabled', true);
+            $iw.addClass('hui-state--disabled');
             $iw.removeClass('hui-state--error');
         }
 
         function enable() {
             $i.datepicker('option', 'disabled', false);
+            $iw.removeClass('hui-state--disabled');
         }
 
         function draw(name, $f, c) {
