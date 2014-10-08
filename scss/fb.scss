@@ -43,9 +43,8 @@
 }
 
 .hui-guests {
-
-  .hui-guests-dd {
-    &.hui-state--hidden {
+  &.hui-state--closed {
+    .hui-guests-dd {
       display: none;
     }
   }

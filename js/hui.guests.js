@@ -3,6 +3,7 @@
     hui.guests = function (config) {
 
         var $c = null, // container
+            $g = null, // guests container
             $s = null, // summary
             $cc = null, // controls container
             $av = null, // adults value
@@ -48,18 +49,18 @@
 
         function validate() {
             // collect errors
-            var r = _.filter(config.children, function(age, k) {
+            var r = _.filter(config.children, function(age, key) {
                 var e = (age === null || parseInt(age) < 0 || parseInt(age) > config.childMaxAge);
                 if(!e) {
-                    $chh[k].hide();
+                    $chiw[key].removeClass('hui-state--error');
                 }
                 return e;
             });
             // show hint of first error
             if(r.length) {
-                _.each(r, function(v, k) {
-                    $chi[k].focus();
-                    $chh[k].show();
+                _.each(r, function(v, key) {
+                    $chiw[key].addClass('hui-state--error');
+                    $chi[key].focus();
                     return false;
                 });
                 return false;
@@ -77,6 +78,7 @@
             controls = c || {};
             $c = hui.getEl($f, 'guests', name);
             $c.html(config.tplContainer(config));
+            $g = hui.getEl($c, 'guests');
             $s = hui.getEl($c, 'summary');
             $cc = hui.getEl($c, 'controls');
             $av = hui.getEl($c, 'adults-val');
@@ -92,7 +94,7 @@
             update();
 
             $s.on('click', function() {
-                $cc.toggleClass('hui-state--hidden');
+                $g.toggleClass('hui-state--closed');
             });
 
             $ai.on('click', function() {
@@ -163,15 +165,11 @@
             });
 
             $chi[key].on('keydown', function(e) {
-                $chh[key].hide();
-            });
-
-            $chi[key].on('focus', function() {
-                $chh[key].hide();
+                $chiw[key].removeClass('hui-state--error');
             });
 
             $chh[key].on('click', function() {
-                $chh[key].hide();
+                $chiw[key].removeClass('hui-state--error');
             });
         }
 
