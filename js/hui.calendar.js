@@ -17,17 +17,21 @@
         config = _.defaults(config || {}, {
             required: false,
             placeholder: 'Choose date...',
-            name: 'date',
+            name: 'date', // getParams param name
             value: null, // Date()
-            format: 'yy-mm-dd',
-            min: 0, //
-            months: 2,
-            hintText: 'panica!',
+            format: 'yy-mm-dd', // getParams() format
+            min: 0, // min selectable date (in days from today)
+            months: 2, // num of months visible in datepicker
+            hintEmpty: 'empty-panica!',
+            hintPeriod: 'period-panica!',
             legendText: 'Days colored by average price for the night',
             onSelect: function() {},
+            onSelectShowCalendar: null,
+            onSelectSetCalendar: null,
             locale: null,
-            lessThan: null,
-            moreThan: null,
+            relationCalendar: null,
+            relationSuperior: true, // 1 - superior, 0 - inferior
+            relationAutoSet: false,
             tplInput: hui.getTpl('hui-input--calendar'),
             tplLegend: hui.getTpl('hui-input--calendar-legend')
         });
@@ -63,23 +67,32 @@
             $i.datepicker({
                 minDate: config.min,
                 numberOfMonths: config.months,
-                //showOn: 'both',
+                //showOn: 'both', // todo
                 //buttonText: '',
                 onSelect: function(date, e) {
-
-                    var lessThanC = controls[config.lessThan];
-                    if(lessThanC && (!lessThanC.getStamp() || lessThanC.getStamp() <= getStamp())) {
-                        lessThanC.setDate(getDate(), 1);
+                    // todo бля бардак пиздец :)
+                    var relation = controls[config.relationCalendar];
+                    if(relation) {
+                        if(relation.getStamp()) {
+                            if(config.relationSuperior) {
+                                if(relation.getStamp() <= getStamp()) {
+                                    relation.setDate(getDate(), 1);
+                                }
+                            } else {
+                                if(relation.getStamp() >= getStamp()) {
+                                    relation.setDate(getDate(), -1);
+                                }
+                            }
+                        } else if(config.relationAutoSet) {
+                            if(config.relationSuperior) {
+                                relation.setDate(getDate(), 1);
+                            } else {
+                                relation.setDate(getDate(), -1);
+                            }
+                        }
                     }
-
-                    var moreThanC = controls[config.moreThan];
-                    if(moreThanC && (!moreThanC.getStamp() || moreThanC.getStamp() >= getStamp())) {
-                        moreThanC.setDate(getDate(), -1);
-                    }
-
                     config.onSelect(date, $.datepicker.formatDate(config.format, getDate()), e);
                     $iw.removeClass('hui-state--error');
-
                 },
                 beforeShowDay: function(date) {
                     return getDayCfg(date);
@@ -180,6 +193,7 @@
                 return true;
             }
             $iw.addClass('hui-state--error');
+            $h.html(config.hintEmpty);
             return false;
         }
 

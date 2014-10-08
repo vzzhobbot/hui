@@ -1,4 +1,11 @@
 $(function() {
+
+    var y = new Date();
+    y.setDate(y.getDate() - 1);
+
+    var t = new Date();
+    t.setDate(t.getDate() + 1);
+
     hui.form('form111', {
 
         destination: hui.ac({
@@ -29,23 +36,25 @@ $(function() {
         checkIn: hui.calendar({
             required: true,
             placeholder: 'Дата заезда',
-            hintText: 'Нужно указать дату заезда и выезда',
+            hintEmpty: 'Нужно указать дату заезда и выезда',
             name: 'checkIn',
-            lessThan: 'checkOut',
+            relationCalendar: 'checkOut',
+            relationSuperior: true,
+            relationAutoSet: true,
             locale: 'ru-RU',
-            min: -1,
-            value: new Date()
+            min: -1
         }),
 
         checkOut: hui.calendar({
             required: true,
             placeholder: 'Дата выезда',
-            hintText: 'Нужно указать дату заезда и выезда',
+            hintEmpty: 'Нужно указать дату заезда и выезда',
             name: 'checkOut',
-            moreThan: 'checkIn',
+            relationCalendar: 'checkIn',
+            relationSuperior: false,
+            relationAutoSet: true,
             locale: 'ru-RU',
-            min: 0,
-            value: new Date()
+            min: 0
         }),
 
         noDates: hui.noDates({
