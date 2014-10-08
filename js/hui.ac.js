@@ -20,7 +20,7 @@
             id: 0, // default id
             limit: 5,
             locale: 'en-US',
-            hintText: 'panic!',
+            hint: 'panic!',
             agvPricesUrl: null,
             onSelect: function() {},
             onSelectShowCalendar: null,

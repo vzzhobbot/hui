@@ -27,7 +27,7 @@
             childMaxAge: 17,
             adultsTitle: 'Adults',
             childrenTitle: 'Children',
-            childHintText: 'Check da age!',
+            childHint: 'Check da age!',
             summary: function(adults, children) {
                 return (adults + children.length);
             },
@@ -146,7 +146,7 @@
             $cl.append(config.tplChild({
                 key: key,
                 age: config.children[key],
-                hintText: config.childHintText
+                hint: config.childHint
             }));
 
             $chc[key] = hui.getEl($cl, 'child-container', key);
