@@ -8,8 +8,6 @@ $(function() {
             locale: 'ru-RU',
             placeholder: 'Введите город или название отеля...',
             onSelectShowCalendar: 'checkIn',
-            avgPricesUrl: 'http://hotellook2.local/ajax/location-avg-prices.json?locationId={id}',
-            avgPricesCalendars: ['checkIn', 'checkOut'],
             hintText: 'Напишите хоть что-нибудь!',
             samplesText: 'Например, {list}',
             samplesList: [
@@ -35,7 +33,8 @@ $(function() {
             name: 'checkIn',
             lessThan: 'checkOut',
             locale: 'ru-RU',
-            min: -1
+            min: -1,
+            value: new Date()
         }),
 
         checkOut: hui.calendar({
@@ -45,7 +44,8 @@ $(function() {
             name: 'checkOut',
             moreThan: 'checkIn',
             locale: 'ru-RU',
-            min: 0
+            min: 0,
+            value: new Date()
         }),
 
         noDates: hui.noDates({

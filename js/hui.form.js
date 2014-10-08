@@ -40,8 +40,7 @@
                         return k + '=' + v;
                     });
 
-                url += '/?' + cp.concat(p).join('&');
-                $('#url').text(url);
+                window.location = url + '/?' + cp.concat(p).join('&');
                 return false;
             }
             return result;
