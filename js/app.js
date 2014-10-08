@@ -1,11 +1,4 @@
 $(function() {
-
-    var y = new Date();
-    y.setDate(y.getDate() - 1);
-
-    var t = new Date();
-    t.setDate(t.getDate() + 1);
-
     hui.form('form111', {
 
         destination: hui.ac({
