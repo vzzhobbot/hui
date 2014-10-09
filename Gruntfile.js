@@ -31,22 +31,22 @@ module.exports = function (grunt) {
         concat: {
             js: {
                 src: [
-                    'js/hui/hui.js',
-                    'js/hui/hui.form.js',
-                    'js/hui/hui.ac.js',
-                    'js/hui/hui.calendar.js',
-                    'js/hui/hui.noDates.js',
-                    'js/hui/hui.guests.js',
-                    'js/hui/hui.submit.js'
+                    'js/hlf/hlf.js',
+                    'js/hlf/hlf.form.js',
+                    'js/hlf/hlf.ac.js',
+                    'js/hlf/hlf.calendar.js',
+                    'js/hlf/hlf.noDates.js',
+                    'js/hlf/hlf.guests.js',
+                    'js/hlf/hlf.submit.js'
                 ],
-                dest: 'js/compiled/hui.js'
+                dest: 'js/compiled/hlf.js'
             }
         },
 
         uglify: {
             all: {
                 files: {
-                    'js/compiled/hui.min.js': ['js/compiled/hui.js']
+                    'js/compiled/hlf.min.js': ['js/compiled/hlf.js']
                 }
             }
         },

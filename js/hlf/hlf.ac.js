@@ -1,7 +1,7 @@
-;(function ($, _, hui) {
+;(function ($, _, hlf) {
     'use strict';
 
-    hui.ac = function (config) {
+    hlf.ac = function (config) {
 
         var $c = null, // container
             $iw = null, // input wrap
@@ -32,9 +32,9 @@
             },
             samplesText: 'For example: {list}',
             samplesList: [], // [{id: 15542, type: 'location', text: 'Paris, France', sample: 'Paris'}]
-            tplInput: _.template('<div class="hui-input hui-input--ac" hui-role="input-wrap"><input type="text" placeholder="<%= placeholder %>" value="<%= text %>" hui-role="input" /><div class="loader" hui-role="loader"></div><div class="hint" hui-role="hint"><%= hint %></div></div>'),
-            tplSamples: _.template('<div class="hui-input--ac-samples" hui-role="samples"><%= samplesText %></div>'),
-            tplSamplesLink: _.template('<a href="#" hui-role="samples-link" data-type="<%= type %>" data-id="<%= id %>" data-text="<%= text %>"><%= sample %></a>')
+            tplInput: _.template('<div class="hlf-input hlf-input--ac" hlf-role="input-wrap"><input type="text" placeholder="<%= placeholder %>" value="<%= text %>" hlf-role="input" /><div class="loader" hlf-role="loader"></div><div class="hint" hlf-role="hint"><%= hint %></div></div>'),
+            tplSamples: _.template('<div class="hlf-input--ac-samples" hlf-role="samples"><%= samplesText %></div>'),
+            tplSamplesLink: _.template('<a href="#" hlf-role="samples-link" data-type="<%= type %>" data-id="<%= id %>" data-text="<%= text %>"><%= sample %></a>')
         });
 
         function avgPricesRequest (id) {
@@ -79,7 +79,7 @@
         }
 
         function source(request, response) {
-            $iw.addClass('hui-state--loading');
+            $iw.addClass('hlf-state--loading');
             $.ajax({
                 dataType: 'jsonp',
                 type: 'get',
@@ -89,7 +89,7 @@
                     limit: config.limit,
                     term: request.term
                 },
-                jsonpCallback: 'hui_ac_callback',
+                jsonpCallback: 'hlf_ac_callback',
                 success: function(data) {
                     var cities = _.map(data.cities, function(item) {
                         return {
@@ -113,10 +113,10 @@
                         }
                     });
                     response(_.union(cities, hotels));
-                    $iw.removeClass('hui-state--loading');
+                    $iw.removeClass('hlf-state--loading');
                 },
                 error: function() {
-                    $iw.removeClass('hui-state--loading');
+                    $iw.removeClass('hlf-state--loading');
                 }
             });
         }
@@ -131,7 +131,7 @@
         }
 
         function select(type, id, text) {
-            $iw.removeClass('hui-state--error');
+            $iw.removeClass('hlf-state--error');
             config.type = type;
             config.id = id;
             if(text) {
@@ -148,12 +148,12 @@
 
         function draw(name, $f, c) {
             controls = c || {};
-            $c = hui.getEl($f, 'ac', name);
+            $c = hlf.getEl($f, 'ac', name);
             $c.html(config.tplInput(config));
-            $iw = hui.getEl($c, 'input-wrap');
-            $i = hui.getEl($c, 'input');
-            $h = hui.getEl($c, 'hint');
-            $l = hui.getEl($c, 'loader');
+            $iw = hlf.getEl($c, 'input-wrap');
+            $i = hlf.getEl($c, 'input');
+            $h = hlf.getEl($c, 'hint');
+            $l = hlf.getEl($c, 'loader');
 
             if(config.id) {
                 avgPricesRequest(config.id);
@@ -178,20 +178,20 @@
                     config.id = 0;
                     onReset();
                 }
-                $iw.removeClass('hui-state--error');
+                $iw.removeClass('hlf-state--error');
             });
 
             $i.on('focus', function() {
-                $iw.addClass('hui-state--focus');
-                $iw.removeClass('hui-state--error');
+                $iw.addClass('hlf-state--focus');
+                $iw.removeClass('hlf-state--error');
             });
 
             $i.on('blur', function() {
-                $iw.removeClass('hui-state--focus');
+                $iw.removeClass('hlf-state--focus');
             });
 
             $h.on('click', function() {
-                $iw.removeClass('hui-state--error');
+                $iw.removeClass('hlf-state--error');
             });
 
             if(config.samplesList.length) {
@@ -205,8 +205,8 @@
                     }, config)
                 );
                 $c.append(samples);
-                $sc = hui.getEl($c, 'samples');
-                $sl = hui.getEl($sc, 'samples-link');
+                $sc = hlf.getEl($c, 'samples');
+                $sl = hlf.getEl($sc, 'samples-link');
 
                 $sl.on('click', function() {
                     var $this = $(this);
@@ -227,7 +227,7 @@
                 return true;
             }
             $i.focus();
-            $iw.addClass('hui-state--error');
+            $iw.addClass('hlf-state--error');
             return false;
         }
 
@@ -242,7 +242,7 @@
     };
 
     // jsonp callback cheat
-    function hui_ac_callback() {}
+    function hlf_ac_callback() {}
 
     /**
      * Extension for jQuery.ui.autocomplete
@@ -253,7 +253,7 @@
             this.widget().menu('option', 'items', '> :not(.ui-autocomplete-category)');
         },
         _renderMenu: function( ul, items ) {
-            ul.addClass('hui-ac');
+            ul.addClass('hlf-ac');
             var that = this,
                 currentCategory = "";
             $.each( items, function( index, item ) {
@@ -280,4 +280,4 @@
         }
     });
 
-})(jQuery, _, hui);
+})(jQuery, _, hlf);

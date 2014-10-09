@@ -1,7 +1,7 @@
 $(function() {
-    hui.form('form111', {
+    hlf.form('form111', {
 
-        destination: hui.ac({
+        destination: hlf.ac({
             id: 15542,
             type: 'location',
             text: 'Париж, Франция',
@@ -26,7 +26,7 @@ $(function() {
             ]
         }),
 
-        checkIn: hui.calendar({
+        checkIn: hlf.calendar({
             required: true,
             head: 'Дата заезда',
             placeholder: 'Дата заезда',
@@ -39,7 +39,7 @@ $(function() {
             min: -1
         }),
 
-        checkOut: hui.calendar({
+        checkOut: hlf.calendar({
             required: true,
             head: 'Дата выезда',
             placeholder: 'Дата выезда',
@@ -52,12 +52,12 @@ $(function() {
             min: 0
         }),
 
-        noDates: hui.noDates({
+        noDates: hlf.noDates({
             text: 'Я еще не знаю дат',
             calendars: ['checkIn', 'checkOut']
         }),
 
-        guests: hui.guests({
+        guests: hlf.guests({
             adults: 2,
             adultsTitle: 'Взрослых',
             childrenTitle: 'Детей',
@@ -67,7 +67,7 @@ $(function() {
             }
         }),
 
-        submit: hui.submit({
+        submit: hlf.submit({
             text: 'Узнать цены'
         })
 

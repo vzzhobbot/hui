@@ -1,6 +1,6 @@
-;(function ($, _, hui) {
+;(function ($, _, hlf) {
     'use strict';
-    hui.noDates = function (config) {
+    hlf.noDates = function (config) {
 
         var $c = null,
             $chw = null,
@@ -14,7 +14,7 @@
             onOn: function() {}, // fires when checkbox set on
             onOff: function() {}, // fires when checkbox set off
             calendars: [], // calendar control names list
-            tplInput: _.template('<label hui-role="noDates-input-wrap"><input type="checkbox" hui-role="noDates-input"><%= text %></label>')
+            tplInput: _.template('<label hlf-role="noDates-input-wrap"><input type="checkbox" hlf-role="noDates-input"><%= text %></label>')
         });
 
         /**
@@ -30,16 +30,16 @@
 
         /**
          * Draws control in DOM
-         * @param name string [hui-name] container param
+         * @param name string [hlf-name] container param
          * @param $f DOM element like context, usually it's <form/> or <div/>
          * @param c list of all form controls
          */
         function draw(name, $f, c) {
             controls = c || {};
-            $c = hui.getEl($f, 'noDates', name);
+            $c = hlf.getEl($f, 'noDates', name);
             $c.html(config.tplInput(config));
-            $chw = hui.getEl($c, 'noDates-input-wrap');
-            $ch = hui.getEl($c, 'noDates-input');
+            $chw = hlf.getEl($c, 'noDates-input-wrap');
+            $ch = hlf.getEl($c, 'noDates-input');
 
             $ch.on('change', function(e) {
                 _.each(config.calendars, function(name) {
@@ -50,11 +50,11 @@
             });
 
             $ch.on('focus', function() {
-                $chw.addClass('hui-state--focus');
+                $chw.addClass('hlf-state--focus');
             });
 
             $ch.on('blur', function() {
-                $chw.removeClass('hui-state--focus');
+                $chw.removeClass('hlf-state--focus');
             });
 
         }
@@ -74,4 +74,4 @@
         };
 
     };
-})(jQuery, _, hui);
+})(jQuery, _, hlf);

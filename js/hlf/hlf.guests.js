@@ -1,6 +1,6 @@
-;(function ($, _, hui) {
+;(function ($, _, hlf) {
     'use strict';
-    hui.guests = function (config) {
+    hlf.guests = function (config) {
 
         var $c = null, // container
             $g = null, // guests container
@@ -31,8 +31,8 @@
             summary: function(adults, children) {
                 return (adults + children.length);
             },
-            tplContainer: _.template('<div class="hui-guests hui-state--closed" hui-role="guests"><div class="hui-guests-i" hui-role="summary"></div><div class="hui-guests-dd" hui-role="controls"><div class="hui-guests-adults"><div class="hui-guests-adults-title"><%= adultsTitle %></div><div class="hui-guests-adults-controls"><a href="#" hui-role="adults-decrement">-</a><div class="hui-guests-adults-val" hui-role="adults-val"></div><a href="#" hui-role="adults-increment">+</a></div></div><div class="hui-guests-children"><div class="hui-guests-children-title"><%= childrenTitle %></div><div class="hui-guests-children-controls"><a href="#" hui-role="children-decrement">-</a><div class="hui-guests-children-val" hui-role="children-val"></div><a href="#" hui-role="children-increment">+</a></div><ul class="hui-guests-children-list" hui-role="children-list"></ul></div></div></div>'),
-            tplChild: _.template('<li class="hui-guests-children-item" hui-role="child-container" hui-name="<%= key %>"><div class="hui-input" hui-role="input-wrap"><input type="text" hui-role="input" value="<%= age %>" /><div class="hint" hui-role="hint"><%= hint %></div></div></li>')
+            tplContainer: _.template('<div class="hlf-guests hlf-state--closed" hlf-role="guests"><div class="hlf-guests-i" hlf-role="summary"></div><div class="hlf-guests-dd" hlf-role="controls"><div class="hlf-guests-adults"><div class="hlf-guests-adults-title"><%= adultsTitle %></div><div class="hlf-guests-adults-controls"><a href="#" hlf-role="adults-decrement">-</a><div class="hlf-guests-adults-val" hlf-role="adults-val"></div><a href="#" hlf-role="adults-increment">+</a></div></div><div class="hlf-guests-children"><div class="hlf-guests-children-title"><%= childrenTitle %></div><div class="hlf-guests-children-controls"><a href="#" hlf-role="children-decrement">-</a><div class="hlf-guests-children-val" hlf-role="children-val"></div><a href="#" hlf-role="children-increment">+</a></div><ul class="hlf-guests-children-list" hlf-role="children-list"></ul></div></div></div>'),
+            tplChild: _.template('<li class="hlf-guests-children-item" hlf-role="child-container" hlf-name="<%= key %>"><div class="hlf-input" hlf-role="input-wrap"><input type="text" hlf-role="input" value="<%= age %>" /><div class="hint" hlf-role="hint"><%= hint %></div></div></li>')
         });
 
         /**
@@ -52,14 +52,14 @@
             var r = _.filter(config.children, function(age, key) {
                 var e = (age === null || parseInt(age) < 0 || parseInt(age) > config.childMaxAge);
                 if(!e) {
-                    $chiw[key].removeClass('hui-state--error');
+                    $chiw[key].removeClass('hlf-state--error');
                 }
                 return e;
             });
             // show hint of first error
             if(r.length) {
                 _.each(r, function(v, key) {
-                    $chiw[key].addClass('hui-state--error');
+                    $chiw[key].addClass('hlf-state--error');
                     $chi[key].focus();
                     return false;
                 });
@@ -70,31 +70,31 @@
 
         /**
          * Draws control in DOM
-         * @param name string [hui-name] container param
+         * @param name string [hlf-name] container param
          * @param $f DOM element like context, usually it's <form/> or <div/>
          * @param c list of all form controls
          */
         function draw(name, $f, c) {
             controls = c || {};
-            $c = hui.getEl($f, 'guests', name);
+            $c = hlf.getEl($f, 'guests', name);
             $c.html(config.tplContainer(config));
-            $g = hui.getEl($c, 'guests');
-            $s = hui.getEl($c, 'summary');
-            $cc = hui.getEl($c, 'controls');
-            $av = hui.getEl($c, 'adults-val');
-            $ad = hui.getEl($c, 'adults-decrement');
-            $ai = hui.getEl($c, 'adults-increment');
-            $cv = hui.getEl($c, 'children-val');
-            $cd = hui.getEl($c, 'children-decrement');
-            $ci = hui.getEl($c, 'children-increment');
-            $cl = hui.getEl($c, 'children-list');
+            $g = hlf.getEl($c, 'guests');
+            $s = hlf.getEl($c, 'summary');
+            $cc = hlf.getEl($c, 'controls');
+            $av = hlf.getEl($c, 'adults-val');
+            $ad = hlf.getEl($c, 'adults-decrement');
+            $ai = hlf.getEl($c, 'adults-increment');
+            $cv = hlf.getEl($c, 'children-val');
+            $cd = hlf.getEl($c, 'children-decrement');
+            $ci = hlf.getEl($c, 'children-increment');
+            $cl = hlf.getEl($c, 'children-list');
             _.each(config.children, function(v, key) {
                 drawChild(key);
             });
             update();
 
             $s.on('click', function() {
-                $g.toggleClass('hui-state--closed');
+                $g.toggleClass('hlf-state--closed');
             });
 
             $ai.on('click', function() {
@@ -149,10 +149,10 @@
                 hint: config.childHint
             }));
 
-            $chc[key] = hui.getEl($cl, 'child-container', key);
-            $chiw[key] = hui.getEl($chc[key], 'input-wrap');
-            $chi[key] = hui.getEl($chc[key], 'input');
-            $chh[key] = hui.getEl($chc[key], 'hint');
+            $chc[key] = hlf.getEl($cl, 'child-container', key);
+            $chiw[key] = hlf.getEl($chc[key], 'input-wrap');
+            $chi[key] = hlf.getEl($chc[key], 'input');
+            $chh[key] = hlf.getEl($chc[key], 'hint');
 
 
             $chi[key].on('keyup', function() {
@@ -165,11 +165,11 @@
             });
 
             $chi[key].on('keydown', function(e) {
-                $chiw[key].removeClass('hui-state--error');
+                $chiw[key].removeClass('hlf-state--error');
             });
 
             $chh[key].on('click', function() {
-                $chiw[key].removeClass('hui-state--error');
+                $chiw[key].removeClass('hlf-state--error');
             });
         }
 
@@ -179,24 +179,24 @@
             $cv.html(config.children.length);
 
             config.children.length
-                ? $cl.removeClass('hui-state--empty')
-                : $cl.addClass('hui-state--empty');
+                ? $cl.removeClass('hlf-state--empty')
+                : $cl.addClass('hlf-state--empty');
 
             config.children.length == config.childrenMax
-                ? $ci.addClass('hui-state--disabled')
-                : $ci.removeClass('hui-state--disabled');
+                ? $ci.addClass('hlf-state--disabled')
+                : $ci.removeClass('hlf-state--disabled');
 
             !config.children.length
-                ? $cd.addClass('hui-state--disabled')
-                : $cd.removeClass('hui-state--disabled');
+                ? $cd.addClass('hlf-state--disabled')
+                : $cd.removeClass('hlf-state--disabled');
 
             config.adults == config.adultsMax
-                ? $ai.addClass('hui-state--disabled')
-                : $ai.removeClass('hui-state--disabled');
+                ? $ai.addClass('hlf-state--disabled')
+                : $ai.removeClass('hlf-state--disabled');
 
             config.adults == config.adultsMin
-                ? $ad.addClass('hui-state--disabled')
-                : $ad.removeClass('hui-state--disabled');
+                ? $ad.addClass('hlf-state--disabled')
+                : $ad.removeClass('hlf-state--disabled');
 
         }
 
@@ -216,4 +216,4 @@
         };
 
     };
-})(jQuery, _, hui);
+})(jQuery, _, hlf);

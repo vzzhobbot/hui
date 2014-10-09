@@ -1,14 +1,14 @@
-;(function ($, _, hui) {
+;(function ($, _, hlf) {
     'use strict';
 
-    hui.calendar = function (config) {
+    hlf.calendar = function (config) {
 
         var $c = null, // container
             $iw = null, // input wrap
             $i = null, // input
             $h = null, // hint
             controls = {},
-            uid = _.uniqueId('hui.calendar'); /* Unique id for "refresh" cheating.
+            uid = _.uniqueId('hlf.calendar'); /* Unique id for "refresh" cheating.
                                                * $i.datepicker('widget') returns any opened datepicker,
                                                * that means we need to mark this calendar with uid
                                                * to check uid in refresh function */
@@ -31,7 +31,7 @@
             relationCalendar: null, // name of control
             relationSuperior: true, // 1 - superior, 0 - inferior
             relationAutoSet: false,
-            tplInput: _.template('<div class="hui-input hui-input--calendar" hui-role="input-wrap"><input type="text" placeholder="<%= placeholder %>" hui-role="input" /><div class="hint" hui-role="hint"></div></div>'),
+            tplInput: _.template('<div class="hlf-input hlf-input--calendar" hlf-role="input-wrap"><input type="text" placeholder="<%= placeholder %>" hlf-role="input" /><div class="hint" hlf-role="hint"></div></div>'),
             tplHead: _.template('<div class="ui-datepicker-head"><%= head %></div>'),
             tplLegend: _.template('<div class="ui-datepicker-legend"><div class="ui-datepicker-legend-head"><%= legend %></div><div class="ui-datepicker-legend-points"><div class="ui-datepicker-legend-points-line"></div><ul class="ui-datepicker-legend-points-list"><% _.each(points, function(point, i) { %><li class="ui-datepicker-legend-points-item ui-datepicker-legend-points-item--<%= i %>"><%= point %></li><% }); %></ul></div></div>')
         });
@@ -49,22 +49,22 @@
 
         function disable() {
             $i.datepicker('option', 'disabled', true);
-            $iw.addClass('hui-state--disabled');
-            $iw.removeClass('hui-state--error');
+            $iw.addClass('hlf-state--disabled');
+            $iw.removeClass('hlf-state--error');
         }
 
         function enable() {
             $i.datepicker('option', 'disabled', false);
-            $iw.removeClass('hui-state--disabled');
+            $iw.removeClass('hlf-state--disabled');
         }
 
         function draw(name, $f, c) {
             controls = c || {};
-            $c = hui.getEl($f, 'calendar', name);
+            $c = hlf.getEl($f, 'calendar', name);
             $c.html(config.tplInput(config));
-            $iw = hui.getEl($c, 'input-wrap');
-            $i = hui.getEl($c, 'input');
-            $h = hui.getEl($c, 'hint');
+            $iw = hlf.getEl($c, 'input-wrap');
+            $i = hlf.getEl($c, 'input');
+            $h = hlf.getEl($c, 'hint');
 
             $i.datepicker({
                 minDate: config.min,
@@ -94,7 +94,7 @@
                         }
                     }
                     config.onSelect(date, $.datepicker.formatDate(config.format, getDate()), e);
-                    $iw.removeClass('hui-state--error');
+                    $iw.removeClass('hlf-state--error');
                 },
                 beforeShowDay: function(date) {
                     return getDayCfg(date);
@@ -130,21 +130,21 @@
             }
 
             $i.on('focus', function() {
-                $iw.addClass('hui-state--focus');
-                $iw.removeClass('hui-state--error');
+                $iw.addClass('hlf-state--focus');
+                $iw.removeClass('hlf-state--error');
             });
 
             $i.on('blur', function() {
-                $iw.removeClass('hui-state--focus');
+                $iw.removeClass('hlf-state--focus');
             });
 
             // todo doesnt work, fix it
             $i.on('change', function() {
-                $iw.removeClass('hui-state--error');
+                $iw.removeClass('hlf-state--error');
             });
 
             $h.on('click', function() {
-                $iw.removeClass('hui-state--error');
+                $iw.removeClass('hlf-state--error');
             });
 
         }
@@ -199,7 +199,7 @@
             if(!config.required || $i.datepicker('option', 'disabled') || !!getParams()) {
                 return true;
             }
-            $iw.addClass('hui-state--error');
+            $iw.addClass('hlf-state--error');
             $h.html(config.hintEmpty);
             return false;
         }
@@ -269,7 +269,7 @@
         }
 
         function setDetails(d) {
-            $iw.addClass('hui-state--detailed');
+            $iw.addClass('hlf-state--detailed');
             details = d;
         }
 
@@ -278,7 +278,7 @@
         }
 
         function resetDetails() {
-            $iw.removeClass('hui-state--detailed');
+            $iw.removeClass('hlf-state--detailed');
             details = {};
         }
 
@@ -384,7 +384,7 @@
         closeText: 'Fermer',
         prevText: 'Précédent',
         nextText: 'Suivant',
-        currentText: 'Aujourd\'hui',
+        currentText: 'Aujourd\'hlf',
         monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin',
             'Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
         monthNamesShort: ['janvier','février','mars','avril','mai','juin',
@@ -491,4 +491,4 @@
 
     $.datepicker.setDefaults($.datepicker.regional['en-US']);
 
-})(jQuery, _, hui);
+})(jQuery, _, hlf);

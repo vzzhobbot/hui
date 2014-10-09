@@ -1,9 +1,9 @@
-;(function ($, _, hui) {
+;(function ($, _, hlf) {
     'use strict';
 
-    hui.form = function (n, controls, params) {
+    hlf.form = function (n, controls, params) {
 
-        var $f = $('[hui-form="' + n +'"]');
+        var $f = $('[hlf-form="' + n +'"]');
 
         _.each(controls, function(control, name) {
             var config = control.getConfig();
@@ -48,4 +48,4 @@
 
     }
 
-})(jQuery, _, hui);
+})(jQuery, _, hlf);

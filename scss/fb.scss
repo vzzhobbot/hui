@@ -42,22 +42,22 @@
 
 }
 
-.hui-guests {
-  &.hui-state--closed {
-    .hui-guests-dd {
+.hlf-guests {
+  &.hlf-state--closed {
+    .hlf-guests-dd {
       display: none;
     }
   }
 
 }
 
-.hui-input {
+.hlf-input {
 
   .hint {
     display: none;
   }
 
-  &.hui-state--error {
+  &.hlf-state--error {
     .hint {
       display: block;
     }
@@ -65,13 +65,13 @@
 
 }
 
-.hui-input--ac {
+.hlf-input--ac {
 
   .loader {
     display: none;
   }
 
-  &.hui-state--loading {
+  &.hlf-state--loading {
     .loader {
       display: block;
     }

@@ -1,7 +1,7 @@
-;(function ($, _, hui) {
+;(function ($, _, hlf) {
     'use strict';
 
-    hui.submit = function (config) {
+    hlf.submit = function (config) {
 
         var $c = null,
             $b = null,
@@ -14,9 +14,9 @@
 
         function draw(name, $f, c) {
             controls = c || {};
-            $c = hui.getEl($f, 'submit', name);
+            $c = hlf.getEl($f, 'submit', name);
             $c.html(config.tplButton(config));
-            $b = hui.getEl($f, 'button', name);
+            $b = hlf.getEl($f, 'button', name);
         }
 
         function getConfig() {
@@ -30,4 +30,4 @@
 
     };
 
-})(jQuery, _, hui);
+})(jQuery, _, hlf);
