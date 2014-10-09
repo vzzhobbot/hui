@@ -59,8 +59,8 @@
             // show hint of first error
             if(r.length) {
                 _.each(r, function(v, key) {
-                    $chiw[key].addClass('hlf-state--error');
                     $chi[key].focus();
+                    $chiw[key].addClass('hlf-state--error');
                     return false;
                 });
                 return false;
@@ -154,6 +154,14 @@
             $chi[key] = hlf.getEl($chc[key], 'input');
             $chh[key] = hlf.getEl($chc[key], 'hint');
 
+            $chi[key].on('focus', function() {
+                $chiw[key].addClass('hlf-state--focus');
+                $chiw[key].removeClass('hlf-state--error');
+            });
+
+            $chi[key].on('blur', function() {
+                $chiw[key].removeClass('hlf-state--focus');
+            });
 
             $chi[key].on('keyup', function() {
                 var val = $chi[key].val().trim();
