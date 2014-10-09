@@ -36,6 +36,7 @@ $(function() {
             relationCalendar: 'checkOut',
             relationSuperior: true,
             relationAutoSet: true,
+            relationAutoShow: true,
             locale: 'ru-RU',
             min: -1
         }),
@@ -49,6 +50,7 @@ $(function() {
             relationCalendar: 'checkIn',
             relationSuperior: false,
             relationAutoSet: true,
+            relationAutoShow: true,
             locale: 'ru-RU',
             min: 0
         }),

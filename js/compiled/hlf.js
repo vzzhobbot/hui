@@ -379,7 +379,8 @@
                                                * $i.datepicker('widget') returns any opened datepicker,
                                                * that means we need to mark this calendar with uid
                                                * to check uid in refresh function */
-        var details = {};
+        var details = {},
+            isAutoShown = false;
 
         config = _.defaults(config || {}, {
             required: false,
@@ -398,6 +399,7 @@
             relationCalendar: null, // name of control
             relationSuperior: true, // 1 - superior, 0 - inferior
             relationAutoSet: false,
+            relationAutoShow: false,
             tplInput: _.template('<div class="hlf-input hlf-input--calendar" hlf-role="input-wrap"><input type="text" placeholder="<%= placeholder %>" hlf-role="input" /><div class="hint" hlf-role="hint"></div></div>'),
             tplHead: _.template('<div class="ui-datepicker-head"><%= head %></div>'),
             tplLegend: _.template('<div class="ui-datepicker-legend"><div class="ui-datepicker-legend-head"><%= legend %></div><div class="ui-datepicker-legend-points"><div class="ui-datepicker-legend-points-line"></div><ul class="ui-datepicker-legend-points-list"><% _.each(points, function(point, i) { %><li class="ui-datepicker-legend-points-item ui-datepicker-legend-points-item--<%= i %>"><%= point %></li><% }); %></ul></div></div>')
@@ -425,6 +427,41 @@
             $iw.removeClass('hlf-state--disabled');
         }
 
+        function relationAdjust() {
+            var relation = controls[config.relationCalendar];
+            if(relation && relation.getStamp()) {
+                if(config.relationSuperior) {
+                    if(relation.getStamp() <= getStamp()) {
+                        relation.setDate(getDate(), 1);
+                    }
+                } else {
+                    if(relation.getStamp() >= getStamp()) {
+                        relation.setDate(getDate(), -1);
+                    }
+                }
+            }
+        }
+
+        function relationAutoSet() {
+            var relation = controls[config.relationCalendar];
+            if(relation && !relation.getStamp() && config.relationAutoSet) {
+                if(config.relationSuperior) {
+                    relation.setDate(getDate(), 1);
+                } else {
+                    relation.setDate(getDate(), -1);
+                }
+            }
+        }
+
+        function relationAutoShow() {
+            var relation = controls[config.relationCalendar];
+            if(relation && !isAutoShown) {
+                if(config.relationAutoShow) {
+                    relation.show(true);
+                }
+            }
+        }
+
         function draw(name, $f, c) {
             controls = c || {};
             $c = hlf.getEl($f, 'calendar', name);
@@ -439,27 +476,9 @@
                 //showOn: 'both', // todo
                 //buttonText: '',
                 onSelect: function(date, e) {
-                    // todo бля бардак пиздец :)
-                    var relation = controls[config.relationCalendar];
-                    if(relation) {
-                        if(relation.getStamp()) {
-                            if(config.relationSuperior) {
-                                if(relation.getStamp() <= getStamp()) {
-                                    relation.setDate(getDate(), 1);
-                                }
-                            } else {
-                                if(relation.getStamp() >= getStamp()) {
-                                    relation.setDate(getDate(), -1);
-                                }
-                            }
-                        } else if(config.relationAutoSet) {
-                            if(config.relationSuperior) {
-                                relation.setDate(getDate(), 1);
-                            } else {
-                                relation.setDate(getDate(), -1);
-                            }
-                        }
-                    }
+                    relationAdjust();
+                    relationAutoSet();
+                    relationAutoShow();
                     config.onSelect(date, $.datepicker.formatDate(config.format, getDate()), e);
                     $iw.removeClass('hlf-state--error');
                 },
@@ -483,6 +502,9 @@
                             })
                         );
                     }
+                },
+                onClose: function() {
+                    isAutoShown = false;
                 }
             });
             // maybe set a date?
@@ -511,7 +533,8 @@
 
         }
 
-        function show() {
+        function show(v) {
+            isAutoShown = !!v;
             setTimeout(function(){ // jquery.ui.datepicker show cheat
                 $i.datepicker('show');
             }, 16);
