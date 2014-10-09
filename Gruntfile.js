@@ -14,7 +14,7 @@ module.exports = function (grunt) {
                     style: 'compressed'
                 },
                 files: {
-                    '<%= assets_path %>/css/app.css': 'scss/app.scss'
+                    'css/compiled/app.css': 'scss/app.scss'
                 }
             }
         },
@@ -24,7 +24,8 @@ module.exports = function (grunt) {
                 force: true
             },
             files: [
-                'assets/*'
+                'css/compiled/*',
+                'js/compiled/*'
             ]
         },
 
