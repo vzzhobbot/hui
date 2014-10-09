@@ -138,11 +138,6 @@
                 $iw.removeClass('hlf-state--focus');
             });
 
-            // todo doesnt work, fix it
-            $i.on('change', function() {
-                $iw.removeClass('hlf-state--error');
-            });
-
             $h.on('click', function() {
                 $iw.removeClass('hlf-state--error');
             });
@@ -189,6 +184,7 @@
 
         function setDate (date, modify) {
             $i.datepicker('setDate', dateModify(date, modify));
+            $iw.removeClass('hlf-state--error');
         }
 
         function getConfig() {
