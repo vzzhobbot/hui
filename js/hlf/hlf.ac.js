@@ -25,7 +25,7 @@
             onSelect: function() {},
             onSelectShowCalendar: null,
             onReset: function() {},
-            avgPricesUrl: null, // ex.: 'http://hotellook2.local/ajax/location-avg-prices.json?locationId={id}'
+            avgPricesUrl: 'http://search.hotellook.com/ajax/location-avg-prices.json?locationId={id}',
             avgPricesCalendars: [], // names if controls
             avgPricesFormatter: function(v) {
                 return '' + Math.round(v);
@@ -38,7 +38,7 @@
         });
 
         function avgPricesRequest (id) {
-            if(config.avgPricesUrl) {
+            if(config.avgPricesCalendars.length) {
                 $.ajax({
                     dataType: 'json',
                     type: 'get',

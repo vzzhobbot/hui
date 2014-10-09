@@ -8,6 +8,7 @@ $(function() {
             locale: 'ru-RU',
             placeholder: 'Введите город или название отеля...',
             onSelectShowCalendar: 'checkIn',
+            avgPricesCalendars: ['checkIn'],
             hintText: 'Напишите хоть что-нибудь!',
             samplesText: 'Например, {list}',
             samplesList: [
