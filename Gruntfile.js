@@ -46,7 +46,7 @@ module.exports = function (grunt) {
         uglify: {
             all: {
                 files: {
-                    '<%= assets_path %>/js/hui.js': ['<%= assets_path %>/js/hui.js']
+                    '<%= assets_path %>/js/hui.min.js': ['<%= assets_path %>/js/hui.js']
                 }
             }
         },
