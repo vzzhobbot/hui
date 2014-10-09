@@ -99,6 +99,7 @@
             id: 0, // default id
             limit: 5,
             locale: 'en-US',
+            autoFocus: false, // auto focus if field is empty
             hint: 'panic!', // this control always required, its hint text
             onSelect: function() {},
             onSelectShowCalendar: null,
@@ -225,6 +226,11 @@
         }
 
         function draw(name, $f, c) {
+
+            if(config.id) {
+                avgPricesRequest(config.id);
+            }
+
             controls = c || {};
             $c = hlf.getEl($f, 'ac', name);
             $c.html(config.tplInput(config));
@@ -232,10 +238,6 @@
             $i = hlf.getEl($c, 'input');
             $h = hlf.getEl($c, 'hint');
             $l = hlf.getEl($c, 'loader');
-
-            if(config.id) {
-                avgPricesRequest(config.id);
-            }
 
             $i.reachAutocomplete({
                 source: source,
@@ -271,6 +273,10 @@
             $h.on('click', function() {
                 $iw.removeClass('hlf-state--error');
             });
+
+            if(config.autoFocus && !config.text.length) {
+                $i.focus();
+            }
 
             if(config.samplesList.length) {
 
