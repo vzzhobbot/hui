@@ -39,14 +39,14 @@ module.exports = function (grunt) {
                     'js/hui/hui.guests.js',
                     'js/hui/hui.submit.js'
                 ],
-                dest: '<%= assets_path %>/js/hui.js'
+                dest: 'js/compiled/hui.js'
             }
         },
 
         uglify: {
             all: {
                 files: {
-                    '<%= assets_path %>/js/hui.min.js': ['<%= assets_path %>/js/hui.js']
+                    'js/compiled/hui.min.js': ['js/compiled/hui.js']
                 }
             }
         },
