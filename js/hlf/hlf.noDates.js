@@ -8,7 +8,7 @@
             controls = {};
 
         config = _.defaults(config || {}, {
-            name: 'noDates', // getParams() param name
+            name: 'unknownDates', // getParams() param name
             text: 'Checkbox',
             gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['noFuckingDates']
             onChange: function() {}, // fires on state change
