@@ -28,19 +28,26 @@
 
                 var url = $f.attr('action'),
                     // collect controls data
-                    cd = _.map(controls, function(i) {
+                    controlsData = _.map(controls, function(i) {
                         return _.isFunction(i.getParams) ? i.getParams() : null;
                     }),
-                    // make params list using controls data
-                    cp = _.filter(cd, function(i) {
+                    // controls params
+                    cp = _.filter(controlsData, function(i) {
                         return i;
                     }),
-                    // make additional params list if needed
-                    p = _.map(params || {}, function(v, k) {
+                    // additional params if needed
+                    ap = _.map(params || {}, function(v, k) {
                         return k + '=' + v;
                     });
 
-                window.location = url + '/?' + cp.concat(p).join('&');
+                // collect ga tracker param
+                if(_.isFunction(ga)) {
+                    ga(function(tracker) {
+                        ap.push(tracker.get('linkerParam'));
+                    });
+                }
+
+                window.location = url + '/?' + cp.concat(ap).join('&');
                 return false;
             }
             return result;
