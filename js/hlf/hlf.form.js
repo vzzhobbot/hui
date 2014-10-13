@@ -1,7 +1,7 @@
 ;(function ($, _, hlf) {
     'use strict';
 
-    hlf.form = function (n, controls, params) {
+    hlf.form = function (n, controls, params, gaEvent) {
 
         var $f = $('[hlf-form="' + n +'"]');
 
@@ -40,8 +40,12 @@
                         return k + '=' + v;
                     });
 
-                // collect ga tracker param
                 if(typeof ga !== 'undefined' && _.isFunction(ga)) {
+                    // send ga event if needed
+                    if(_.isArray(gaEvent) && gaEvent.length) {
+                        ga('send', 'event', gaEvent[0], gaEvent[1]);
+                    }
+                    // collect ga tracker param
                     ga(function(tracker) {
                         ap.push(tracker.get('linkerParam'));
                     });

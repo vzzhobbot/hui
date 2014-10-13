@@ -10,6 +10,7 @@
         config = _.defaults(config || {}, {
             name: 'noDates', // getParams() param name
             text: 'Checkbox',
+            gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['noFuckingDates']
             onChange: function() {}, // fires on state change
             onOn: function() {}, // fires when checkbox set on
             onOff: function() {}, // fires when checkbox set off
@@ -46,6 +47,10 @@
                     e.target.checked ? controls[name].disable() : controls[name].enable();
                 });
                 config.onChange(e);
+                // send data to ga if needed
+                if(config.gaEvent.length && typeof ga !== 'undefined' && _.isFunction(ga)) {
+                    ga('send', 'event', config.gaEvent[0], config.gaEvent[1]);
+                }
                 e.target.checked ? config.onOn(e) : config.onOff(e);
             });
 

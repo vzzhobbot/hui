@@ -6,6 +6,7 @@ $(function() {
             type: 'location',
             text: 'Париж, Франция',
             locale: 'ru-RU',
+            gaEvent: ['form111', 'query'],
             placeholder: 'Введите город или название отеля...',
             onSelectShowCalendar: 'checkIn',
             avgPricesCalendars: ['checkIn'],
@@ -28,6 +29,7 @@ $(function() {
         }),
 
         checkIn: hlf.calendar({
+            gaEvent: ['form111', 'checkIn'],
             required: true,
             head: 'Дата заезда',
             placeholder: 'Дата заезда',
@@ -42,6 +44,7 @@ $(function() {
         }),
 
         checkOut: hlf.calendar({
+            gaEvent: ['form111', 'checkOut'],
             required: true,
             head: 'Дата выезда',
             placeholder: 'Дата выезда',
@@ -57,7 +60,8 @@ $(function() {
 
         noDates: hlf.noDates({
             text: 'Я еще не знаю дат',
-            calendars: ['checkIn', 'checkOut']
+            calendars: ['checkIn', 'checkOut'],
+            gaEvent: ['form111', 'noDates']
         }),
 
         guests: hlf.guests({
@@ -72,11 +76,12 @@ $(function() {
         }),
 
         submit: hlf.submit({
-            text: 'Узнать цены'
+            text: 'Узнать цены',
+            gaEvent: ['form111', 'button']
         })
 
     }, {
         language: 'ru-ru',
         currency: 'rub'
-    });
+    }, ['form111', 'submit']);
 });

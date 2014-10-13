@@ -28,7 +28,7 @@
 ;(function ($, _, hlf) {
     'use strict';
 
-    hlf.form = function (n, controls, params) {
+    hlf.form = function (n, controls, params, gaEvent) {
 
         var $f = $('[hlf-form="' + n +'"]');
 
@@ -67,8 +67,12 @@
                         return k + '=' + v;
                     });
 
-                // collect ga tracker param
                 if(typeof ga !== 'undefined' && _.isFunction(ga)) {
+                    // send ga event if needed
+                    if(_.isArray(gaEvent) && gaEvent.length) {
+                        ga('send', 'event', gaEvent[0], gaEvent[1]);
+                    }
+                    // collect ga tracker param
                     ga(function(tracker) {
                         ap.push(tracker.get('linkerParam'));
                     });
@@ -106,6 +110,7 @@
             id: 0, // default id
             limit: 5,
             locale: 'en-US',
+            gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['destination']
             autoFocus: false, // auto focus if field is empty
             hint: 'panic!', // this control always required, its hint text
             onSelect: function() {},
@@ -265,6 +270,10 @@
                     config.id = 0;
                     onReset();
                 }
+                // send data to ga if needed
+                if(config.gaEvent.length && typeof ga !== 'undefined' && _.isFunction(ga)) {
+                    ga('send', 'event', config.gaEvent[0], config.gaEvent[1]);
+                }
                 $iw.removeClass('hlf-state--error');
             });
 
@@ -390,6 +399,7 @@
             isAutoShown = false;
 
         config = _.defaults(config || {}, {
+            gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['checkIn']
             required: false,
             placeholder: 'Choose date...',
             name: 'date', // getParams param name
@@ -487,6 +497,10 @@
                     relationAutoSet();
                     relationAutoShow();
                     config.onSelect(date, $.datepicker.formatDate(config.format, getDate()), e);
+                    // send data to ga if needed
+                    if(config.gaEvent.length && typeof ga !== 'undefined' && _.isFunction(ga)) {
+                        ga('send', 'event', config.gaEvent[0], config.gaEvent[1]);
+                    }
                     $iw.removeClass('hlf-state--error');
                 },
                 beforeShowDay: function(date) {
@@ -897,6 +911,7 @@
         config = _.defaults(config || {}, {
             name: 'noDates', // getParams() param name
             text: 'Checkbox',
+            gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['noFuckingDates']
             onChange: function() {}, // fires on state change
             onOn: function() {}, // fires when checkbox set on
             onOff: function() {}, // fires when checkbox set off
@@ -933,6 +948,10 @@
                     e.target.checked ? controls[name].disable() : controls[name].enable();
                 });
                 config.onChange(e);
+                // send data to ga if needed
+                if(config.gaEvent.length && typeof ga !== 'undefined' && _.isFunction(ga)) {
+                    ga('send', 'event', config.gaEvent[0], config.gaEvent[1]);
+                }
                 e.target.checked ? config.onOn(e) : config.onOff(e);
             });
 
@@ -983,6 +1002,7 @@
             $chh = [], // child hints
             controls = {};
         config = _.defaults(config || {}, {
+            gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['noFuckingDates']
             adultsMax: 4,
             adultsMin: 1,
             adults: 2, // adults value
@@ -1058,6 +1078,10 @@
             update();
 
             $s.on('click', function() {
+                // send data to ga if needed (only for open)
+                if($g.hasClass('hlf-state--closed') && config.gaEvent.length && typeof ga !== 'undefined' && _.isFunction(ga)) {
+                    ga('send', 'event', config.gaEvent[0], config.gaEvent[1]);
+                }
                 $g.toggleClass('hlf-state--closed');
             });
 
@@ -1204,15 +1228,24 @@
             controls = {};
 
         config = _.defaults(config || {}, {
+            gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['submit']
             text: 'Submit',
-            tplButton: _.template('<button><%= text %></button>')
+            tplButton: _.template('<button hlf-role="button"><%= text %></button>')
         });
 
         function draw(name, $f, c) {
             controls = c || {};
             $c = hlf.getEl($f, 'submit', name);
             $c.html(config.tplButton(config));
-            $b = hlf.getEl($f, 'button', name);
+            $b = hlf.getEl($c, 'button');
+
+            $b.on('click', function() {
+                // send data to ga if needed
+                if(config.gaEvent.length && typeof ga !== 'undefined' && _.isFunction(ga)) {
+                    ga('send', 'event', config.gaEvent[0], config.gaEvent[1]);
+                }
+            });
+
         }
 
         function getConfig() {

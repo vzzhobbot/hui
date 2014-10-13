@@ -19,6 +19,7 @@
             $chh = [], // child hints
             controls = {};
         config = _.defaults(config || {}, {
+            gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['noFuckingDates']
             adultsMax: 4,
             adultsMin: 1,
             adults: 2, // adults value
@@ -94,6 +95,10 @@
             update();
 
             $s.on('click', function() {
+                // send data to ga if needed (only for open)
+                if($g.hasClass('hlf-state--closed') && config.gaEvent.length && typeof ga !== 'undefined' && _.isFunction(ga)) {
+                    ga('send', 'event', config.gaEvent[0], config.gaEvent[1]);
+                }
                 $g.toggleClass('hlf-state--closed');
             });
 

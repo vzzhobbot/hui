@@ -21,6 +21,7 @@
             id: 0, // default id
             limit: 5,
             locale: 'en-US',
+            gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['destination']
             autoFocus: false, // auto focus if field is empty
             hint: 'panic!', // this control always required, its hint text
             onSelect: function() {},
@@ -179,6 +180,10 @@
                     config.type = '';
                     config.id = 0;
                     onReset();
+                }
+                // send data to ga if needed
+                if(config.gaEvent.length && typeof ga !== 'undefined' && _.isFunction(ga)) {
+                    ga('send', 'event', config.gaEvent[0], config.gaEvent[1]);
                 }
                 $iw.removeClass('hlf-state--error');
             });
