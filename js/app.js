@@ -62,6 +62,7 @@ $(function() {
 
         guests: hlf.guests({
             adults: 2,
+            children: [12],
             adultsTitle: 'Взрослых',
             childrenTitle: 'Детей',
             childHintText: 'Укажите возраст ребенка (0-17 лет)',

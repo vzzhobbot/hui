@@ -179,6 +179,11 @@
             $chh[key].on('click', function() {
                 $chiw[key].removeClass('hlf-state--error');
             });
+
+            if(config.children[key] == null) {
+                $chi[key].focus();
+            }
+
         }
 
         function update() {
