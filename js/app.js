@@ -67,6 +67,7 @@ $(function() {
         guests: hlf.guests({
             adults: 2,
             children: [12],
+            gaEvent: ['form111', 'guests'],
             adultsTitle: 'Взрослых',
             childrenTitle: 'Детей',
             childHintText: 'Укажите возраст ребенка (0-17 лет)',
