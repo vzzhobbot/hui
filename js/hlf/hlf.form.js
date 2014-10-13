@@ -41,7 +41,7 @@
                     });
 
                 // collect ga tracker param
-                if(_.isFunction(ga)) {
+                if(typeof ga !== 'undefined' && _.isFunction(ga)) {
                     ga(function(tracker) {
                         ap.push(tracker.get('linkerParam'));
                     });
