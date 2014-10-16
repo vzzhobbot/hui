@@ -57,13 +57,13 @@ module.exports = function (grunt) {
                 files: [
                     'scss/*.scss'
                 ],
-                tasks: ['dev']
+                tasks: ['default']
             },
             js: {
                 files: [
                     'js/hlf/*.js'
                 ],
-                tasks: ['dev']
+                tasks: ['default']
             }
         }
 
