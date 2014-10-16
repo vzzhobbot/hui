@@ -57,6 +57,8 @@
             return result;
         });
 
+        return controls;
+
     }
 
 })(jQuery, _, hlf);
