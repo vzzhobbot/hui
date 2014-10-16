@@ -10,7 +10,7 @@ $(function() {
             placeholder: 'Введите город или название отеля...',
             onSelectShowCalendar: 'checkIn',
             avgPricesCalendars: ['checkIn'],
-            hintText: 'Напишите хоть что-нибудь!',
+            hint: 'Напишите хоть что-нибудь!',
             samplesText: 'Например, {list}',
             samplesList: [
                 {
@@ -70,7 +70,7 @@ $(function() {
             gaEvent: ['form111', 'guests'],
             adultsTitle: 'Взрослых',
             childrenTitle: 'Детей',
-            childHintText: 'Укажите возраст ребенка (0-17 лет)',
+            childHint: 'Укажите возраст ребенка (0-17 лет)',
             summary: function(adults, children) {
                 return 'Гостей ' + (adults + children.length);
             }
