@@ -1,7 +1,7 @@
 $(function() {
     hlf.form('form111', {
 
-        destination: hlf.ac({
+        /*destination: hlf.ac({
             id: 15542,
             type: 'location',
             text: 'Париж, Франция',
@@ -26,7 +26,7 @@ $(function() {
                     sample: 'Москва'
                 }
             ]
-        }),
+        }),*/
 
         checkIn: hlf.calendar({
             gaEvent: ['form111', 'checkIn'],
@@ -82,6 +82,7 @@ $(function() {
         })
 
     }, {
+        hotelId: 299294,
         language: 'ru-ru',
         currency: 'rub'
     }, ['form111', 'submit']);
