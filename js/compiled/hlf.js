@@ -909,7 +909,7 @@
             controls = {};
 
         config = _.defaults(config || {}, {
-            name: 'noDates', // getParams() param name
+            name: 'unknownDates', // getParams() param name
             text: 'Checkbox',
             gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['noFuckingDates']
             onChange: function() {}, // fires on state change
@@ -1033,19 +1033,21 @@
 
         function validate() {
             // collect errors
-            var r = _.filter(config.children, function(age, key) {
-                var e = (age === null || parseInt(age) < 0 || parseInt(age) > config.childMaxAge);
-                if(!e) {
+            var r = _.map(config.children, function(age, key) {
+                var ok = !(age === null || parseInt(age) < 0 || parseInt(age) > config.childMaxAge);
+                if(ok) {
                     $chiw[key].removeClass('hlf-state--error');
                 }
-                return e;
+                return ok;
             });
             // show hint of first error
             if(r.length) {
-                _.each(r, function(v, key) {
-                    $chi[key].focus();
-                    $chiw[key].addClass('hlf-state--error');
-                    return false;
+                _.each(r, function(ok, key) {
+                    if(!ok) {
+                        $chi[key].focus();
+                        $chiw[key].addClass('hlf-state--error');
+                        return false;
+                    }
                 });
                 return false;
             }
