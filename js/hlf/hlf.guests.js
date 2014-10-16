@@ -49,7 +49,7 @@
         }
 
         function validate() {
-            // collect errors
+            // validate each field
             var r = _.map(config.children, function(age, key) {
                 var ok = !(age === null || parseInt(age) < 0 || parseInt(age) > config.childMaxAge);
                 if(ok) {
@@ -58,17 +58,17 @@
                 return ok;
             });
             // show hint of first error
-            if(r.length) {
-                _.each(r, function(ok, key) {
-                    if(!ok) {
-                        $chi[key].focus();
-                        $chiw[key].addClass('hlf-state--error');
-                        return false;
-                    }
-                });
-                return false;
-            }
-            return true;
+            _.each(r, function(ok, key) {
+                if(!ok) {
+                    $chi[key].focus();
+                    $chiw[key].addClass('hlf-state--error');
+                    return false;
+                }
+            });
+            // count error results
+            return !_.filter(r, function(ok) {
+                return !ok;
+            }).length;
         }
 
         /**
