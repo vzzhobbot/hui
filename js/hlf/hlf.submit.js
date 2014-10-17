@@ -15,7 +15,7 @@
 
         function draw(name, $f, c) {
             controls = c || {};
-            $c = hlf.getEl($f, 'submit', name);
+            $c = hlf.getContainer($f, 'submit', name);
             $c.html(config.tplButton(config));
             $b = hlf.getEl($c, 'button');
 

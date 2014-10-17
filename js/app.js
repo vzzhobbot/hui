@@ -1,6 +1,6 @@
 var maForm = hlf.form('form111', {
 
-    /*destination: hlf.ac({
+    destination: hlf.ac({
         id: 15542,
         type: 'location',
         text: 'Париж, Франция',
@@ -25,7 +25,7 @@ var maForm = hlf.form('form111', {
                 sample: 'Москва'
             }
         ]
-    }),*/
+    }),
 
     checkIn: hlf.calendar({
         gaEvent: ['form111', 'checkIn'],

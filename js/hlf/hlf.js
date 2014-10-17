@@ -22,6 +22,10 @@
         return $c.find(selector);
     };
 
+    hlf.getContainer = function($c, place, value) {
+        return $c.find('[hlf-' + place + '="' + value + '"]');
+    };
+
     context.hlf = hlf;
 
 })(jQuery, _, window);

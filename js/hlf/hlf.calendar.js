@@ -98,7 +98,7 @@
 
         function draw(name, $f, c) {
             controls = c || {};
-            $c = hlf.getEl($f, 'calendar', name);
+            $c = hlf.getContainer($f, 'calendar', name);
             $c.html(config.tplInput(config));
             $iw = hlf.getEl($c, 'input-wrap');
             $i = hlf.getEl($c, 'input');

@@ -155,7 +155,7 @@
             }
 
             controls = c || {};
-            $c = hlf.getEl($f, 'ac', name);
+            $c = hlf.getContainer($f, 'ac', name);
             $c.html(config.tplInput(config));
             $iw = hlf.getEl($c, 'input-wrap');
             $i = hlf.getEl($c, 'input');

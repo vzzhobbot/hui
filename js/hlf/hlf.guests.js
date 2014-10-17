@@ -79,7 +79,7 @@
          */
         function draw(name, $f, c) {
             controls = c || {};
-            $c = hlf.getEl($f, 'guests', name);
+            $c = hlf.getContainer($f, 'guests', name);
             $c.html(config.tplContainer(config));
             $g = hlf.getEl($c, 'guests');
             $s = hlf.getEl($c, 'summary');

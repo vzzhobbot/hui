@@ -22,6 +22,10 @@
         return $c.find(selector);
     };
 
+    hlf.getContainer = function($c, place, value) {
+        return $c.find('[hlf-' + place + '="' + value + '"]');
+    };
+
     context.hlf = hlf;
 
 })(jQuery, _, window);
@@ -246,7 +250,7 @@
             }
 
             controls = c || {};
-            $c = hlf.getEl($f, 'ac', name);
+            $c = hlf.getContainer($f, 'ac', name);
             $c.html(config.tplInput(config));
             $iw = hlf.getEl($c, 'input-wrap');
             $i = hlf.getEl($c, 'input');
@@ -483,7 +487,7 @@
 
         function draw(name, $f, c) {
             controls = c || {};
-            $c = hlf.getEl($f, 'calendar', name);
+            $c = hlf.getContainer($f, 'calendar', name);
             $c.html(config.tplInput(config));
             $iw = hlf.getEl($c, 'input-wrap');
             $i = hlf.getEl($c, 'input');
@@ -940,7 +944,7 @@
          */
         function draw(name, $f, c) {
             controls = c || {};
-            $c = hlf.getEl($f, 'noDates', name);
+            $c = hlf.getContainer($f, 'noDates', name);
             $c.html(config.tplInput(config));
             $chw = hlf.getEl($c, 'noDates-input-wrap');
             $ch = hlf.getEl($c, 'noDates-input');
@@ -1064,7 +1068,7 @@
          */
         function draw(name, $f, c) {
             controls = c || {};
-            $c = hlf.getEl($f, 'guests', name);
+            $c = hlf.getContainer($f, 'guests', name);
             $c.html(config.tplContainer(config));
             $g = hlf.getEl($c, 'guests');
             $s = hlf.getEl($c, 'summary');
@@ -1239,7 +1243,7 @@
 
         function draw(name, $f, c) {
             controls = c || {};
-            $c = hlf.getEl($f, 'submit', name);
+            $c = hlf.getContainer($f, 'submit', name);
             $c.html(config.tplButton(config));
             $b = hlf.getEl($c, 'button');
 

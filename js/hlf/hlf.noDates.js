@@ -37,7 +37,7 @@
          */
         function draw(name, $f, c) {
             controls = c || {};
-            $c = hlf.getEl($f, 'noDates', name);
+            $c = hlf.getContainer($f, 'noDates', name);
             $c.html(config.tplInput(config));
             $chw = hlf.getEl($c, 'noDates-input-wrap');
             $ch = hlf.getEl($c, 'noDates-input');
