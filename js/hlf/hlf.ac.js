@@ -32,8 +32,11 @@
             avgPricesFormatter: function(v) {
                 return '' + Math.round(v);
             },
-            categoryTranslate: function(v) {
-                return v;
+            categoryTranslate: function(t) {
+                return t;
+            },
+            hotelsCountTranslate: function(n) {
+                return n + ' hotels';
             },
             samplesText: 'For example: {list}',
             samplesList: [], // [{id: 15542, type: 'location', text: 'Paris, France', sample: 'Paris'}]
@@ -104,7 +107,7 @@
                             value: item.fullname,
                             text: item.city,
                             clar: (item.state ? item.state + ', ' : '') + item.country,
-                            comment: item.hotelsCount + ' hotels'
+                            comment: config.hotelsCountTranslate(item.hotelsCount)
                         }
                     });
                     var hotels = _.map(data.hotels, function(item) {
