@@ -128,7 +128,7 @@
                 return '' + Math.round(v);
             },
             categoryTranslate: function(v) {
-                return v + 'asdasd';
+                return v;
             },
             samplesText: 'For example: {list}',
             samplesList: [], // [{id: 15542, type: 'location', text: 'Paris, France', sample: 'Paris'}]
