@@ -127,6 +127,9 @@
             avgPricesFormatter: function(v) {
                 return '' + Math.round(v);
             },
+            categoryTranslate: function(v) {
+                return v + 'asdasd';
+            },
             samplesText: 'For example: {list}',
             samplesList: [], // [{id: 15542, type: 'location', text: 'Paris, France', sample: 'Paris'}]
             tplInput: _.template('<div class="hlf-input hlf-input--ac" hlf-role="input-wrap"><input type="text" placeholder="<%= placeholder %>" value="<%= text %>" hlf-role="input" /><div class="loader" hlf-role="loader"></div><div class="hint" hlf-role="hint"><%= hint %></div></div>'),
@@ -191,7 +194,7 @@
                     var cities = _.map(data.cities, function(item) {
                         return {
                             id: item.id,
-                            category: 'Locations',
+                            category: config.categoryTranslate('Locations'),
                             type: 'location',
                             value: item.fullname,
                             text: item.city,
@@ -202,7 +205,7 @@
                     var hotels = _.map(data.hotels, function(item) {
                         return {
                             id: item.id,
-                            category: 'Hotels',
+                            category: config.categoryTranslate('Hotels'),
                             type: 'hotel',
                             value: item.name + ', ' + item.city + ', ' + item.country,
                             text: item.name,
