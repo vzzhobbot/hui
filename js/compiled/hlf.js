@@ -995,6 +995,7 @@
     hlf.guests = function (config) {
 
         var $c = null, // container
+            $doc = null, // document
             $g = null, // guests container
             $s = null, // summary
             $cc = null, // controls container
@@ -1063,6 +1064,24 @@
             }).length;
         }
 
+        function summaryClick() {
+            $g.hasClass('hlf-state--closed') ? guestsOpen() : guestsClose();
+        }
+
+        function guestsClose() {
+            $g.addClass('hlf-state--closed');
+            $g.removeClass('hlf-state--focus');
+        }
+
+        function guestsOpen() {
+            // send data to ga if needed (only for open)
+            if(config.gaEvent.length && typeof ga !== 'undefined' && _.isFunction(ga)) {
+                ga('send', 'event', config.gaEvent[0], config.gaEvent[1]);
+            }
+            $g.removeClass('hlf-state--closed');
+            $g.addClass('hlf-state--focus');
+        }
+
         /**
          * Draws control in DOM
          * @param name string [hlf-name] container param
@@ -1071,6 +1090,7 @@
          */
         function draw(name, $f, c) {
             controls = c || {};
+            $doc = $(document);
             $c = hlf.getContainer($f, 'guests', name);
             $c.html(config.tplContainer(config));
             $g = hlf.getEl($c, 'guests');
@@ -1088,13 +1108,14 @@
             });
             update();
 
-            $s.on('click', function() {
-                // send data to ga if needed (only for open)
-                if($g.hasClass('hlf-state--closed') && config.gaEvent.length && typeof ga !== 'undefined' && _.isFunction(ga)) {
-                    ga('send', 'event', config.gaEvent[0], config.gaEvent[1]);
+            $doc.on('click', function(ev) {
+                if(!$(ev.target).closest('[hlf-role=guests]').length) {
+                    guestsClose();
                 }
-                $g.toggleClass('hlf-state--closed');
+                ev.stopPropagation();
             });
+
+            $s.on('click', summaryClick);
 
             $ai.on('click', function() {
                 if(config.adults == config.adultsMax) {
