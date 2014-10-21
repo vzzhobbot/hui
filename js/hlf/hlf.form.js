@@ -3,6 +3,20 @@
 
     hlf.form = function (n, controls, params, gaEvent) {
 
+        /**
+         * set/get for params
+         *
+         * @param n
+         * @param v
+         * @returns {*}
+         */
+        function param(n, v) {
+            if(!v) {
+                return params[n];
+            }
+            params[n] = v;
+        }
+
         var $f = $('[hlf-form="' + n +'"]');
 
         _.each(controls, function(control, name) {
@@ -57,7 +71,10 @@
             return result;
         });
 
-        return controls;
+        return {
+            controls: controls,
+            param: param
+        };
 
     }
 
