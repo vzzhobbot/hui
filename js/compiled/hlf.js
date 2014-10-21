@@ -37,15 +37,15 @@
         /**
          * set/get for params
          *
-         * @param n
-         * @param v
+         * @param name
+         * @param value
          * @returns {*}
          */
-        function param(n, v) {
-            if(!v) {
-                return params[n];
+        function param(name, value) {
+            if(!value) {
+                return params[name];
             }
-            params[n] = v;
+            params[name] = value;
         }
 
         var $f = $('[hlf-form="' + n +'"]');
