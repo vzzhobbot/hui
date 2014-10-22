@@ -1204,6 +1204,26 @@
 
             $s.on('click', summaryClick);
 
+            $s.on('keydown', function(e) {
+                switch(e.keyCode) {
+                    case 38:
+                        guestsClose();
+                        break;
+                    case 40:
+                        guestsOpen();
+                        break;
+                    default: break;
+                }
+            });
+
+            $s.on('focus', function() {
+                $s.addClass('hlf-state--focus');
+            });
+
+            $s.on('blur', function() {
+                $s.removeClass('hlf-state--focus');
+            });
+
             $ai.on('click', function() {
                 if(config.adults == config.adultsMax) {
                     return false;
