@@ -15,7 +15,7 @@
             onOn: function() {}, // fires when checkbox set on
             onOff: function() {}, // fires when checkbox set off
             calendars: [], // calendar control names list
-            tplInput: _.template('<label hlf-role="noDates-input-wrap"><input type="checkbox" hlf-role="noDates-input"><%= text %></label>')
+            tplInput: _.template('<label hlf-role="noDates-input-wrap"><input type="checkbox" tabindex="<%= tabIndex %>" hlf-role="noDates-input"><%= text %></label>')
         });
 
         /**

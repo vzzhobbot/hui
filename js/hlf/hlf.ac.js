@@ -43,7 +43,7 @@
             },
             samplesText: 'For example: {list}',
             samplesList: [], // [{id: 15542, type: 'location', text: 'Paris, France', sample: 'Paris'}]
-            tplInput: _.template('<div class="hlf-input hlf-input--ac" hlf-role="input-wrap"><input type="text" placeholder="<%= placeholder %>" value="<%= text %>" hlf-role="input" /><div class="loader" hlf-role="loader"></div><div class="hint" hlf-role="hint"><%= hint %></div></div>'),
+            tplInput: _.template('<div class="hlf-input hlf-input--ac" hlf-role="input-wrap"><input type="text" placeholder="<%= placeholder %>" value="<%= text %>" tabindex="<%= tabIndex %>" hlf-role="input" /><div class="loader" hlf-role="loader"></div><div class="hint" hlf-role="hint"><%= hint %></div></div>'),
             tplSamples: _.template('<div class="hlf-input--ac-samples" hlf-role="samples"><%= samplesText %></div>'),
             tplSamplesLink: _.template('<a href="#" hlf-role="samples-link" data-type="<%= type %>" data-id="<%= id %>" data-text="<%= text %>"><%= sample %></a>')
         });

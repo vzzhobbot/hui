@@ -10,7 +10,7 @@
         config = _.defaults(config || {}, {
             gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['submit']
             text: 'Submit',
-            tplButton: _.template('<button hlf-role="button"><%= text %></button>')
+            tplButton: _.template('<button tabindex="<%= tabIndex %>" hlf-role="button"><%= text %></button>')
         });
 
         function draw(name, $f, c) {

@@ -17,7 +17,8 @@
             params[name] = value;
         }
 
-        var $f = $('[hlf-form="' + n +'"]');
+        var $f = $('[hlf-form="' + n +'"]'),
+            tabIndex = 1;
 
         _.each(controls, function(control, name) {
             var config = control.getConfig();
@@ -26,8 +27,8 @@
                     config[key] = _.partialRight(value, controls);
                 }
             });
+            config.tabIndex = tabIndex++;
             control.draw(name, $f, controls);
-            // todo set control tab index
         });
 
         $f.on('submit', function() {

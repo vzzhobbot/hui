@@ -34,7 +34,7 @@
             relationSuperior: true, // 1 - superior, 0 - inferior
             relationAutoSet: false,
             relationAutoShow: false,
-            tplInput: _.template('<div class="hlf-input hlf-input--calendar" hlf-role="input-wrap"><input type="text" placeholder="<%= placeholder %>" hlf-role="input" /><div class="hint" hlf-role="hint"></div></div>'),
+            tplInput: _.template('<div class="hlf-input hlf-input--calendar" hlf-role="input-wrap"><input type="text" placeholder="<%= placeholder %>" tabindex="<%= tabIndex %>" hlf-role="input" /><div class="hint" hlf-role="hint"></div></div>'),
             tplHead: _.template('<div class="ui-datepicker-head"><%= head %></div>'),
             tplLegend: _.template('<div class="ui-datepicker-legend"><div class="ui-datepicker-legend-head"><%= legend %></div><div class="ui-datepicker-legend-points"><div class="ui-datepicker-legend-points-line"></div><ul class="ui-datepicker-legend-points-list"><% _.each(points, function(point, i) { %><li class="ui-datepicker-legend-points-item ui-datepicker-legend-points-item--<%= i %>"><%= point %></li><% }); %></ul></div></div>')
         });

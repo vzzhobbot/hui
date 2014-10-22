@@ -127,7 +127,8 @@
             params[name] = value;
         }
 
-        var $f = $('[hlf-form="' + n +'"]');
+        var $f = $('[hlf-form="' + n +'"]'),
+            tabIndex = 1;
 
         _.each(controls, function(control, name) {
             var config = control.getConfig();
@@ -136,8 +137,8 @@
                     config[key] = _.partialRight(value, controls);
                 }
             });
+            config.tabIndex = tabIndex++;
             control.draw(name, $f, controls);
-            // todo set control tab index
         });
 
         $f.on('submit', function() {
@@ -229,7 +230,7 @@
             },
             samplesText: 'For example: {list}',
             samplesList: [], // [{id: 15542, type: 'location', text: 'Paris, France', sample: 'Paris'}]
-            tplInput: _.template('<div class="hlf-input hlf-input--ac" hlf-role="input-wrap"><input type="text" placeholder="<%= placeholder %>" value="<%= text %>" hlf-role="input" /><div class="loader" hlf-role="loader"></div><div class="hint" hlf-role="hint"><%= hint %></div></div>'),
+            tplInput: _.template('<div class="hlf-input hlf-input--ac" hlf-role="input-wrap"><input type="text" placeholder="<%= placeholder %>" value="<%= text %>" tabindex="<%= tabIndex %>" hlf-role="input" /><div class="loader" hlf-role="loader"></div><div class="hint" hlf-role="hint"><%= hint %></div></div>'),
             tplSamples: _.template('<div class="hlf-input--ac-samples" hlf-role="samples"><%= samplesText %></div>'),
             tplSamplesLink: _.template('<a href="#" hlf-role="samples-link" data-type="<%= type %>" data-id="<%= id %>" data-text="<%= text %>"><%= sample %></a>')
         });
@@ -521,7 +522,7 @@
             relationSuperior: true, // 1 - superior, 0 - inferior
             relationAutoSet: false,
             relationAutoShow: false,
-            tplInput: _.template('<div class="hlf-input hlf-input--calendar" hlf-role="input-wrap"><input type="text" placeholder="<%= placeholder %>" hlf-role="input" /><div class="hint" hlf-role="hint"></div></div>'),
+            tplInput: _.template('<div class="hlf-input hlf-input--calendar" hlf-role="input-wrap"><input type="text" placeholder="<%= placeholder %>" tabindex="<%= tabIndex %>" hlf-role="input" /><div class="hint" hlf-role="hint"></div></div>'),
             tplHead: _.template('<div class="ui-datepicker-head"><%= head %></div>'),
             tplLegend: _.template('<div class="ui-datepicker-legend"><div class="ui-datepicker-legend-head"><%= legend %></div><div class="ui-datepicker-legend-points"><div class="ui-datepicker-legend-points-line"></div><ul class="ui-datepicker-legend-points-list"><% _.each(points, function(point, i) { %><li class="ui-datepicker-legend-points-item ui-datepicker-legend-points-item--<%= i %>"><%= point %></li><% }); %></ul></div></div>')
         });
@@ -1017,7 +1018,7 @@
             onOn: function() {}, // fires when checkbox set on
             onOff: function() {}, // fires when checkbox set off
             calendars: [], // calendar control names list
-            tplInput: _.template('<label hlf-role="noDates-input-wrap"><input type="checkbox" hlf-role="noDates-input"><%= text %></label>')
+            tplInput: _.template('<label hlf-role="noDates-input-wrap"><input type="checkbox" tabindex="<%= tabIndex %>" hlf-role="noDates-input"><%= text %></label>')
         });
 
         /**
@@ -1114,7 +1115,7 @@
             summary: function(adults, children) {
                 return (adults + children.length);
             },
-            tplContainer: _.template('<div class="hlf-guests hlf-state--closed" hlf-role="guests"><div class="hlf-guests-i" hlf-role="summary"></div><div class="hlf-guests-dd" hlf-role="controls"><div class="hlf-guests-adults"><div class="hlf-guests-adults-title"><%= adultsTitle %></div><div class="hlf-guests-adults-controls"><a href="#" hlf-role="adults-decrement">-</a><div class="hlf-guests-adults-val" hlf-role="adults-val"></div><a href="#" hlf-role="adults-increment">+</a></div></div><div class="hlf-guests-children"><div class="hlf-guests-children-title"><%= childrenTitle %></div><div class="hlf-guests-children-controls"><a href="#" hlf-role="children-decrement">-</a><div class="hlf-guests-children-val" hlf-role="children-val"></div><a href="#" hlf-role="children-increment">+</a></div><ul class="hlf-guests-children-list" hlf-role="children-list"></ul></div></div></div>'),
+            tplContainer: _.template('<div class="hlf-guests hlf-state--closed" hlf-role="guests"><a href="#" class="hlf-guests-i" tabindex="<%= tabIndex %>" hlf-role="summary"></a><div class="hlf-guests-dd" hlf-role="controls"><div class="hlf-guests-adults"><div class="hlf-guests-adults-title"><%= adultsTitle %></div><div class="hlf-guests-adults-controls"><a href="#" hlf-role="adults-decrement">-</a><div class="hlf-guests-adults-val" hlf-role="adults-val"></div><a href="#" hlf-role="adults-increment">+</a></div></div><div class="hlf-guests-children"><div class="hlf-guests-children-title"><%= childrenTitle %></div><div class="hlf-guests-children-controls"><a href="#" hlf-role="children-decrement">-</a><div class="hlf-guests-children-val" hlf-role="children-val"></div><a href="#" hlf-role="children-increment">+</a></div><ul class="hlf-guests-children-list" hlf-role="children-list"></ul></div></div></div>'),
             tplChild: _.template('<li class="hlf-guests-children-item" hlf-role="child-container" hlf-name="<%= key %>"><div class="hlf-input" hlf-role="input-wrap"><input type="text" hlf-role="input" value="<%= age %>" /><div class="hint" hlf-role="hint"><%= hint %></div></div></li>')
         });
 
@@ -1348,7 +1349,7 @@
         config = _.defaults(config || {}, {
             gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['submit']
             text: 'Submit',
-            tplButton: _.template('<button hlf-role="button"><%= text %></button>')
+            tplButton: _.template('<button tabindex="<%= tabIndex %>" hlf-role="button"><%= text %></button>')
         });
 
         function draw(name, $f, c) {
