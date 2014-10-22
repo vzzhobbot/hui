@@ -1,9 +1,88 @@
 ;(function ($, _, context) {
     'use strict';
 
-    function hlf () {
-        // ...
-    }
+    var hlf = function() {
+
+        /**
+         * Check google analytics (GA) exists on page
+         * @returns {boolean|*}
+         */
+        function gaExists() {
+            return typeof ga !== 'undefined' && _.isFunction(ga);
+        }
+
+        /**
+         * Send event to GA
+         * @param ev ['category', 'name']
+         * @returns {boolean}
+         */
+        function gaEvent(ev) {
+            if(gaExists() && typeof ev !== 'undefined' && _.isArray(ev) && ev.length) {
+                ga('send', 'event', ev[0], ev[1]);
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Return ga linkerParam for cross domain linking
+         * @returns string
+         */
+        function gaGetLinkerParam() {
+            var str = null;
+            if(gaExists()) {
+                // collect cross domain linker
+                ga(function (tracker) {
+                    str = tracker.get('linkerParam');
+                });
+            }
+            return str;
+        }
+
+        /**
+         * Its yandex metrika
+         * @type {object}
+         */
+        var yam = null;
+
+        /**
+         * Check yandex metrika exists on page
+         * @returns {boolean}
+         */
+        function yamExists() {
+            if(!yam) {
+                _.each(Ya._metrika.counters, function(v){
+                    yam = v;
+                    return;
+                });
+            }
+            return !!yam;
+        }
+
+        /**
+         * Send event to yam
+         * @param ev 'event-name'
+         * @returns {boolean}
+         */
+        function yamEvent(ev) {
+            if(yamExists() && _.isString(ev)) {
+                yam.reachGoal(ev);
+                return true;
+            }
+            return false;
+        }
+
+        return {
+            ga: {
+                event: gaEvent,
+                getLinkerParam: gaGetLinkerParam
+            },
+            yam: {
+                event: yamEvent
+            }
+        }
+
+    }();
 
     hlf.getTpl = _.memoize(function (id) {
         var obj = $('#' + id);

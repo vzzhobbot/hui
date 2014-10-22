@@ -47,10 +47,7 @@
                     e.target.checked ? controls[name].disable() : controls[name].enable();
                 });
                 config.onChange(e);
-                // send data to ga if needed
-                if(config.gaEvent.length && typeof ga !== 'undefined' && _.isFunction(ga)) {
-                    ga('send', 'event', config.gaEvent[0], config.gaEvent[1]);
-                }
+                hlf.ga.event(config.gaEvent);
                 e.target.checked ? config.onOn(e) : config.onOff(e);
             });
 

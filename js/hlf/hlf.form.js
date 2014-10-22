@@ -55,14 +55,9 @@
                     });
 
                 if(typeof ga !== 'undefined' && _.isFunction(ga)) {
-                    // send ga event if needed
-                    if(_.isArray(gaEvent) && gaEvent.length) {
-                        ga('send', 'event', gaEvent[0], gaEvent[1]);
-                    }
+                    hlf.ga.event(gaEvent);
                     // collect ga tracker param
-                    ga(function(tracker) {
-                        ap.push(tracker.get('linkerParam'));
-                    });
+                    ap.push(hlf.ga.getLinkerParam());
                 }
 
                 window.location = url + '/?' + cp.concat(ap).join('&');

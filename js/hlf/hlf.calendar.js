@@ -114,10 +114,7 @@
                     relationAutoSet();
                     relationAutoShow();
                     config.onSelect(date, $.datepicker.formatDate(config.format, getDate()), e);
-                    // send data to ga if needed
-                    if(config.gaEvent.length && typeof ga !== 'undefined' && _.isFunction(ga)) {
-                        ga('send', 'event', config.gaEvent[0], config.gaEvent[1]);
-                    }
+                    hlf.ga.event(config.gaEvent);
                     $iw.removeClass('hlf-state--error');
                 },
                 beforeShowDay: function(date) {

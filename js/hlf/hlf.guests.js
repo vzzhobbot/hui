@@ -82,10 +82,7 @@
         }
 
         function guestsOpen() {
-            // send data to ga if needed (only for open)
-            if(config.gaEvent.length && typeof ga !== 'undefined' && _.isFunction(ga)) {
-                ga('send', 'event', config.gaEvent[0], config.gaEvent[1]);
-            }
+            hlf.ga.event(config.gaEvent);
             $g.removeClass('hlf-state--closed');
             $g.addClass('hlf-state--focus');
         }

@@ -1,9 +1,88 @@
 ;(function ($, _, context) {
     'use strict';
 
-    function hlf () {
-        // ...
-    }
+    var hlf = function() {
+
+        /**
+         * Check google analytics (GA) exists on page
+         * @returns {boolean|*}
+         */
+        function gaExists() {
+            return typeof ga !== 'undefined' && _.isFunction(ga);
+        }
+
+        /**
+         * Send event to GA
+         * @param ev ['category', 'name']
+         * @returns {boolean}
+         */
+        function gaEvent(ev) {
+            if(gaExists() && typeof ev !== 'undefined' && _.isArray(ev) && ev.length) {
+                ga('send', 'event', ev[0], ev[1]);
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Return ga linkerParam for cross domain linking
+         * @returns string
+         */
+        function gaGetLinkerParam() {
+            var str = null;
+            if(gaExists()) {
+                // collect cross domain linker
+                ga(function (tracker) {
+                    str = tracker.get('linkerParam');
+                });
+            }
+            return str;
+        }
+
+        /**
+         * Its yandex metrika
+         * @type {object}
+         */
+        var yam = null;
+
+        /**
+         * Check yandex metrika exists on page
+         * @returns {boolean}
+         */
+        function yamExists() {
+            if(!yam) {
+                _.each(Ya._metrika.counters, function(v){
+                    yam = v;
+                    return;
+                });
+            }
+            return !!yam;
+        }
+
+        /**
+         * Send event to yam
+         * @param ev 'event-name'
+         * @returns {boolean}
+         */
+        function yamEvent(ev) {
+            if(yamExists() && _.isString(ev)) {
+                yam.reachGoal(ev);
+                return true;
+            }
+            return false;
+        }
+
+        return {
+            ga: {
+                event: gaEvent,
+                getLinkerParam: gaGetLinkerParam
+            },
+            yam: {
+                event: yamEvent
+            }
+        }
+
+    }();
 
     hlf.getTpl = _.memoize(function (id) {
         var obj = $('#' + id);
@@ -86,14 +165,9 @@
                     });
 
                 if(typeof ga !== 'undefined' && _.isFunction(ga)) {
-                    // send ga event if needed
-                    if(_.isArray(gaEvent) && gaEvent.length) {
-                        ga('send', 'event', gaEvent[0], gaEvent[1]);
-                    }
+                    hlf.ga.event(gaEvent);
                     // collect ga tracker param
-                    ga(function(tracker) {
-                        ap.push(tracker.get('linkerParam'));
-                    });
+                    ap.push(hlf.ga.getLinkerParam());
                 }
 
                 window.location = url + '/?' + cp.concat(ap).join('&');
@@ -133,6 +207,9 @@
             id: 0, // default id
             limit: 5,
             locale: 'en-US',
+            yamEvents: {
+                select: null // todo
+            },
             gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['destination']
             autoFocus: false, // auto focus if field is empty
             hint: 'panic!', // this control always required, its hint text
@@ -299,10 +376,8 @@
                     config.id = 0;
                     onReset();
                 }
-                // send data to ga if needed
-                if(config.gaEvent.length && typeof ga !== 'undefined' && _.isFunction(ga)) {
-                    ga('send', 'event', config.gaEvent[0], config.gaEvent[1]);
-                }
+                // todo bug, it send too many times
+                hlf.ga.event(config.gaEvent);
                 $iw.removeClass('hlf-state--error');
             });
 
@@ -526,10 +601,7 @@
                     relationAutoSet();
                     relationAutoShow();
                     config.onSelect(date, $.datepicker.formatDate(config.format, getDate()), e);
-                    // send data to ga if needed
-                    if(config.gaEvent.length && typeof ga !== 'undefined' && _.isFunction(ga)) {
-                        ga('send', 'event', config.gaEvent[0], config.gaEvent[1]);
-                    }
+                    hlf.ga.event(config.gaEvent);
                     $iw.removeClass('hlf-state--error');
                 },
                 beforeShowDay: function(date) {
@@ -977,10 +1049,7 @@
                     e.target.checked ? controls[name].disable() : controls[name].enable();
                 });
                 config.onChange(e);
-                // send data to ga if needed
-                if(config.gaEvent.length && typeof ga !== 'undefined' && _.isFunction(ga)) {
-                    ga('send', 'event', config.gaEvent[0], config.gaEvent[1]);
-                }
+                hlf.ga.event(config.gaEvent);
                 e.target.checked ? config.onOn(e) : config.onOff(e);
             });
 
@@ -1094,10 +1163,7 @@
         }
 
         function guestsOpen() {
-            // send data to ga if needed (only for open)
-            if(config.gaEvent.length && typeof ga !== 'undefined' && _.isFunction(ga)) {
-                ga('send', 'event', config.gaEvent[0], config.gaEvent[1]);
-            }
+            hlf.ga.event(config.gaEvent);
             $g.removeClass('hlf-state--closed');
             $g.addClass('hlf-state--focus');
         }
@@ -1292,10 +1358,7 @@
             $b = hlf.getEl($c, 'button');
 
             $b.on('click', function() {
-                // send data to ga if needed
-                if(config.gaEvent.length && typeof ga !== 'undefined' && _.isFunction(ga)) {
-                    ga('send', 'event', config.gaEvent[0], config.gaEvent[1]);
-                }
+                hlf.ga.event(config.gaEvent);
             });
 
         }
