@@ -373,10 +373,10 @@
         monthStatus: 'Посмотреть другой месяц', yearStatus: 'Посмотреть другой год',
         weekHeader: 'Sm', weekStatus: '',
         dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
-        dayNamesShort: ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'],
+        dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
         dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
         dayStatus: 'Использовать DD как первый день недели', dateStatus: 'Выбрать DD, MM d',
-        dateFormat: 'd M, D', firstDay: 1,
+        dateFormat: 'D, d M yy', firstDay: 1,
         initStatus: 'Выбрать дату', isRTL: false
     };
     $.datepicker.regional['en-US'] = {
@@ -392,7 +392,7 @@
         dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         dayNamesMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
         weekHeader: 'Wk',
-        dateFormat: 'D, MM d', firstDay: 0,
+        dateFormat: 'D, MM d, yy', firstDay: 0,
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
