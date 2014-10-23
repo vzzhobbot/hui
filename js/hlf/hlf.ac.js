@@ -22,10 +22,11 @@
             id: 0, // default id
             limit: 5,
             locale: 'en-US',
-            yamEvents: {
-                select: null // todo
-            },
-            gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['destination']
+            yamEventUse: null, // todo
+            yamEventSelect: null,
+            gaEventUse: [], // category & event to send to ga, ex: ['formTop'], ['destination']
+            gaEventSelect: [],
+            placeholder: 'Type something....',
             autoFocus: false, // auto focus if field is empty
             hint: 'panic!', // this control always required, its hint text
             onSelect: function() {},
@@ -44,9 +45,9 @@
             },
             samplesText: 'For example: {list}',
             samplesList: [], // [{id: 15542, type: 'location', text: 'Paris, France', sample: 'Paris'}]
-            tplInput: _.template('<div class="hlf-input hlf-input--ac" hlf-role="input-wrap"><input type="text" placeholder="<%= placeholder %>" value="<%= text %>" tabindex="<%= tabIndex %>" hlf-role="input" /><div class="loader" hlf-role="loader"></div><div class="hint" hlf-role="hint"><%= hint %></div></div>'),
-            tplSamples: _.template('<div class="hlf-input--ac-samples" hlf-role="samples"><%= samplesText %></div>'),
-            tplSamplesLink: _.template('<a href="#" hlf-role="samples-link" data-type="<%= type %>" data-id="<%= id %>" data-text="<%= text %>"><%= sample %></a>')
+            tplInput: hlf.getTpl('ac.input'),
+            tplSamples: hlf.getTpl('ac.samples'),
+            tplSamplesLink: hlf.getTpl('ac.samplesLink')
         });
 
         function avgPricesRequest (id) {

@@ -79,19 +79,16 @@
             },
             yam: {
                 event: yamEvent
-            }
+            },
+            // js templates
+            jst: {}
         }
 
     }();
 
-    hlf.getTpl = _.memoize(function (id) {
-        var obj = $('#' + id);
-        if(!obj.length) {
-            console.log('there is no hlf.tpl \'' + id + '\' in dom');
-            return '';
-        }
-        return _.template(obj.html());
-    });
+    hlf.getTpl = function (name) {
+        return _.template(hlf.jst[name + '.jst'].main());
+    };
 
     hlf.getEl = function($c, role, name) {
         var selector = '[hlf-role="' + role + '"]';
@@ -107,4 +104,4 @@
 
     context.hlf = hlf;
 
-})(jQuery, _, window);
+})(jQuery, _, this);

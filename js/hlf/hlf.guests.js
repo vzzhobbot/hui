@@ -33,8 +33,8 @@
             summary: function(adults, children) {
                 return (adults + children.length);
             },
-            tplContainer: _.template('<div class="hlf-guests hlf-state--closed" hlf-role="guests"><a href="#" class="hlf-guests-i" tabindex="<%= tabIndex %>" hlf-role="summary"></a><div class="hlf-guests-dd" hlf-role="controls"><div class="hlf-guests-adults"><div class="hlf-guests-adults-title"><%= adultsTitle %></div><div class="hlf-guests-adults-controls"><a href="#" hlf-role="adults-decrement">-</a><div class="hlf-guests-adults-val" hlf-role="adults-val"></div><a href="#" hlf-role="adults-increment">+</a></div></div><div class="hlf-guests-children"><div class="hlf-guests-children-title"><%= childrenTitle %></div><div class="hlf-guests-children-controls"><a href="#" hlf-role="children-decrement">-</a><div class="hlf-guests-children-val" hlf-role="children-val"></div><a href="#" hlf-role="children-increment">+</a></div><ul class="hlf-guests-children-list" hlf-role="children-list"></ul></div></div></div>'),
-            tplChild: _.template('<li class="hlf-guests-children-item" hlf-role="child-container" hlf-name="<%= key %>"><div class="hlf-input" hlf-role="input-wrap"><input type="text" hlf-role="input" value="<%= age %>" /><div class="hint" hlf-role="hint"><%= hint %></div></div></li>')
+            tplContainer: hlf.getTpl('guests.container'),
+            tplChild: hlf.getTpl('guests.child')
         });
 
         /**

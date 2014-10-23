@@ -25,7 +25,8 @@ module.exports = function (grunt) {
             },
             files: [
                 'css/compiled/*',
-                'js/compiled/*'
+                'js/compiled/*',
+                'js/process/*'
             ]
         },
 
@@ -33,6 +34,7 @@ module.exports = function (grunt) {
             js: {
                 src: [
                     'js/hlf/hlf.js',
+                    'js/process/hlf.tpls.js',
                     'js/hlf/hlf.form.js',
                     'js/hlf/hlf.ac.js',
                     'js/hlf/hlf.calendar.js',
@@ -48,6 +50,23 @@ module.exports = function (grunt) {
             all: {
                 files: {
                     'js/compiled/hlf.min.js': ['js/compiled/hlf.js']
+                }
+            }
+        },
+
+        handlebars: {
+            compile: {
+                options: {
+                    namespace: 'hlf.jst',
+                    separator: '\n',
+                    wrapped: false,
+                    processName: function(filePath) {
+                        var tree = filePath.split('/');
+                        return tree[tree.length - 1];
+                    }
+                },
+                files: {
+                    "js/process/hlf.tpls.js": "js/hlf/jst/*.jst"
                 }
             }
         },
@@ -75,6 +94,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-handlebars');
 
     grunt.task.registerTask('generate_assets_hash', 'generate YII asets hash', function () {
         var fs = require('fs'),
@@ -94,15 +114,14 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', [
         'clean',
-        'generate_assets_hash',
         'css',
+        'handlebars',
         'concat',
         'uglify'
     ]);
 
     grunt.registerTask('dev', [
         'clean',
-        'generate_assets_hash',
         'css',
         'concat'
     ]);
