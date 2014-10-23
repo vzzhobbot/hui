@@ -10,7 +10,8 @@
             $l = null, // loader
             $sc = null, // samples container
             $sl = null, // samples links
-            controls = {};
+            controls = {},
+            gaEventSent = false;
 
         config = _.defaults(config || {}, {
             url: 'http://yasen.hotellook.com/autocomplete',
@@ -190,8 +191,10 @@
                     config.id = 0;
                     onReset();
                 }
-                // todo bug, it send too many times
-                hlf.ga.event(config.gaEvent);
+                if(!gaEventSent) {
+                    hlf.ga.event(config.gaEvent);
+                    gaEventSent = true;
+                }
                 $iw.removeClass('hlf-state--error');
             });
 
