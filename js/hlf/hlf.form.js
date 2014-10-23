@@ -18,6 +18,7 @@
         }
 
         var $f = $('[hlf-form="' + n +'"]'),
+            uid = _.uniqueId(),
             tabIndex = 1;
 
         _.each(controls, function(control, name) {
@@ -27,7 +28,7 @@
                     config[key] = _.partialRight(value, controls);
                 }
             });
-            config.tabIndex = tabIndex++;
+            config.tabIndex = (uid + '') + tabIndex++;
             control.draw(name, $f, controls);
         });
 

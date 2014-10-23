@@ -128,6 +128,7 @@
         }
 
         var $f = $('[hlf-form="' + n +'"]'),
+            uid = _.uniqueId(),
             tabIndex = 1;
 
         _.each(controls, function(control, name) {
@@ -137,7 +138,7 @@
                     config[key] = _.partialRight(value, controls);
                 }
             });
-            config.tabIndex = tabIndex++;
+            config.tabIndex = (uid + '') + tabIndex++;
             control.draw(name, $f, controls);
         });
 
@@ -197,7 +198,8 @@
             $l = null, // loader
             $sc = null, // samples container
             $sl = null, // samples links
-            controls = {};
+            controls = {},
+            gaEventSent = false;
 
         config = _.defaults(config || {}, {
             url: 'http://yasen.hotellook.com/autocomplete',
@@ -377,8 +379,10 @@
                     config.id = 0;
                     onReset();
                 }
-                // todo bug, it send too many times
-                hlf.ga.event(config.gaEvent);
+                if(!gaEventSent) {
+                    hlf.ga.event(config.gaEvent);
+                    gaEventSent = true;
+                }
                 $iw.removeClass('hlf-state--error');
             });
 
