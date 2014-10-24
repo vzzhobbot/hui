@@ -1199,6 +1199,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
         function summaryClick() {
             $g.hasClass('hlf-state--closed') ? guestsOpen() : guestsClose();
+            return false;
         }
 
         function guestsClose() {
