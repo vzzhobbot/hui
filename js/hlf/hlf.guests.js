@@ -74,6 +74,7 @@
 
         function summaryClick() {
             $g.hasClass('hlf-state--closed') ? guestsOpen() : guestsClose();
+            return false;
         }
 
         function guestsClose() {
