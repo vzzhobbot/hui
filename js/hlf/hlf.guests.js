@@ -20,7 +20,7 @@
             $chh = [], // child hints
             controls = {};
         config = _.defaults(config || {}, {
-            gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['noFuckingDates']
+            goalOpen: {},
             adultsMax: 4,
             adultsMin: 1,
             adults: 2, // adults value
@@ -83,7 +83,7 @@
         }
 
         function guestsOpen() {
-            hlf.ga.event(config.gaEvent);
+            hlf.goal(config.goalOpen);
             $g.removeClass('hlf-state--closed');
             $g.addClass('hlf-state--focus');
         }

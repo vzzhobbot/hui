@@ -3,6 +3,10 @@
 
     var hlf = function() {
 
+        var config = {
+            asGoalUrl: 'http://metrics.aviasales.ru'
+        };
+
         /**
          * Check google analytics (GA) exists on page
          * @returns {boolean|*}
@@ -12,13 +16,13 @@
         }
 
         /**
-         * Send event to GA
-         * @param ev ['category', 'name']
+         * Send goal to GA
+         * @param goal ['category', 'name']
          * @returns {boolean}
          */
-        function gaEvent(ev) {
-            if(gaExists() && typeof ev !== 'undefined' && _.isArray(ev) && ev.length) {
-                ga('send', 'event', ev[0], ev[1]);
+        function gaGoal(goal) {
+            if(gaExists() && typeof goal !== 'undefined' && _.isArray(goal) && goal.length) {
+                ga('send', 'event', goal[0], goal[1]);
                 return true;
             }
             return false;
@@ -60,28 +64,51 @@
         }
 
         /**
-         * Send event to yam
-         * @param ev 'event-name'
+         * Send goal to yam
+         * @param goal 'goal-name'
          * @returns {boolean}
          */
-        function yamEvent(ev) {
-            if(yamExists() && _.isString(ev)) {
-                yam.reachGoal(ev);
+        function yamGoal(goal) {
+            if(yamExists() && _.isString(goal) && goal.length) {
+                yam.reachGoal(goal);
                 return true;
             }
             return false;
         }
 
+        /**
+         * Send goal to aviasales
+         * @param goal 'goal-name'
+         * @param d any json
+         * @returns {boolean}
+         */
+        function asGoal(goal, d) {
+            if(_.isString(goal) && goal.length) {
+                $.ajax({
+                    url: config.asGoalUrl,
+                    type: 'get',
+                    dataType: 'jsonp',
+                    data: {
+                        goal: goal,
+                        data: JSON.stringify(d)
+                    }
+                });
+                return true;
+            }
+            return false;
+        }
+
+        function goal(goals, data) {
+            yamGoal(goals.yam || null);
+            gaGoal(goals.ga ? goals.ga.split('.') : null);
+            asGoal(goals.as || null, data);
+        }
+
         return {
-            ga: {
-                event: gaEvent,
-                getLinkerParam: gaGetLinkerParam
-            },
-            yam: {
-                event: yamEvent
-            },
-            // js templates
-            jst: {}
+            gaGetLinkerParam: gaGetLinkerParam,
+            goal: goal,
+            config: config,
+            jst: {} // js templates
         }
 
     }();

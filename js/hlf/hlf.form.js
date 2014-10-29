@@ -1,7 +1,7 @@
 ;(function ($, _, hlf) {
     'use strict';
 
-    hlf.form = function (n, controls, params, gaEvent) {
+    hlf.form = function (n, controls, params, goalSubmit) {
 
         /**
          * set/get for params
@@ -42,27 +42,25 @@
             });
             if(result) {
 
-                var url = $f.attr('action'),
+                var p =
                     // collect controls data
-                    controlsData = _.map(controls, function(i) {
+                    _.map(controls, function(i) {
                         return _.isFunction(i.getParams) ? i.getParams() : null;
-                    }),
-                    // controls params
-                    cp = _.filter(controlsData, function(i) {
-                        return i;
-                    }),
+                    })
                     // additional params if needed
-                    ap = _.map(params || {}, function(v, k) {
+                    .concat(_.map(params || {}, function(v, k) {
                         return k + '=' + v;
-                    });
-
-                if(typeof ga !== 'undefined' && _.isFunction(ga)) {
-                    hlf.ga.event(gaEvent);
-                    // collect ga tracker param
-                    ap.push(hlf.ga.getLinkerParam());
-                }
-
-                window.location = url + '/?' + cp.concat(ap).join('&');
+                    }));
+                // collect ga tracker param
+                p.push(hlf.gaGetLinkerParam());
+                // remove empty strings
+                p = _.filter(p, function(i) {
+                    return i;
+                });
+                hlf.goal(goalSubmit, {
+                    params: p
+                });
+                window.location = $f.attr('action') + '/?' + p.join('&');
                 return false;
             }
             return result;

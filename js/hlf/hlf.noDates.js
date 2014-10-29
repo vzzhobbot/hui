@@ -10,7 +10,7 @@
         config = _.defaults(config || {}, {
             name: 'unknownDates', // getParams() param name
             text: 'Checkbox',
-            gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['noFuckingDates']
+            goalChange: {},
             onChange: function() {}, // fires on state change
             onOn: function() {}, // fires when checkbox set on
             onOff: function() {}, // fires when checkbox set off
@@ -47,7 +47,9 @@
                     e.target.checked ? controls[name].disable() : controls[name].enable();
                 });
                 config.onChange(e);
-                hlf.ga.event(config.gaEvent);
+                hlf.goal(config.goalChange, {
+                    checked: e.target.checked
+                });
                 e.target.checked ? config.onOn(e) : config.onOff(e);
             });
 

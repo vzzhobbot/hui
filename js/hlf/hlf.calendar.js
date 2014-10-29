@@ -16,7 +16,7 @@
             isAutoShown = false;
 
         config = _.defaults(config || {}, {
-            gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['checkIn']
+            goalSelectDate: {},
             required: false,
             placeholder: 'Choose date...',
             name: 'date', // getParams param name
@@ -114,7 +114,7 @@
                     relationAutoSet();
                     relationAutoShow();
                     config.onSelect(date, $.datepicker.formatDate(config.format, getDate()), e);
-                    hlf.ga.event(config.gaEvent);
+                    hlf.goal(config.goalSelectDate);
                     $iw.removeClass('hlf-state--error');
                 },
                 beforeShowDay: function(date) {

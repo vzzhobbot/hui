@@ -8,7 +8,7 @@
             controls = {};
 
         config = _.defaults(config || {}, {
-            gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['submit']
+            goalClick: {},
             text: 'Submit',
             tplButton: hlf.getTpl('submit.button')
         });
@@ -20,7 +20,7 @@
             $b = hlf.getEl($c, 'button');
 
             $b.on('click', function() {
-                hlf.ga.event(config.gaEvent);
+                hlf.goal(config.goalClick);
             });
 
         }

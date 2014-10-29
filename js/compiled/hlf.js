@@ -3,6 +3,10 @@
 
     var hlf = function() {
 
+        var config = {
+            asGoalUrl: 'http://metrics.aviasales.ru'
+        };
+
         /**
          * Check google analytics (GA) exists on page
          * @returns {boolean|*}
@@ -12,13 +16,13 @@
         }
 
         /**
-         * Send event to GA
-         * @param ev ['category', 'name']
+         * Send goal to GA
+         * @param goal ['category', 'name']
          * @returns {boolean}
          */
-        function gaEvent(ev) {
-            if(gaExists() && typeof ev !== 'undefined' && _.isArray(ev) && ev.length) {
-                ga('send', 'event', ev[0], ev[1]);
+        function gaGoal(goal) {
+            if(gaExists() && typeof goal !== 'undefined' && _.isArray(goal) && goal.length) {
+                ga('send', 'event', goal[0], goal[1]);
                 return true;
             }
             return false;
@@ -60,28 +64,51 @@
         }
 
         /**
-         * Send event to yam
-         * @param ev 'event-name'
+         * Send goal to yam
+         * @param goal 'goal-name'
          * @returns {boolean}
          */
-        function yamEvent(ev) {
-            if(yamExists() && _.isString(ev)) {
-                yam.reachGoal(ev);
+        function yamGoal(goal) {
+            if(yamExists() && _.isString(goal) && goal.length) {
+                yam.reachGoal(goal);
                 return true;
             }
             return false;
         }
 
+        /**
+         * Send goal to aviasales
+         * @param goal 'goal-name'
+         * @param d any json
+         * @returns {boolean}
+         */
+        function asGoal(goal, d) {
+            if(_.isString(goal) && goal.length) {
+                $.ajax({
+                    url: config.asGoalUrl,
+                    type: 'get',
+                    dataType: 'jsonp',
+                    data: {
+                        goal: goal,
+                        data: JSON.stringify(d)
+                    }
+                });
+                return true;
+            }
+            return false;
+        }
+
+        function goal(goals, data) {
+            yamGoal(goals.yam || null);
+            gaGoal(goals.ga ? goals.ga.split('.') : null);
+            asGoal(goals.as || null, data);
+        }
+
         return {
-            ga: {
-                event: gaEvent,
-                getLinkerParam: gaGetLinkerParam
-            },
-            yam: {
-                event: yamEvent
-            },
-            // js templates
-            jst: {}
+            gaGetLinkerParam: gaGetLinkerParam,
+            goal: goal,
+            config: config,
+            jst: {} // js templates
         }
 
     }();
@@ -149,7 +176,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 ;(function ($, _, hlf) {
     'use strict';
 
-    hlf.form = function (n, controls, params, gaEvent) {
+    hlf.form = function (n, controls, params, goalSubmit) {
 
         /**
          * set/get for params
@@ -190,27 +217,25 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             });
             if(result) {
 
-                var url = $f.attr('action'),
+                var p =
                     // collect controls data
-                    controlsData = _.map(controls, function(i) {
+                    _.map(controls, function(i) {
                         return _.isFunction(i.getParams) ? i.getParams() : null;
-                    }),
-                    // controls params
-                    cp = _.filter(controlsData, function(i) {
-                        return i;
-                    }),
+                    })
                     // additional params if needed
-                    ap = _.map(params || {}, function(v, k) {
+                    .concat(_.map(params || {}, function(v, k) {
                         return k + '=' + v;
-                    });
-
-                if(typeof ga !== 'undefined' && _.isFunction(ga)) {
-                    hlf.ga.event(gaEvent);
-                    // collect ga tracker param
-                    ap.push(hlf.ga.getLinkerParam());
-                }
-
-                window.location = url + '/?' + cp.concat(ap).join('&');
+                    }));
+                // collect ga tracker param
+                p.push(hlf.gaGetLinkerParam());
+                // remove empty strings
+                p = _.filter(p, function(i) {
+                    return i;
+                });
+                hlf.goal(goalSubmit, {
+                    params: p
+                });
+                window.location = $f.attr('action') + '/?' + p.join('&');
                 return false;
             }
             return result;
@@ -237,7 +262,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $sc = null, // samples container
             $sl = null, // samples links
             controls = {},
-            gaEventSent = false;
+            goalUseInputSent = false; // flag event 'use' sent
 
         config = _.defaults(config || {}, {
             url: 'http://yasen.hotellook.com/autocomplete',
@@ -248,10 +273,10 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             id: 0, // default id
             limit: 5,
             locale: 'en-US',
-            yamEventUse: null, // todo
-            yamEventSelect: null,
-            gaEventUse: [], // category & event to send to ga, ex: ['formTop'], ['destination']
-            gaEventSelect: [],
+            // events
+            goalUseInput: {}, // {ga: 'la-la-la.bla-bla', yam: 'sdasds', as: 'something'}
+            goalAcSelect: {},
+            goalUseSamples: {},
             placeholder: 'Type something....',
             autoFocus: false, // auto focus if field is empty
             hint: 'panic!', // this control always required, its hint text
@@ -403,6 +428,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 source: source,
                 select: function(ev, data) {
                     select(data.item.type, data.item.id);
+                    hlf.goal(config.goalAcSelect, data.item);
                 },
                 minLength: 3
             });
@@ -418,9 +444,9 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                     config.id = 0;
                     onReset();
                 }
-                if(!gaEventSent) {
-                    hlf.ga.event(config.gaEvent);
-                    gaEventSent = true;
+                if(!goalUseInputSent) {
+                    hlf.goal(config.goalUseInput);
+                    goalUseInputSent = true;
                 }
                 $iw.removeClass('hlf-state--error');
             });
@@ -428,6 +454,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $i.on('focus', function() {
                 $iw.addClass('hlf-state--focus');
                 $iw.removeClass('hlf-state--error');
+                goalUseInputSent = false;
             });
 
             $i.on('blur', function() {
@@ -459,6 +486,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 $sl.on('click', function() {
                     var $this = $(this);
                     select($this.data('type'), $this.data('id'), $this.data('text'));
+                    hlf.goal(config.goalUseSamples);
                     return false;
                 });
 
@@ -547,7 +575,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             isAutoShown = false;
 
         config = _.defaults(config || {}, {
-            gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['checkIn']
+            goalSelectDate: {},
             required: false,
             placeholder: 'Choose date...',
             name: 'date', // getParams param name
@@ -645,7 +673,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                     relationAutoSet();
                     relationAutoShow();
                     config.onSelect(date, $.datepicker.formatDate(config.format, getDate()), e);
-                    hlf.ga.event(config.gaEvent);
+                    hlf.goal(config.goalSelectDate);
                     $iw.removeClass('hlf-state--error');
                 },
                 beforeShowDay: function(date) {
@@ -1056,7 +1084,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         config = _.defaults(config || {}, {
             name: 'unknownDates', // getParams() param name
             text: 'Checkbox',
-            gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['noFuckingDates']
+            goalChange: {},
             onChange: function() {}, // fires on state change
             onOn: function() {}, // fires when checkbox set on
             onOff: function() {}, // fires when checkbox set off
@@ -1093,7 +1121,9 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                     e.target.checked ? controls[name].disable() : controls[name].enable();
                 });
                 config.onChange(e);
-                hlf.ga.event(config.gaEvent);
+                hlf.goal(config.goalChange, {
+                    checked: e.target.checked
+                });
                 e.target.checked ? config.onOn(e) : config.onOff(e);
             });
 
@@ -1145,7 +1175,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $chh = [], // child hints
             controls = {};
         config = _.defaults(config || {}, {
-            gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['noFuckingDates']
+            goalOpen: {},
             adultsMax: 4,
             adultsMin: 1,
             adults: 2, // adults value
@@ -1208,7 +1238,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         }
 
         function guestsOpen() {
-            hlf.ga.event(config.gaEvent);
+            hlf.goal(config.goalOpen);
             $g.removeClass('hlf-state--closed');
             $g.addClass('hlf-state--focus');
         }
@@ -1411,7 +1441,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             controls = {};
 
         config = _.defaults(config || {}, {
-            gaEvent: [], // category & event to send to ga, ex: ['formTop'], ['submit']
+            goalClick: {},
             text: 'Submit',
             tplButton: hlf.getTpl('submit.button')
         });
@@ -1423,7 +1453,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $b = hlf.getEl($c, 'button');
 
             $b.on('click', function() {
-                hlf.ga.event(config.gaEvent);
+                hlf.goal(config.goalClick);
             });
 
         }

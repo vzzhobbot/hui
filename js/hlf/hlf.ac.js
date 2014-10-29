@@ -11,7 +11,7 @@
             $sc = null, // samples container
             $sl = null, // samples links
             controls = {},
-            gaEventSent = false;
+            goalUseInputSent = false; // flag event 'use' sent
 
         config = _.defaults(config || {}, {
             url: 'http://yasen.hotellook.com/autocomplete',
@@ -22,10 +22,10 @@
             id: 0, // default id
             limit: 5,
             locale: 'en-US',
-            yamEventUse: null, // todo
-            yamEventSelect: null,
-            gaEventUse: [], // category & event to send to ga, ex: ['formTop'], ['destination']
-            gaEventSelect: [],
+            // events
+            goalUseInput: {}, // {ga: 'la-la-la.bla-bla', yam: 'sdasds', as: 'something'}
+            goalAcSelect: {},
+            goalUseSamples: {},
             placeholder: 'Type something....',
             autoFocus: false, // auto focus if field is empty
             hint: 'panic!', // this control always required, its hint text
@@ -177,6 +177,7 @@
                 source: source,
                 select: function(ev, data) {
                     select(data.item.type, data.item.id);
+                    hlf.goal(config.goalAcSelect, data.item);
                 },
                 minLength: 3
             });
@@ -192,9 +193,9 @@
                     config.id = 0;
                     onReset();
                 }
-                if(!gaEventSent) {
-                    hlf.ga.event(config.gaEvent);
-                    gaEventSent = true;
+                if(!goalUseInputSent) {
+                    hlf.goal(config.goalUseInput);
+                    goalUseInputSent = true;
                 }
                 $iw.removeClass('hlf-state--error');
             });
@@ -202,6 +203,7 @@
             $i.on('focus', function() {
                 $iw.addClass('hlf-state--focus');
                 $iw.removeClass('hlf-state--error');
+                goalUseInputSent = false;
             });
 
             $i.on('blur', function() {
@@ -233,6 +235,7 @@
                 $sl.on('click', function() {
                     var $this = $(this);
                     select($this.data('type'), $this.data('id'), $this.data('text'));
+                    hlf.goal(config.goalUseSamples);
                     return false;
                 });
 

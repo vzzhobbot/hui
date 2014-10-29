@@ -5,7 +5,21 @@ var maForm = hlf.form('form111', {
         type: 'location',
         text: 'Париж, Франция',
         locale: 'ru-RU',
-        gaEvent: ['form111', 'query'],
+        goalUseInput: {
+            ga: 'form111.goalUseInput',
+            yam: 'form111-goalUseInput',
+            as: 'hlf-form111-goalUseInput'
+        },
+        goalAcSelect: {
+            ga: 'form111.goalAcSelect',
+            yam: 'form111-goalAcSelect',
+            as: 'hlf-form111-goalAcSelect'
+        },
+        goalUseSamples: {
+            ga: 'form111.goalUseSamples',
+            yam: 'form111-goalUseSamples',
+            as: 'hlf-form111-goalUseSamples'
+        },
         placeholder: 'Введите город или название отеля...',
         onSelectShowCalendar: 'checkIn',
         avgPricesCalendars: ['checkIn'],
@@ -28,7 +42,11 @@ var maForm = hlf.form('form111', {
     }),
 
     checkIn: hlf.calendar({
-        gaEvent: ['form111', 'checkIn'],
+        goalSelectDate: {
+            ga: 'form111.checkInSelectDate',
+            yam: 'form111-checkInSelectDate',
+            as: 'hlf-form111-checkInSelectDate'
+        },
         required: true,
         head: 'Дата заезда',
         placeholder: 'Дата заезда',
@@ -43,7 +61,11 @@ var maForm = hlf.form('form111', {
     }),
 
     checkOut: hlf.calendar({
-        gaEvent: ['form111', 'checkOut'],
+        goalSelectDate: {
+            ga: 'form111.dasdascheckInSelectDate',
+            yam: 'form111-asdscheckInSelectDate',
+            as: 'hlf-form111-asdsacheckInSelectDate'
+        },
         required: true,
         head: 'Дата выезда',
         placeholder: 'Дата выезда',
@@ -60,13 +82,18 @@ var maForm = hlf.form('form111', {
     noDates: hlf.noDates({
         text: 'Я еще не знаю дат',
         calendars: ['checkIn', 'checkOut'],
-        gaEvent: ['form111', 'noDates']
+        goalChange: {
+            as: 'sadsas'
+        }
     }),
 
     guests: hlf.guests({
         adults: 2,
         children: [12],
-        gaEvent: ['form111', 'guests'],
+        goalOpen: {
+            ga: 'hlfcat.guestsitem',
+            as: 'hlf-guests'
+        },
         adultsTitle: 'Взрослых',
         childrenTitle: 'Детей',
         childHint: 'Укажите возраст ребенка (0-17 лет)',
@@ -77,11 +104,16 @@ var maForm = hlf.form('form111', {
 
     submit: hlf.submit({
         text: 'Узнать цены',
-        gaEvent: ['form111', 'button']
+        goalClick: {
+            as: 'form111--------button'
+        }
     })
 
 }, {
     hotelId: 299294,
     language: 'ru-ru',
     currency: 'rub'
-}, ['form111', 'submit']);
+}, {
+    yam: 'sumbimt!',
+    as: 'form0submit----------!'
+});
