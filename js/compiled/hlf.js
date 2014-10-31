@@ -54,7 +54,7 @@
          * @returns {boolean}
          */
         function yamExists() {
-            if(!yam) {
+            if(!yam && typeof Ya !== 'undefined') {
                 _.each(Ya._metrika.counters, function(v){
                     yam = v;
                     return;
