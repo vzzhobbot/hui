@@ -53,7 +53,7 @@
         function avgPricesRequest (id) {
             if(config.avgPricesCalendars.length) {
                 $.ajax({
-                    dataType: 'json',
+                    dataType: 'jsonp',
                     type: 'get',
                     url: config.avgPricesUrl.replace('{id}', id),
                     success: avgPricesRequestSuccess
