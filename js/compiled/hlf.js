@@ -4,7 +4,7 @@
     var hlf = function() {
 
         var config = {
-            asGoalUrl: 'http://metrics.aviasales.ru'
+            asGoalUrl: (location.protocol == 'file:' ? 'http:' : '') + '//metrics.aviasales.ru'
         };
 
         /**
