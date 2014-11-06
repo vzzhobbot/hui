@@ -14,7 +14,7 @@
             goalUseInputSent = false; // flag event 'use' sent
 
         config = _.defaults(config || {}, {
-            url: 'http://yasen.hotellook.com/autocomplete',
+            url: (location.protocol == 'file:' ? 'http:' : '') + '//yasen.hotellook.com/autocomplete',
             name: 'destination', // getParams() param name in case
                                  // you select nothing in autocomplete
             text: '', // default input value
@@ -32,7 +32,7 @@
             onSelect: function() {},
             onSelectShowCalendar: null,
             onReset: function() {},
-            avgPricesUrl: 'http://search.hotellook.com/ajax/location-avg-prices.json?locationId={id}',
+            avgPricesUrl: (location.protocol == 'file:' ? 'http:' : '') + '//search.hotellook.com/ajax/location-avg-prices.json?locationId={id}',
             avgPricesCalendars: [], // names if controls
             avgPricesFormatter: function(v) {
                 return '' + Math.round(v);
