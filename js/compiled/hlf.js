@@ -701,8 +701,9 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                     i.dpDiv.attr('__cheat', uid);
                 },
                 afterShow: function() {
+                    var $datepicker = $('#ui-datepicker-div');
                     if(config.head) {
-                        $('#ui-datepicker-div').prepend(config.tplHead({
+                        $datepicker.prepend(config.tplHead({
                             head: config.head
                         }));
                     }
@@ -714,8 +715,12 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                             })
                         );
                     }
+                    /*$('[data-handler=selectDay]', $datepicker).mouseenter(function() {
+                        dateHover(this);
+                    });*/
                 },
                 onClose: function() {
+                    //$('#ui-datepicker-div [data-handler=selectDay]').off('mouseenter');
                     isAutoShown = false;
                 }
             });
@@ -908,13 +913,34 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
          * @returns {*[]}
          */
         function getDayCfg(date) {
-            var dateStr = $.datepicker.formatDate('yy-mm-dd', date),
+            var dateAsStr = $.datepicker.formatDate('yy-mm-dd', date),
                 cfg = [true, '', ''];
 
             // fill cfg with date details
-            if(!_.isUndefined(details.dates) && details.dates[dateStr]) {
-                cfg[1] += 'ui-datepicker-dayType ui-datepicker-dayType--' + details.dates[dateStr].rate; // cell class
-                cfg[2] = details.formatter(details.dates[dateStr].value);
+            if(!_.isUndefined(details.dates) && details.dates[dateAsStr]) {
+                cfg[1] += ' ui-datepicker-dayType ui-datepicker-dayType--' + details.dates[dateAsStr].rate; // cell class
+                cfg[2] = details.formatter(details.dates[dateAsStr].value);
+            }
+
+            // fill cfg with range details
+            // todo fix to complicated logic
+            var rel = controls[config.relationCalendar];
+            if(rel) {
+                // choose dateIn & dateOut
+                var dateIn = getDate(),
+                    dateOut = rel.getDate();
+                if(!config.relationSuperior) {
+                    var tmp = dateIn;
+                    dateIn = dateOut;
+                    dateOut = tmp;
+                }
+                // in range
+                cfg[1] += dateIn && dateOut && (dateIn.getTime() <= date.getTime() && date.getTime() <= dateOut.getTime()) ?
+                    ' ui-datepicker-dayRange' :
+                    '';
+                // it is in or out date?
+                cfg[1] += dateIn && dateIn.getTime() == date.getTime() ? ' ui-datepicker-dayRange-in' : '';
+                cfg[1] += dateOut && dateOut.getTime() == date.getTime() ? ' ui-datepicker-dayRange-out' : '';
             }
 
             return cfg;
@@ -941,6 +967,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         }
 
         // after show extension
+        // todo fix it: works bad, calls too often
         var afterShow = this._get(inst, 'afterShow');
         if (afterShow) {
             afterShow.apply((inst.input ? inst.input[0] : null));

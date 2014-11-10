@@ -57,6 +57,7 @@ var maForm = hlf.form('form111', {
         relationAutoSet: true,
         relationAutoShow: true,
         locale: 'ru-RU',
+        value: new Date((new Date()).getTime() + 3 * 24 * 60 * 60 * 1000),
         min: -1
     }),
 
@@ -76,6 +77,7 @@ var maForm = hlf.form('form111', {
         relationAutoSet: true,
         relationAutoShow: true,
         locale: 'ru-RU',
+        value: new Date((new Date()).getTime() + 6 * 24 * 60 * 60 * 1000),
         min: 0
     }),
 
