@@ -176,35 +176,35 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 ;(function ($, _, hlf) {
     'use strict';
 
-    hlf.form = function (n, controls, params, goalSubmit) {
+    /**
+     * Form constructor
+     *
+     * @param id form uid hlf-form="maForm"
+     * @param cs control constructors list
+     * @param params additional url params
+     * @param goalSubmit goal submit config
+     * @returns {{controls: {}, param: Function}}
+     */
+    hlf.form = function (id, cs, params, goalSubmit) {
 
-        /**
-         * set/get for params
-         *
-         * @param name
-         * @param value
-         * @returns {*}
-         */
-        function param(name, value) {
-            if(!value) {
-                return params[name];
-            }
-            params[name] = value;
-        }
-
-        var $f = $('[hlf-form="' + n +'"]'),
+        var $f = $('[hlf-form="' + id +'"]'),
             uid = _.uniqueId(),
-            tabIndex = 1;
+            tabIndex = 1,
+            controls = {};
 
-        _.each(controls, function(control, name) {
+        // draw each control
+        _.each(cs, function(c, n) {
+            controls[n] = c(n, $f, controls, uid + (tabIndex++) + '');
+        });
+
+        // wrap config functions to use controls obj
+        _.each(controls, function(control) {
             var config = control.getConfig();
             _.each(config, function(value, key) {
                 if(_.isFunction(value)) {
                     config[key] = _.partialRight(value, controls);
                 }
             });
-            config.tabIndex = (uid + '') + tabIndex++;
-            control.draw(name, $f, controls);
         });
 
         $f.on('submit', function() {
@@ -216,7 +216,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 return result;
             });
             if(result) {
-
                 var p =
                     // collect controls data
                     _.map(controls, function(i) {
@@ -243,7 +242,20 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
         return {
             controls: controls,
-            param: param
+
+            /**
+             * set/get for params
+             *
+             * @param name
+             * @param value
+             * @returns {*}
+             */
+            param: function (name, value) {
+                if(!value) {
+                    return params[name];
+                }
+                params[name] = value;
+            }
         };
 
     }
@@ -410,13 +422,15 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             }
         }
 
-        function draw(name, $f, c) {
+        function draw(name, $f, c, ti) {
 
             if(config.id) {
                 avgPricesRequest(config.id);
             }
 
             controls = c || {};
+            config.tabIndex = ti || 0;
+
             $c = hlf.getContainer($f, 'ac', name);
             $c.html(config.tplInput(config));
             $iw = hlf.getEl($c, 'input-wrap');
@@ -492,6 +506,13 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
             }
 
+            return {
+                select: select,
+                getParams: getParams,
+                getConfig: getConfig,
+                validate: validate
+            };
+
         }
 
         function getConfig() {
@@ -507,13 +528,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             return false;
         }
 
-        return {
-            draw: draw,
-            select: select,
-            getParams: getParams,
-            getConfig: getConfig,
-            validate: validate
-        };
+        return draw;
 
     };
 
@@ -655,19 +670,22 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             }
         }
 
-        function draw(name, $f, c) {
+        function draw(name, $f, c, ti) {
+
             controls = c || {};
+            config.tabIndex = ti || 0;
+
             $c = hlf.getContainer($f, 'calendar', name);
             $c.html(config.tplInput(config));
+
             $iw = hlf.getEl($c, 'input-wrap');
             $i = hlf.getEl($c, 'input');
             $h = hlf.getEl($c, 'hint');
 
+            // create ui control
             $i.datepicker({
                 minDate: config.min,
                 numberOfMonths: config.months,
-                //showOn: 'both', // todo
-                //buttonText: '',
                 onSelect: function(date, e) {
                     relationAdjust();
                     relationAutoSet();
@@ -701,12 +719,14 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                     isAutoShown = false;
                 }
             });
+
             // maybe set a date?
             if(_.isDate(config.value)) {
                 // correct date by timezone offset
                 config.value.setTime(config.value.getTime() + config.value.getTimezoneOffset() * 60 * 1000);
                 $i.datepicker('setDate', config.value);
             }
+
             // customize datepicker with locale
             if(config.locale) {
                 $i.datepicker('option', $.datepicker.regional[config.locale]);
@@ -724,6 +744,24 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $h.on('click', function() {
                 $iw.removeClass('hlf-state--error');
             });
+
+            return {
+                disable: disable,
+                enable: enable,
+                refresh: refresh,
+                show: show,
+                hide: hide,
+                getStamp: getStamp,
+                getDate: getDate,
+                setDate: setDate,
+                getParams: getParams,
+                getConfig: getConfig,
+                setDetails: setDetails,
+                getDetails: getDetails,
+                resetDetails: resetDetails,
+                specify: specify,
+                validate: validate
+            };
 
         }
 
@@ -786,10 +824,11 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
         /**
          * Process each date average price & calculate day details
+         * todo fix it strange logic
          * @param data
          * @param formatter function
          */
-        function specify(data, formatter) { // todo strange logic
+        function specify(data, formatter) {
             if(!_.size(data))
                 return false;
             var count = 0,
@@ -869,56 +908,45 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
          * @returns {*[]}
          */
         function getDayCfg(date) {
-            var month = (date.getMonth() + 1),
-                day = date.getDate(),
-                dateStr =
-                    date.getFullYear() + '-' +
-                        (month < 10 ? '0' + month : month) + '-' +
-                        (day < 10 ? '0' + day : day),
+            var dateStr = $.datepicker.formatDate('yy-mm-dd', date),
                 cfg = [true, '', ''];
+
+            // fill cfg with date details
             if(!_.isUndefined(details.dates) && details.dates[dateStr]) {
-                cfg = [
-                    true, // something :)
-                    'ui-datepicker-dayType ui-datepicker-dayType--' + details.dates[dateStr].rate, // cell class
-                    details.formatter(details.dates[dateStr].value)
-                ];
+                cfg[1] += 'ui-datepicker-dayType ui-datepicker-dayType--' + details.dates[dateStr].rate; // cell class
+                cfg[2] = details.formatter(details.dates[dateStr].value);
             }
+
             return cfg;
         }
 
-        return {
-            disable: disable,
-            enable: enable,
-            draw: draw,
-            refresh: refresh,
-            show: show,
-            hide: hide,
-            getStamp: getStamp,
-            getDate: getDate,
-            setDate: setDate,
-            getParams: getParams,
-            getConfig: getConfig,
-            setDetails: setDetails,
-            getDetails: getDetails,
-            resetDetails: resetDetails,
-            specify: specify,
-            validate: validate
-        };
+        return draw;
 
     };
 
     /**
      * Extension for jQuery.ui.datepicker
      */
-    $(function () {
-        $.datepicker._updateDatepicker_original = $.datepicker._updateDatepicker;
-        $.datepicker._updateDatepicker = function (inst) {
-            $.datepicker._updateDatepicker_original(inst);
-            var afterShow = this._get(inst, 'afterShow');
-            if (afterShow)
-                afterShow.apply((inst.input ? inst.input[0] : null));
+    $.datepicker._updateDatepicker_original = $.datepicker._updateDatepicker;
+    $.datepicker._updateDatepicker = function (inst) {
+        $.datepicker._updateDatepicker_original(inst);
+
+        // add data-day attr to day cell
+        if (typeof inst.settings.beforeShowDay == 'function') {
+            inst.settings.beforeShowDay = _.wrap(inst.settings.beforeShowDay, function(func, date) {
+                var dayConfig = func(date);
+                dayConfig[1] += "' data-day='" + date.getDate();
+                return dayConfig;
+            });
         }
-    });
+
+        // after show extension
+        var afterShow = this._get(inst, 'afterShow');
+        if (afterShow) {
+            afterShow.apply((inst.input ? inst.input[0] : null));
+        }
+
+    };
 
     $.datepicker.regional['ru-RU'] = {clearText: 'Удалить', clearStatus: '',
         closeText: 'Закрыть', closeStatus: 'Закрыть без изменений',
@@ -1109,8 +1137,11 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
          * @param $f DOM element like context, usually it's <form/> or <div/>
          * @param c list of all form controls
          */
-        function draw(name, $f, c) {
+        function draw(name, $f, c, ti) {
+
             controls = c || {};
+            config.tabIndex = ti || 0;
+
             $c = hlf.getContainer($f, 'noDates', name);
             $c.html(config.tplInput(config));
             $chw = hlf.getEl($c, 'noDates-input-wrap');
@@ -1135,6 +1166,11 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 $chw.removeClass('hlf-state--focus');
             });
 
+            return {
+                getParams: getParams,
+                getConfig: getConfig
+            };
+
         }
 
         /**
@@ -1145,11 +1181,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             return config;
         }
 
-        return {
-            draw: draw,
-            getParams: getParams,
-            getConfig: getConfig
-        };
+        return draw;
 
     };
 })(jQuery, _, hlf);
@@ -1244,13 +1276,16 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         }
 
         /**
-         * Draws control in DOM
          * @param name string [hlf-name] container param
          * @param $f DOM element like context, usually it's <form/> or <div/>
          * @param c list of all form controls
+         * @param ti tabIndex value
          */
-        function draw(name, $f, c) {
+        function draw(name, $f, c, ti) {
+
             controls = c || {};
+            config.tabIndex = ti || 0;
+
             $doc = $(document);
             $c = hlf.getContainer($f, 'guests', name);
             $c.html(config.tplContainer(config));
@@ -1340,6 +1375,12 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 return false;
             });
 
+            return {
+                getParams: getParams,
+                getConfig: getConfig,
+                validate: validate
+            };
+
         }
 
         function drawChild(key) {
@@ -1422,12 +1463,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             return config;
         }
 
-        return {
-            draw: draw,
-            getParams: getParams,
-            getConfig: getConfig,
-            validate: validate
-        };
+        return draw;
 
     };
 })(jQuery, _, hlf);
@@ -1446,8 +1482,11 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             tplButton: hlf.getTpl('submit.button')
         });
 
-        function draw(name, $f, c) {
+        function draw(name, $f, c, ti) {
+
             controls = c || {};
+            config.tabIndex = ti || 0;
+
             $c = hlf.getContainer($f, 'submit', name);
             $c.html(config.tplButton(config));
             $b = hlf.getEl($c, 'button');
@@ -1456,16 +1495,17 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 hlf.goal(config.goalClick);
             });
 
+            return {
+                getConfig: getConfig
+            };
+
         }
 
         function getConfig() {
             return config;
         }
 
-        return {
-            draw: draw,
-            getConfig: getConfig
-        };
+        return draw;
 
     };
 

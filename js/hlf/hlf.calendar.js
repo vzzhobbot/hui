@@ -96,19 +96,22 @@
             }
         }
 
-        function draw(name, $f, c) {
+        function draw(name, $f, c, ti) {
+
             controls = c || {};
+            config.tabIndex = ti || 0;
+
             $c = hlf.getContainer($f, 'calendar', name);
             $c.html(config.tplInput(config));
+
             $iw = hlf.getEl($c, 'input-wrap');
             $i = hlf.getEl($c, 'input');
             $h = hlf.getEl($c, 'hint');
 
+            // create ui control
             $i.datepicker({
                 minDate: config.min,
                 numberOfMonths: config.months,
-                //showOn: 'both', // todo
-                //buttonText: '',
                 onSelect: function(date, e) {
                     relationAdjust();
                     relationAutoSet();
@@ -142,12 +145,14 @@
                     isAutoShown = false;
                 }
             });
+
             // maybe set a date?
             if(_.isDate(config.value)) {
                 // correct date by timezone offset
                 config.value.setTime(config.value.getTime() + config.value.getTimezoneOffset() * 60 * 1000);
                 $i.datepicker('setDate', config.value);
             }
+
             // customize datepicker with locale
             if(config.locale) {
                 $i.datepicker('option', $.datepicker.regional[config.locale]);
@@ -165,6 +170,24 @@
             $h.on('click', function() {
                 $iw.removeClass('hlf-state--error');
             });
+
+            return {
+                disable: disable,
+                enable: enable,
+                refresh: refresh,
+                show: show,
+                hide: hide,
+                getStamp: getStamp,
+                getDate: getDate,
+                setDate: setDate,
+                getParams: getParams,
+                getConfig: getConfig,
+                setDetails: setDetails,
+                getDetails: getDetails,
+                resetDetails: resetDetails,
+                specify: specify,
+                validate: validate
+            };
 
         }
 
@@ -227,10 +250,11 @@
 
         /**
          * Process each date average price & calculate day details
+         * todo fix it strange logic
          * @param data
          * @param formatter function
          */
-        function specify(data, formatter) { // todo strange logic
+        function specify(data, formatter) {
             if(!_.size(data))
                 return false;
             var count = 0,
@@ -310,56 +334,45 @@
          * @returns {*[]}
          */
         function getDayCfg(date) {
-            var month = (date.getMonth() + 1),
-                day = date.getDate(),
-                dateStr =
-                    date.getFullYear() + '-' +
-                        (month < 10 ? '0' + month : month) + '-' +
-                        (day < 10 ? '0' + day : day),
+            var dateStr = $.datepicker.formatDate('yy-mm-dd', date),
                 cfg = [true, '', ''];
+
+            // fill cfg with date details
             if(!_.isUndefined(details.dates) && details.dates[dateStr]) {
-                cfg = [
-                    true, // something :)
-                    'ui-datepicker-dayType ui-datepicker-dayType--' + details.dates[dateStr].rate, // cell class
-                    details.formatter(details.dates[dateStr].value)
-                ];
+                cfg[1] += 'ui-datepicker-dayType ui-datepicker-dayType--' + details.dates[dateStr].rate; // cell class
+                cfg[2] = details.formatter(details.dates[dateStr].value);
             }
+
             return cfg;
         }
 
-        return {
-            disable: disable,
-            enable: enable,
-            draw: draw,
-            refresh: refresh,
-            show: show,
-            hide: hide,
-            getStamp: getStamp,
-            getDate: getDate,
-            setDate: setDate,
-            getParams: getParams,
-            getConfig: getConfig,
-            setDetails: setDetails,
-            getDetails: getDetails,
-            resetDetails: resetDetails,
-            specify: specify,
-            validate: validate
-        };
+        return draw;
 
     };
 
     /**
      * Extension for jQuery.ui.datepicker
      */
-    $(function () {
-        $.datepicker._updateDatepicker_original = $.datepicker._updateDatepicker;
-        $.datepicker._updateDatepicker = function (inst) {
-            $.datepicker._updateDatepicker_original(inst);
-            var afterShow = this._get(inst, 'afterShow');
-            if (afterShow)
-                afterShow.apply((inst.input ? inst.input[0] : null));
+    $.datepicker._updateDatepicker_original = $.datepicker._updateDatepicker;
+    $.datepicker._updateDatepicker = function (inst) {
+        $.datepicker._updateDatepicker_original(inst);
+
+        // add data-day attr to day cell
+        if (typeof inst.settings.beforeShowDay == 'function') {
+            inst.settings.beforeShowDay = _.wrap(inst.settings.beforeShowDay, function(func, date) {
+                var dayConfig = func(date);
+                dayConfig[1] += "' data-day='" + date.getDate();
+                return dayConfig;
+            });
         }
-    });
+
+        // after show extension
+        var afterShow = this._get(inst, 'afterShow');
+        if (afterShow) {
+            afterShow.apply((inst.input ? inst.input[0] : null));
+        }
+
+    };
 
     $.datepicker.regional['ru-RU'] = {clearText: 'Удалить', clearStatus: '',
         closeText: 'Закрыть', closeStatus: 'Закрыть без изменений',

@@ -1,35 +1,35 @@
 ;(function ($, _, hlf) {
     'use strict';
 
-    hlf.form = function (n, controls, params, goalSubmit) {
+    /**
+     * Form constructor
+     *
+     * @param id form uid hlf-form="maForm"
+     * @param cs control constructors list
+     * @param params additional url params
+     * @param goalSubmit goal submit config
+     * @returns {{controls: {}, param: Function}}
+     */
+    hlf.form = function (id, cs, params, goalSubmit) {
 
-        /**
-         * set/get for params
-         *
-         * @param name
-         * @param value
-         * @returns {*}
-         */
-        function param(name, value) {
-            if(!value) {
-                return params[name];
-            }
-            params[name] = value;
-        }
-
-        var $f = $('[hlf-form="' + n +'"]'),
+        var $f = $('[hlf-form="' + id +'"]'),
             uid = _.uniqueId(),
-            tabIndex = 1;
+            tabIndex = 1,
+            controls = {};
 
-        _.each(controls, function(control, name) {
+        // draw each control
+        _.each(cs, function(c, n) {
+            controls[n] = c(n, $f, controls, uid + (tabIndex++) + '');
+        });
+
+        // wrap config functions to use controls obj
+        _.each(controls, function(control) {
             var config = control.getConfig();
             _.each(config, function(value, key) {
                 if(_.isFunction(value)) {
                     config[key] = _.partialRight(value, controls);
                 }
             });
-            config.tabIndex = (uid + '') + tabIndex++;
-            control.draw(name, $f, controls);
         });
 
         $f.on('submit', function() {
@@ -41,7 +41,6 @@
                 return result;
             });
             if(result) {
-
                 var p =
                     // collect controls data
                     _.map(controls, function(i) {
@@ -68,7 +67,20 @@
 
         return {
             controls: controls,
-            param: param
+
+            /**
+             * set/get for params
+             *
+             * @param name
+             * @param value
+             * @returns {*}
+             */
+            param: function (name, value) {
+                if(!value) {
+                    return params[name];
+                }
+                params[name] = value;
+            }
         };
 
     }

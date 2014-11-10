@@ -13,8 +13,11 @@
             tplButton: hlf.getTpl('submit.button')
         });
 
-        function draw(name, $f, c) {
+        function draw(name, $f, c, ti) {
+
             controls = c || {};
+            config.tabIndex = ti || 0;
+
             $c = hlf.getContainer($f, 'submit', name);
             $c.html(config.tplButton(config));
             $b = hlf.getEl($c, 'button');
@@ -23,16 +26,17 @@
                 hlf.goal(config.goalClick);
             });
 
+            return {
+                getConfig: getConfig
+            };
+
         }
 
         function getConfig() {
             return config;
         }
 
-        return {
-            draw: draw,
-            getConfig: getConfig
-        };
+        return draw;
 
     };
 

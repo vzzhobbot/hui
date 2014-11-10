@@ -159,13 +159,15 @@
             }
         }
 
-        function draw(name, $f, c) {
+        function draw(name, $f, c, ti) {
 
             if(config.id) {
                 avgPricesRequest(config.id);
             }
 
             controls = c || {};
+            config.tabIndex = ti || 0;
+
             $c = hlf.getContainer($f, 'ac', name);
             $c.html(config.tplInput(config));
             $iw = hlf.getEl($c, 'input-wrap');
@@ -241,6 +243,13 @@
 
             }
 
+            return {
+                select: select,
+                getParams: getParams,
+                getConfig: getConfig,
+                validate: validate
+            };
+
         }
 
         function getConfig() {
@@ -256,13 +265,7 @@
             return false;
         }
 
-        return {
-            draw: draw,
-            select: select,
-            getParams: getParams,
-            getConfig: getConfig,
-            validate: validate
-        };
+        return draw;
 
     };
 

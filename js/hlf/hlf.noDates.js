@@ -35,8 +35,11 @@
          * @param $f DOM element like context, usually it's <form/> or <div/>
          * @param c list of all form controls
          */
-        function draw(name, $f, c) {
+        function draw(name, $f, c, ti) {
+
             controls = c || {};
+            config.tabIndex = ti || 0;
+
             $c = hlf.getContainer($f, 'noDates', name);
             $c.html(config.tplInput(config));
             $chw = hlf.getEl($c, 'noDates-input-wrap');
@@ -61,6 +64,11 @@
                 $chw.removeClass('hlf-state--focus');
             });
 
+            return {
+                getParams: getParams,
+                getConfig: getConfig
+            };
+
         }
 
         /**
@@ -71,11 +79,7 @@
             return config;
         }
 
-        return {
-            draw: draw,
-            getParams: getParams,
-            getConfig: getConfig
-        };
+        return draw;
 
     };
 })(jQuery, _, hlf);

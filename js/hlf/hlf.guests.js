@@ -89,13 +89,16 @@
         }
 
         /**
-         * Draws control in DOM
          * @param name string [hlf-name] container param
          * @param $f DOM element like context, usually it's <form/> or <div/>
          * @param c list of all form controls
+         * @param ti tabIndex value
          */
-        function draw(name, $f, c) {
+        function draw(name, $f, c, ti) {
+
             controls = c || {};
+            config.tabIndex = ti || 0;
+
             $doc = $(document);
             $c = hlf.getContainer($f, 'guests', name);
             $c.html(config.tplContainer(config));
@@ -185,6 +188,12 @@
                 return false;
             });
 
+            return {
+                getParams: getParams,
+                getConfig: getConfig,
+                validate: validate
+            };
+
         }
 
         function drawChild(key) {
@@ -267,12 +276,7 @@
             return config;
         }
 
-        return {
-            draw: draw,
-            getParams: getParams,
-            getConfig: getConfig,
-            validate: validate
-        };
+        return draw;
 
     };
 })(jQuery, _, hlf);
