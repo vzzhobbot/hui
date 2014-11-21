@@ -14,8 +14,10 @@
                                                * that means we need to mark this calendar with uid
                                                * to check uid in refresh function */
             details = {}, // day details
-            dateIn = null, // if you use relation calendar here is inferior date value
-            dateOut = null,// ... and here superior date value
+            range = {
+                'in': null, // if you use relation calendar here is inferior date value
+                'out': null // ... and here superior date value
+            },
             isAutoShown = false; // it means calendar been shown automatically (not by user)
 
         config = _.defaults(config || {}, {
@@ -244,54 +246,35 @@
             }
 
             // fill cfg with range details
-            // todo fix to complicated logic
-            var rel = controls[config.relationCalendar];
-            if(rel) {
-                // choose dateIn & dateOut
-                var dateIn = getDate(),
-                    dateOut = rel.getDate();
-                if(!config.relationSuperior) {
-                    var tmp = dateIn;
-                    dateIn = dateOut;
-                    dateOut = tmp;
-                }
+            if(controls[config.relationCalendar]) {
                 // in range
-                cfg[1] += dateIn && dateOut && (dateIn.getTime() <= date.getTime() && date.getTime() <= dateOut.getTime()) ?
+                cfg[1] += range.in && range.out && (range.in.getTime() <= date.getTime() && date.getTime() <= range.out.getTime()) ?
                     ' ui-datepicker-dayRange' :
                     '';
                 // it is in or out date?
-                cfg[1] += dateIn && dateIn.getTime() == date.getTime() ? ' ui-datepicker-dayRange-in' : '';
-                cfg[1] += dateOut && dateOut.getTime() == date.getTime() ? ' ui-datepicker-dayRange-out' : '';
+                cfg[1] += range.in && range.in.getTime() == date.getTime() ? ' ui-datepicker-dayRange-in' : '';
+                cfg[1] += range.out && range.out.getTime() == date.getTime() ? ' ui-datepicker-dayRange-out' : '';
             }
 
             return cfg;
         }
 
-        // todo fix too complicated logic
-        function dateHover() {
-            var $cell = $(this),
-                date = new Date($cell.data('year') + '-' + ($cell.data('month') + 1) + '-' + $cell.data('day')),
-                rel = controls[config.relationCalendar],
-                clss = '';
-            if(rel) {
-                // todo there is no logic!!!!!
-                // choose dateIn & dateOut
-                var dateIn = getDate(),
-                    dateOut = rel.getDate();
-                if(!config.relationSuperior) {
-                    var tmp = dateIn;
-                    dateIn = dateOut;
-                    dateOut = tmp;
+        function dateHover(e, i) {
+            var $hover = $(this),
+                hoverDate = new Date($hover.data('year') + '-' + ($hover.data('month') + 1) + '-' + $hover.data('day') + ' 00:00:00'),
+                type = config.relationSuperior ? 'in' : 'out';
+
+            $hover.addClass('ui-datepicker-dayRange-hover--' + type);
+
+            $('[data-handler=selectDay]', i.dpDiv).each(function() {
+                var $cell = $(this),
+                    cellDate = new Date($cell.data('year') + '-' + ($cell.data('month') + 1) + '-' + $cell.data('day') + ' 00:00:00');
+                if(type == 'in' ?
+                    cellDate.getTime() >= hoverDate.getTime() && cellDate.getTime() <= range.out.getTime() :
+                    cellDate.getTime() <= hoverDate.getTime() && cellDate.getTime() >= range.in.getTime()) {
+                    $cell.addClass('ui-datepicker-dayRange-hover');
                 }
-                // in range
-                clss += dateIn && dateOut && (dateIn.getTime() <= date.getTime() && date.getTime() <= dateOut.getTime()) ?
-                    ' ui-datepicker-dayRange--hover' :
-                    '';
-                // it is in or out date?
-                clss += dateIn && dateIn.getTime() == date.getTime() ? ' ui-datepicker-dayRange-in--hover' : '';
-                clss += dateOut && dateOut.getTime() == date.getTime() ? ' ui-datepicker-dayRange-out--hover' : '';
-            }
-            $cell.addClass(clss);
+            });
         }
 
         function getParams() {
@@ -303,6 +286,18 @@
                 return config.name + '=' + $.datepicker.formatDate(config.format, date);
             }
             return null;
+        }
+
+        function updateRange() {
+            if(controls[config.relationCalendar]) {
+                range.in = getDate();
+                range.out = controls[config.relationCalendar].getDate();
+                if(!config.relationSuperior) {
+                    var tmp = range.in;
+                    range.in = range.out;
+                    range.out = tmp;
+                }
+            }
         }
 
         /**
@@ -340,6 +335,7 @@
                 },
                 beforeShow: function(e, i) {
                     i.dpDiv.attr('__cheat', uid);
+                    updateRange();
                 },
                 afterShow: function(i) {
                     if(config.head) {
@@ -355,7 +351,16 @@
                             })
                         );
                     }
-                    $('[data-handler=selectDay]', i.dpDiv).on('mouseenter', dateHover);
+                    if(controls[config.relationCalendar]) {
+                        $('[data-handler=selectDay]', i.dpDiv).on('mouseenter', _.partialRight(dateHover, i));
+                        $('[data-handler=selectDay]', i.dpDiv).on('mouseleave', _.partialRight(function(e, i) {
+                            $('[data-handler=selectDay]', i.dpDiv).each(function() {
+                                $(this).removeClass('ui-datepicker-dayRange-hover');
+                                $(this).removeClass('ui-datepicker-dayRange-hover--in');
+                                $(this).removeClass('ui-datepicker-dayRange-hover--out');
+                            });
+                        }, i));
+                    }
                 },
                 onClose: function(date, i) {
                     $('[data-handler=selectDay]', i.dpDiv).off('mouseenter');
