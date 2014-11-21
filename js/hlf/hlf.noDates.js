@@ -5,6 +5,7 @@
         var $c = null,
             $chw = null,
             $ch = null,
+
             controls = {};
 
         config = _.defaults(config || {}, {
@@ -35,13 +36,14 @@
          * @param $f DOM element like context, usually it's <form/> or <div/>
          * @param c list of all form controls
          */
-        function draw(name, $f, c, ti) {
+        return function (name, $f, c, ti) {
 
             controls = c || {};
             config.tabIndex = ti || 0;
 
             $c = hlf.getContainer($f, 'noDates', name);
             $c.html(config.tplInput(config));
+
             $chw = hlf.getEl($c, 'noDates-input-wrap');
             $ch = hlf.getEl($c, 'noDates-input');
 
@@ -50,7 +52,7 @@
                     e.target.checked ? controls[name].disable() : controls[name].enable();
                 });
                 config.onChange(e);
-                hlf.goal(config.goalChange, {
+                hlf.goal(config.goalChange, { // reach change goal
                     checked: e.target.checked
                 });
                 e.target.checked ? config.onOn(e) : config.onOff(e);
@@ -65,21 +67,11 @@
             });
 
             return {
-                getParams: getParams,
-                getConfig: getConfig
+                config: config,
+                getParams: getParams
             };
 
-        }
-
-        /**
-         * Returns control config object
-         * @returns {*}
-         */
-        function getConfig() {
-            return config;
-        }
-
-        return draw;
+        };
 
     };
 })(jQuery, _, hlf);

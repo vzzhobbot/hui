@@ -7,48 +7,47 @@
             $iw = null, // input wrap
             $i = null, // input
             $h = null, // hint
+
             controls = {},
-            uid = _.uniqueId('hlf.calendar'); /* Unique id for "refresh" cheating.
+            uid = _.uniqueId('hlf.calendar'), /* Unique id for "refresh" cheating.
                                                * $i.datepicker('widget') returns any opened datepicker,
                                                * that means we need to mark this calendar with uid
                                                * to check uid in refresh function */
-        var details = {},
-            isAutoShown = false;
+            details = {}, // day details
+            dateIn = null, // if you use relation calendar here is inferior date value
+            dateOut = null,// ... and here superior date value
+            isAutoShown = false; // it means calendar been shown automatically (not by user)
 
         config = _.defaults(config || {}, {
-            goalSelectDate: {},
+
             required: false,
-            placeholder: 'Choose date...',
-            name: 'date', // getParams param name
-            value: null, // Date()
-            format: 'yy-mm-dd', // getParams() format
+            name: 'date', // getParams() param name
+            value: null, // default date Date()
+            format: 'yy-mm-dd', // getParams() param value format
             min: 0, // min selectable date (in days from today)
             months: 2, // num of months visible in datepicker
-            hintEmpty: 'empty-panica!', // hint text if required calendar field is empty
-            hintPeriod: 'period-panica!', // todo hint text if relation calendar date >30 days
+            locale: 'en-US',
+
+            placeholder: 'Choose date...',
+            hintEmpty: 'Its required field', // hint text if required calendar field is empty
             head: null, // datepicker head text
             legend: 'Days colored by average price for the night',
+            // todo hint text if relation calendar date >30 days
+            // hintPeriod: 'period-panica!',
+
+            goalSelectDate: {}, // goal on select date
             onSelect: function() {},
-            locale: 'en-US',
+
             relationCalendar: null, // name of control
             relationSuperior: true, // 1 - superior, 0 - inferior
             relationAutoSet: false,
             relationAutoShow: false,
+
             tplInput: hlf.getTpl('calendar.input'),
             tplHead: hlf.getTpl('calendar.head'),
             tplLegend: hlf.getTpl('calendar.legend')
-        });
 
-        function getParams() {
-            if($i.datepicker('option', 'disabled')) {
-                return null;
-            }
-            var date = getDate();
-            if(date) {
-                return config.name + '=' + $.datepicker.formatDate(config.format, date);
-            }
-            return null;
-        }
+        });
 
         function disable() {
             $i.datepicker('option', 'disabled', true);
@@ -59,6 +58,24 @@
         function enable() {
             $i.datepicker('option', 'disabled', false);
             $iw.removeClass('hlf-state--disabled');
+        }
+
+        function show(v) {
+            isAutoShown = !!v;
+            setTimeout(function(){ // jquery.ui.datepicker show cheat
+                $i.datepicker('show');
+            }, 16);
+        }
+
+        function hide() {
+            $i.datepicker('hide');
+        }
+
+        function refresh() {
+            var $widget = $i.datepicker('widget');
+            if($widget.is(':visible') && $widget.attr('__cheat') == uid) {
+                $i.datepicker('refresh');
+            }
         }
 
         function relationAdjust() {
@@ -96,124 +113,6 @@
             }
         }
 
-        function draw(name, $f, c, ti) {
-
-            controls = c || {};
-            config.tabIndex = ti || 0;
-
-            $c = hlf.getContainer($f, 'calendar', name);
-            $c.html(config.tplInput(config));
-
-            $iw = hlf.getEl($c, 'input-wrap');
-            $i = hlf.getEl($c, 'input');
-            $h = hlf.getEl($c, 'hint');
-
-            // create ui control
-            $i.datepicker({
-                minDate: config.min,
-                numberOfMonths: config.months,
-                onSelect: function(date, e) {
-                    relationAdjust();
-                    relationAutoSet();
-                    relationAutoShow();
-                    config.onSelect(date, $.datepicker.formatDate(config.format, getDate()), e);
-                    hlf.goal(config.goalSelectDate);
-                    $iw.removeClass('hlf-state--error');
-                },
-                beforeShowDay: function(date) {
-                    return getDayCfg(date);
-                },
-                beforeShow: function(e, i) {
-                    i.dpDiv.attr('__cheat', uid);
-                },
-                afterShow: function() {
-                    var $datepicker = $('#ui-datepicker-div');
-                    if(config.head) {
-                        $datepicker.prepend(config.tplHead({
-                            head: config.head
-                        }));
-                    }
-                    if(_.isArray(details.points) && details.points.length) {
-                        $('.ui-datepicker-row-break').html(
-                            config.tplLegend({
-                                'legend': config.legend,
-                                'points': _.map(details.points, details.formatter)
-                            })
-                        );
-                    }
-                    /*$('[data-handler=selectDay]', $datepicker).mouseenter(function() {
-                        dateHover(this);
-                    });*/
-                },
-                onClose: function() {
-                    //$('#ui-datepicker-div [data-handler=selectDay]').off('mouseenter');
-                    isAutoShown = false;
-                }
-            });
-
-            // maybe set a date?
-            if(_.isDate(config.value)) {
-                // correct date by timezone offset
-                config.value.setTime(config.value.getTime() + config.value.getTimezoneOffset() * 60 * 1000);
-                $i.datepicker('setDate', config.value);
-            }
-
-            // customize datepicker with locale
-            if(config.locale) {
-                $i.datepicker('option', $.datepicker.regional[config.locale]);
-            }
-
-            $i.on('focus', function() {
-                $iw.addClass('hlf-state--focus');
-                $iw.removeClass('hlf-state--error');
-            });
-
-            $i.on('blur', function() {
-                $iw.removeClass('hlf-state--focus');
-            });
-
-            $h.on('click', function() {
-                $iw.removeClass('hlf-state--error');
-            });
-
-            return {
-                disable: disable,
-                enable: enable,
-                refresh: refresh,
-                show: show,
-                hide: hide,
-                getStamp: getStamp,
-                getDate: getDate,
-                setDate: setDate,
-                getParams: getParams,
-                getConfig: getConfig,
-                setDetails: setDetails,
-                getDetails: getDetails,
-                resetDetails: resetDetails,
-                specify: specify,
-                validate: validate
-            };
-
-        }
-
-        function show(v) {
-            isAutoShown = !!v;
-            setTimeout(function(){ // jquery.ui.datepicker show cheat
-                $i.datepicker('show');
-            }, 16);
-        }
-
-        function hide() {
-            $i.datepicker('hide');
-        }
-
-        function refresh() {
-            var $widget = $i.datepicker('widget');
-            if($widget.is(':visible') && $widget.attr('__cheat') == uid) {
-                $i.datepicker('refresh');
-            }
-        }
-
         function dateModify (date, modify) {
             date.setDate(date.getDate() + modify);
             return date;
@@ -238,10 +137,6 @@
         function setDate (date, modify) {
             $i.datepicker('setDate', dateModify(date, modify));
             $iw.removeClass('hlf-state--error');
-        }
-
-        function getConfig() {
-            return config;
         }
 
         function validate() {
@@ -372,7 +267,146 @@
             return cfg;
         }
 
-        return draw;
+        // todo fix too complicated logic
+        function dateHover() {
+            var $cell = $(this),
+                date = new Date($cell.data('year') + '-' + ($cell.data('month') + 1) + '-' + $cell.data('day')),
+                rel = controls[config.relationCalendar],
+                clss = '';
+            if(rel) {
+                // todo there is no logic!!!!!
+                // choose dateIn & dateOut
+                var dateIn = getDate(),
+                    dateOut = rel.getDate();
+                if(!config.relationSuperior) {
+                    var tmp = dateIn;
+                    dateIn = dateOut;
+                    dateOut = tmp;
+                }
+                // in range
+                clss += dateIn && dateOut && (dateIn.getTime() <= date.getTime() && date.getTime() <= dateOut.getTime()) ?
+                    ' ui-datepicker-dayRange--hover' :
+                    '';
+                // it is in or out date?
+                clss += dateIn && dateIn.getTime() == date.getTime() ? ' ui-datepicker-dayRange-in--hover' : '';
+                clss += dateOut && dateOut.getTime() == date.getTime() ? ' ui-datepicker-dayRange-out--hover' : '';
+            }
+            $cell.addClass(clss);
+        }
+
+        function getParams() {
+            if($i.datepicker('option', 'disabled')) {
+                return null;
+            }
+            var date = getDate();
+            if(date) {
+                return config.name + '=' + $.datepicker.formatDate(config.format, date);
+            }
+            return null;
+        }
+
+        /**
+         * Draw
+         *
+         * @param name
+         * @returns {*[]}
+         */
+        return function (name, $f, c, ti) {
+
+            controls = c || {};
+            config.tabIndex = ti || 0;
+
+            $c = hlf.getContainer($f, 'calendar', name);
+            $c.html(config.tplInput(config));
+
+            $iw = hlf.getEl($c, 'input-wrap');
+            $i = hlf.getEl($c, 'input');
+            $h = hlf.getEl($c, 'hint');
+
+            // draw ui control
+            $i.datepicker({
+                minDate: config.min,
+                numberOfMonths: config.months,
+                onSelect: function(date, e) {
+                    relationAdjust();
+                    relationAutoSet();
+                    relationAutoShow();
+                    config.onSelect(date, $.datepicker.formatDate(config.format, getDate()), e);
+                    hlf.goal(config.goalSelectDate);
+                    $iw.removeClass('hlf-state--error');
+                },
+                beforeShowDay: function(date) {
+                    return getDayCfg(date);
+                },
+                beforeShow: function(e, i) {
+                    i.dpDiv.attr('__cheat', uid);
+                },
+                afterShow: function(i) {
+                    if(config.head) {
+                        i.dpDiv.prepend(config.tplHead({
+                            head: config.head
+                        }));
+                    }
+                    if(_.isArray(details.points) && details.points.length) {
+                        $('.ui-datepicker-row-break', i.dpDiv).html(
+                            config.tplLegend({
+                                'legend': config.legend,
+                                'points': _.map(details.points, details.formatter)
+                            })
+                        );
+                    }
+                    $('[data-handler=selectDay]', i.dpDiv).on('mouseenter', dateHover);
+                },
+                onClose: function(date, i) {
+                    $('[data-handler=selectDay]', i.dpDiv).off('mouseenter');
+                    isAutoShown = false;
+                }
+            });
+
+            // maybe set a date?
+            if(_.isDate(config.value)) {
+                // correct date by timezone offset
+                config.value.setTime(config.value.getTime() + config.value.getTimezoneOffset() * 60 * 1000);
+                $i.datepicker('setDate', config.value);
+            }
+
+            // customize datepicker with locale
+            if(config.locale) {
+                $i.datepicker('option', $.datepicker.regional[config.locale]);
+            }
+
+            $i.on('focus', function() {
+                $iw.addClass('hlf-state--focus');
+                $iw.removeClass('hlf-state--error');
+            });
+
+            $i.on('blur', function() {
+                $iw.removeClass('hlf-state--focus');
+            });
+
+            $h.on('click', function() {
+                $iw.removeClass('hlf-state--error');
+            });
+
+            return {
+                config: config,
+                disable: disable,
+                enable: enable,
+                refresh: refresh,
+                show: show,
+                hide: hide,
+                getStamp: getStamp,
+                getDate: getDate,
+                setDate: setDate,
+                getParams: getParams,
+                setDetails: setDetails,
+                getDetails: getDetails,
+                resetDetails: resetDetails,
+                specify: specify,
+                validate: validate
+            };
+
+        };
 
     };
 
@@ -396,7 +430,7 @@
         // todo fix it: works bad, calls too often
         var afterShow = this._get(inst, 'afterShow');
         if (afterShow) {
-            afterShow.apply((inst.input ? inst.input[0] : null));
+            afterShow.apply(null, [inst]);
         }
 
     };

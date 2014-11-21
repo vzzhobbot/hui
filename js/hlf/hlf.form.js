@@ -24,10 +24,9 @@
 
         // wrap config functions to use controls obj
         _.each(controls, function(control) {
-            var config = control.getConfig();
-            _.each(config, function(value, key) {
+            _.each(control.config, function(value, key) {
                 if(_.isFunction(value)) {
-                    config[key] = _.partialRight(value, controls);
+                    control.config[key] = _.partialRight(value, controls);
                 }
             });
         });

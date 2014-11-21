@@ -18,23 +18,30 @@
             $chiw = [], // child input wraps
             $chi = [], // child inputs
             $chh = [], // child hints
+
             controls = {};
+
         config = _.defaults(config || {}, {
-            goalOpen: {},
+
+            adults: 2, // adults default value
             adultsMax: 4,
             adultsMin: 1,
-            adults: 2, // adults value
             children: [], // children age
             childrenMax: 3,
             childMaxAge: 17,
-            adultsTitle: 'Adults',
-            childrenTitle: 'Children',
-            childHint: 'Check da age!',
             summary: function(adults, children) {
                 return (adults + children.length);
             },
+
+            adultsTitle: 'Adults',
+            childrenTitle: 'Children',
+            childHint: 'Check da age!',
+
+            goalOpen: {},
+
             tplContainer: hlf.getTpl('guests.container'),
             tplChild: hlf.getTpl('guests.child')
+
         });
 
         /**
@@ -88,13 +95,86 @@
             $g.addClass('hlf-state--focus');
         }
 
+        function drawChild(key) {
+
+            $cl.append(config.tplChild({
+                key: key,
+                age: config.children[key],
+                hint: config.childHint
+            }));
+
+            $chc[key] = hlf.getEl($cl, 'child-container', key);
+            $chiw[key] = hlf.getEl($chc[key], 'input-wrap');
+            $chi[key] = hlf.getEl($chc[key], 'input');
+            $chh[key] = hlf.getEl($chc[key], 'hint');
+
+            $chi[key].on('focus', function() {
+                $chiw[key].addClass('hlf-state--focus');
+                $chiw[key].removeClass('hlf-state--error');
+            });
+
+            $chi[key].on('blur', function() {
+                $chiw[key].removeClass('hlf-state--focus');
+            });
+
+            $chi[key].on('keyup', function() {
+                var val = $chi[key].val().trim();
+                if(!val.length || !_.isFinite(val)) {
+                    config.children[key] = null;
+                } else {
+                    config.children[key] = parseInt(val);
+                }
+            });
+
+            $chi[key].on('keydown', function(e) {
+                $chiw[key].removeClass('hlf-state--error');
+            });
+
+            $chh[key].on('click', function() {
+                $chiw[key].removeClass('hlf-state--error');
+            });
+
+            if(config.children[key] == null) {
+                $chi[key].focus();
+            }
+
+        }
+
+        function update() {
+            $s.html(config.summary(config.adults, config.children));
+            $av.html(config.adults);
+            $cv.html(config.children.length);
+
+            config.children.length
+                ? $cl.removeClass('hlf-state--empty')
+                : $cl.addClass('hlf-state--empty');
+
+            config.children.length == config.childrenMax
+                ? $ci.addClass('hlf-state--disabled')
+                : $ci.removeClass('hlf-state--disabled');
+
+            !config.children.length
+                ? $cd.addClass('hlf-state--disabled')
+                : $cd.removeClass('hlf-state--disabled');
+
+            config.adults == config.adultsMax
+                ? $ai.addClass('hlf-state--disabled')
+                : $ai.removeClass('hlf-state--disabled');
+
+            config.adults == config.adultsMin
+                ? $ad.addClass('hlf-state--disabled')
+                : $ad.removeClass('hlf-state--disabled');
+
+        }
+
         /**
+         * Draw in DOM
          * @param name string [hlf-name] container param
          * @param $f DOM element like context, usually it's <form/> or <div/>
          * @param c list of all form controls
          * @param ti tabIndex value
          */
-        function draw(name, $f, c, ti) {
+        return function (name, $f, c, ti) {
 
             controls = c || {};
             config.tabIndex = ti || 0;
@@ -189,94 +269,12 @@
             });
 
             return {
+                config: config,
                 getParams: getParams,
-                getConfig: getConfig,
                 validate: validate
             };
 
-        }
-
-        function drawChild(key) {
-
-            $cl.append(config.tplChild({
-                key: key,
-                age: config.children[key],
-                hint: config.childHint
-            }));
-
-            $chc[key] = hlf.getEl($cl, 'child-container', key);
-            $chiw[key] = hlf.getEl($chc[key], 'input-wrap');
-            $chi[key] = hlf.getEl($chc[key], 'input');
-            $chh[key] = hlf.getEl($chc[key], 'hint');
-
-            $chi[key].on('focus', function() {
-                $chiw[key].addClass('hlf-state--focus');
-                $chiw[key].removeClass('hlf-state--error');
-            });
-
-            $chi[key].on('blur', function() {
-                $chiw[key].removeClass('hlf-state--focus');
-            });
-
-            $chi[key].on('keyup', function() {
-                var val = $chi[key].val().trim();
-                if(!val.length || !_.isFinite(val)) {
-                    config.children[key] = null;
-                } else {
-                    config.children[key] = parseInt(val);
-                }
-            });
-
-            $chi[key].on('keydown', function(e) {
-                $chiw[key].removeClass('hlf-state--error');
-            });
-
-            $chh[key].on('click', function() {
-                $chiw[key].removeClass('hlf-state--error');
-            });
-
-            if(config.children[key] == null) {
-                $chi[key].focus();
-            }
-
-        }
-
-        function update() {
-            $s.html(config.summary(config.adults, config.children));
-            $av.html(config.adults);
-            $cv.html(config.children.length);
-
-            config.children.length
-                ? $cl.removeClass('hlf-state--empty')
-                : $cl.addClass('hlf-state--empty');
-
-            config.children.length == config.childrenMax
-                ? $ci.addClass('hlf-state--disabled')
-                : $ci.removeClass('hlf-state--disabled');
-
-            !config.children.length
-                ? $cd.addClass('hlf-state--disabled')
-                : $cd.removeClass('hlf-state--disabled');
-
-            config.adults == config.adultsMax
-                ? $ai.addClass('hlf-state--disabled')
-                : $ai.removeClass('hlf-state--disabled');
-
-            config.adults == config.adultsMin
-                ? $ad.addClass('hlf-state--disabled')
-                : $ad.removeClass('hlf-state--disabled');
-
-        }
-
-        /**
-         * Returns control config object
-         * @returns {*}
-         */
-        function getConfig() {
-            return config;
-        }
-
-        return draw;
+        };
 
     };
 })(jQuery, _, hlf);

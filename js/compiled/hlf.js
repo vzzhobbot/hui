@@ -199,10 +199,9 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
         // wrap config functions to use controls obj
         _.each(controls, function(control) {
-            var config = control.getConfig();
-            _.each(config, function(value, key) {
+            _.each(control.config, function(value, key) {
                 if(_.isFunction(value)) {
-                    config[key] = _.partialRight(value, controls);
+                    control.config[key] = _.partialRight(value, controls);
                 }
             });
         });
@@ -273,44 +272,56 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $l = null, // loader
             $sc = null, // samples container
             $sl = null, // samples links
+
             controls = {},
-            goalUseInputSent = false; // flag event 'use' sent
+            goalUseInputSent = false; // flag means event 'use' sent (prevent multisent)
 
         config = _.defaults(config || {}, {
+
             url: (location.protocol == 'file:' ? 'http:' : '') + '//yasen.hotellook.com/autocomplete',
             name: 'destination', // getParams() param name in case
                                  // you select nothing in autocomplete
             text: '', // default input value
             type: '', // default type
             id: 0, // default id
-            limit: 5,
+            limit: 5, // limit for items each category
             locale: 'en-US',
-            // events
+            autoFocus: false, // auto focus if field is empty
+
+            placeholder: 'Type something....',
+            hint: 'panic!', // this control always required, its hint text
+            translateCategory: function(t) {
+                return t;
+            },
+            translateHotelsCount: function(n) {
+                return n + ' hotels';
+            },
+
             goalUseInput: {}, // {ga: 'la-la-la.bla-bla', yam: 'sdasds', as: 'something'}
             goalAcSelect: {},
             goalUseSamples: {},
-            placeholder: 'Type something....',
-            autoFocus: false, // auto focus if field is empty
-            hint: 'panic!', // this control always required, its hint text
-            onSelect: function() {},
+
+            onSelect: function() {}, // select from autocomplete
             onSelectShowCalendar: null,
-            onReset: function() {},
+            onReset: function() {}, // fires when you type something in autocomplete
+                                    // and type & id values resets
             avgPricesUrl: (location.protocol == 'file:' ? 'http:' : '') + '//search.hotellook.com/ajax/location-avg-prices.json?locationId={id}',
             avgPricesCalendars: [], // names if controls
             avgPricesFormatter: function(v) {
                 return '' + Math.round(v);
             },
-            categoryTranslate: function(t) {
-                return t;
-            },
-            hotelsCountTranslate: function(n) {
-                return n + ' hotels';
-            },
+
             samplesText: 'For example: {list}',
-            samplesList: [], // [{id: 15542, type: 'location', text: 'Paris, France', sample: 'Paris'}]
+            samplesList: [], // e.g.:
+                             // [
+                             //     {id: 15542, type: 'location', text: 'Paris, France', sample: 'Paris'},
+                             //     {id: 15298, type: 'location', text: 'Marseille, France', sample: 'Marseille'}
+                             // ]
+
             tplInput: hlf.getTpl('ac.input'),
             tplSamples: hlf.getTpl('ac.samples'),
             tplSamplesLink: hlf.getTpl('ac.samplesLink')
+
         });
 
         function avgPricesRequest (id) {
@@ -370,18 +381,18 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                     var cities = _.map(data.cities, function(item) {
                         return {
                             id: item.id,
-                            category: config.categoryTranslate('Locations'),
+                            category: config.translateCategory('Locations'),
                             type: 'location',
                             value: item.fullname,
                             text: item.city,
                             clar: (item.state ? item.state + ', ' : '') + item.country,
-                            comment: config.hotelsCountTranslate(item.hotelsCount)
+                            comment: config.translateHotelsCount(item.hotelsCount)
                         }
                     });
                     var hotels = _.map(data.hotels, function(item) {
                         return {
                             id: item.id,
-                            category: config.categoryTranslate('Hotels'),
+                            category: config.translateCategory('Hotels'),
                             type: 'hotel',
                             value: item.name + ', ' + item.city + ', ' + item.country,
                             text: item.name,
@@ -422,7 +433,16 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             }
         }
 
-        function draw(name, $f, c, ti) {
+        function validate() {
+            if(getParams()) {
+                return true;
+            }
+            $i.focus();
+            $iw.addClass('hlf-state--error');
+            return false;
+        }
+
+        return function(name, $f, c, ti) {
 
             if(config.id) {
                 avgPricesRequest(config.id);
@@ -433,6 +453,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
             $c = hlf.getContainer($f, 'ac', name);
             $c.html(config.tplInput(config));
+
             $iw = hlf.getEl($c, 'input-wrap');
             $i = hlf.getEl($c, 'input');
             $h = hlf.getEl($c, 'hint');
@@ -507,28 +528,13 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             }
 
             return {
+                config: config,
                 select: select,
                 getParams: getParams,
-                getConfig: getConfig,
                 validate: validate
             };
 
-        }
-
-        function getConfig() {
-            return config;
-        }
-
-        function validate() {
-            if(getParams()) {
-                return true;
-            }
-            $i.focus();
-            $iw.addClass('hlf-state--error');
-            return false;
-        }
-
-        return draw;
+        };
 
     };
 
@@ -581,48 +587,47 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $iw = null, // input wrap
             $i = null, // input
             $h = null, // hint
+
             controls = {},
-            uid = _.uniqueId('hlf.calendar'); /* Unique id for "refresh" cheating.
+            uid = _.uniqueId('hlf.calendar'), /* Unique id for "refresh" cheating.
                                                * $i.datepicker('widget') returns any opened datepicker,
                                                * that means we need to mark this calendar with uid
                                                * to check uid in refresh function */
-        var details = {},
-            isAutoShown = false;
+            details = {}, // day details
+            dateIn = null, // if you use relation calendar here is inferior date value
+            dateOut = null,// ... and here superior date value
+            isAutoShown = false; // it means calendar been shown automatically (not by user)
 
         config = _.defaults(config || {}, {
-            goalSelectDate: {},
+
             required: false,
-            placeholder: 'Choose date...',
-            name: 'date', // getParams param name
-            value: null, // Date()
-            format: 'yy-mm-dd', // getParams() format
+            name: 'date', // getParams() param name
+            value: null, // default date Date()
+            format: 'yy-mm-dd', // getParams() param value format
             min: 0, // min selectable date (in days from today)
             months: 2, // num of months visible in datepicker
-            hintEmpty: 'empty-panica!', // hint text if required calendar field is empty
-            hintPeriod: 'period-panica!', // todo hint text if relation calendar date >30 days
+            locale: 'en-US',
+
+            placeholder: 'Choose date...',
+            hintEmpty: 'Its required field', // hint text if required calendar field is empty
             head: null, // datepicker head text
             legend: 'Days colored by average price for the night',
+            // todo hint text if relation calendar date >30 days
+            // hintPeriod: 'period-panica!',
+
+            goalSelectDate: {}, // goal on select date
             onSelect: function() {},
-            locale: 'en-US',
+
             relationCalendar: null, // name of control
             relationSuperior: true, // 1 - superior, 0 - inferior
             relationAutoSet: false,
             relationAutoShow: false,
+
             tplInput: hlf.getTpl('calendar.input'),
             tplHead: hlf.getTpl('calendar.head'),
             tplLegend: hlf.getTpl('calendar.legend')
-        });
 
-        function getParams() {
-            if($i.datepicker('option', 'disabled')) {
-                return null;
-            }
-            var date = getDate();
-            if(date) {
-                return config.name + '=' + $.datepicker.formatDate(config.format, date);
-            }
-            return null;
-        }
+        });
 
         function disable() {
             $i.datepicker('option', 'disabled', true);
@@ -633,6 +638,24 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         function enable() {
             $i.datepicker('option', 'disabled', false);
             $iw.removeClass('hlf-state--disabled');
+        }
+
+        function show(v) {
+            isAutoShown = !!v;
+            setTimeout(function(){ // jquery.ui.datepicker show cheat
+                $i.datepicker('show');
+            }, 16);
+        }
+
+        function hide() {
+            $i.datepicker('hide');
+        }
+
+        function refresh() {
+            var $widget = $i.datepicker('widget');
+            if($widget.is(':visible') && $widget.attr('__cheat') == uid) {
+                $i.datepicker('refresh');
+            }
         }
 
         function relationAdjust() {
@@ -670,124 +693,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             }
         }
 
-        function draw(name, $f, c, ti) {
-
-            controls = c || {};
-            config.tabIndex = ti || 0;
-
-            $c = hlf.getContainer($f, 'calendar', name);
-            $c.html(config.tplInput(config));
-
-            $iw = hlf.getEl($c, 'input-wrap');
-            $i = hlf.getEl($c, 'input');
-            $h = hlf.getEl($c, 'hint');
-
-            // create ui control
-            $i.datepicker({
-                minDate: config.min,
-                numberOfMonths: config.months,
-                onSelect: function(date, e) {
-                    relationAdjust();
-                    relationAutoSet();
-                    relationAutoShow();
-                    config.onSelect(date, $.datepicker.formatDate(config.format, getDate()), e);
-                    hlf.goal(config.goalSelectDate);
-                    $iw.removeClass('hlf-state--error');
-                },
-                beforeShowDay: function(date) {
-                    return getDayCfg(date);
-                },
-                beforeShow: function(e, i) {
-                    i.dpDiv.attr('__cheat', uid);
-                },
-                afterShow: function() {
-                    var $datepicker = $('#ui-datepicker-div');
-                    if(config.head) {
-                        $datepicker.prepend(config.tplHead({
-                            head: config.head
-                        }));
-                    }
-                    if(_.isArray(details.points) && details.points.length) {
-                        $('.ui-datepicker-row-break').html(
-                            config.tplLegend({
-                                'legend': config.legend,
-                                'points': _.map(details.points, details.formatter)
-                            })
-                        );
-                    }
-                    /*$('[data-handler=selectDay]', $datepicker).mouseenter(function() {
-                        dateHover(this);
-                    });*/
-                },
-                onClose: function() {
-                    //$('#ui-datepicker-div [data-handler=selectDay]').off('mouseenter');
-                    isAutoShown = false;
-                }
-            });
-
-            // maybe set a date?
-            if(_.isDate(config.value)) {
-                // correct date by timezone offset
-                config.value.setTime(config.value.getTime() + config.value.getTimezoneOffset() * 60 * 1000);
-                $i.datepicker('setDate', config.value);
-            }
-
-            // customize datepicker with locale
-            if(config.locale) {
-                $i.datepicker('option', $.datepicker.regional[config.locale]);
-            }
-
-            $i.on('focus', function() {
-                $iw.addClass('hlf-state--focus');
-                $iw.removeClass('hlf-state--error');
-            });
-
-            $i.on('blur', function() {
-                $iw.removeClass('hlf-state--focus');
-            });
-
-            $h.on('click', function() {
-                $iw.removeClass('hlf-state--error');
-            });
-
-            return {
-                disable: disable,
-                enable: enable,
-                refresh: refresh,
-                show: show,
-                hide: hide,
-                getStamp: getStamp,
-                getDate: getDate,
-                setDate: setDate,
-                getParams: getParams,
-                getConfig: getConfig,
-                setDetails: setDetails,
-                getDetails: getDetails,
-                resetDetails: resetDetails,
-                specify: specify,
-                validate: validate
-            };
-
-        }
-
-        function show(v) {
-            isAutoShown = !!v;
-            setTimeout(function(){ // jquery.ui.datepicker show cheat
-                $i.datepicker('show');
-            }, 16);
-        }
-
-        function hide() {
-            $i.datepicker('hide');
-        }
-
-        function refresh() {
-            var $widget = $i.datepicker('widget');
-            if($widget.is(':visible') && $widget.attr('__cheat') == uid) {
-                $i.datepicker('refresh');
-            }
-        }
-
         function dateModify (date, modify) {
             date.setDate(date.getDate() + modify);
             return date;
@@ -812,10 +717,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         function setDate (date, modify) {
             $i.datepicker('setDate', dateModify(date, modify));
             $iw.removeClass('hlf-state--error');
-        }
-
-        function getConfig() {
-            return config;
         }
 
         function validate() {
@@ -946,7 +847,146 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             return cfg;
         }
 
-        return draw;
+        // todo fix too complicated logic
+        function dateHover() {
+            var $cell = $(this),
+                date = new Date($cell.data('year') + '-' + ($cell.data('month') + 1) + '-' + $cell.data('day')),
+                rel = controls[config.relationCalendar],
+                clss = '';
+            if(rel) {
+                // todo there is no logic!!!!!
+                // choose dateIn & dateOut
+                var dateIn = getDate(),
+                    dateOut = rel.getDate();
+                if(!config.relationSuperior) {
+                    var tmp = dateIn;
+                    dateIn = dateOut;
+                    dateOut = tmp;
+                }
+                // in range
+                clss += dateIn && dateOut && (dateIn.getTime() <= date.getTime() && date.getTime() <= dateOut.getTime()) ?
+                    ' ui-datepicker-dayRange--hover' :
+                    '';
+                // it is in or out date?
+                clss += dateIn && dateIn.getTime() == date.getTime() ? ' ui-datepicker-dayRange-in--hover' : '';
+                clss += dateOut && dateOut.getTime() == date.getTime() ? ' ui-datepicker-dayRange-out--hover' : '';
+            }
+            $cell.addClass(clss);
+        }
+
+        function getParams() {
+            if($i.datepicker('option', 'disabled')) {
+                return null;
+            }
+            var date = getDate();
+            if(date) {
+                return config.name + '=' + $.datepicker.formatDate(config.format, date);
+            }
+            return null;
+        }
+
+        /**
+         * Draw
+         *
+         * @param name
+         * @returns {*[]}
+         */
+        return function (name, $f, c, ti) {
+
+            controls = c || {};
+            config.tabIndex = ti || 0;
+
+            $c = hlf.getContainer($f, 'calendar', name);
+            $c.html(config.tplInput(config));
+
+            $iw = hlf.getEl($c, 'input-wrap');
+            $i = hlf.getEl($c, 'input');
+            $h = hlf.getEl($c, 'hint');
+
+            // draw ui control
+            $i.datepicker({
+                minDate: config.min,
+                numberOfMonths: config.months,
+                onSelect: function(date, e) {
+                    relationAdjust();
+                    relationAutoSet();
+                    relationAutoShow();
+                    config.onSelect(date, $.datepicker.formatDate(config.format, getDate()), e);
+                    hlf.goal(config.goalSelectDate);
+                    $iw.removeClass('hlf-state--error');
+                },
+                beforeShowDay: function(date) {
+                    return getDayCfg(date);
+                },
+                beforeShow: function(e, i) {
+                    i.dpDiv.attr('__cheat', uid);
+                },
+                afterShow: function(i) {
+                    if(config.head) {
+                        i.dpDiv.prepend(config.tplHead({
+                            head: config.head
+                        }));
+                    }
+                    if(_.isArray(details.points) && details.points.length) {
+                        $('.ui-datepicker-row-break', i.dpDiv).html(
+                            config.tplLegend({
+                                'legend': config.legend,
+                                'points': _.map(details.points, details.formatter)
+                            })
+                        );
+                    }
+                    $('[data-handler=selectDay]', i.dpDiv).on('mouseenter', dateHover);
+                },
+                onClose: function(date, i) {
+                    $('[data-handler=selectDay]', i.dpDiv).off('mouseenter');
+                    isAutoShown = false;
+                }
+            });
+
+            // maybe set a date?
+            if(_.isDate(config.value)) {
+                // correct date by timezone offset
+                config.value.setTime(config.value.getTime() + config.value.getTimezoneOffset() * 60 * 1000);
+                $i.datepicker('setDate', config.value);
+            }
+
+            // customize datepicker with locale
+            if(config.locale) {
+                $i.datepicker('option', $.datepicker.regional[config.locale]);
+            }
+
+            $i.on('focus', function() {
+                $iw.addClass('hlf-state--focus');
+                $iw.removeClass('hlf-state--error');
+            });
+
+            $i.on('blur', function() {
+                $iw.removeClass('hlf-state--focus');
+            });
+
+            $h.on('click', function() {
+                $iw.removeClass('hlf-state--error');
+            });
+
+            return {
+                config: config,
+                disable: disable,
+                enable: enable,
+                refresh: refresh,
+                show: show,
+                hide: hide,
+                getStamp: getStamp,
+                getDate: getDate,
+                setDate: setDate,
+                getParams: getParams,
+                setDetails: setDetails,
+                getDetails: getDetails,
+                resetDetails: resetDetails,
+                specify: specify,
+                validate: validate
+            };
+
+        };
 
     };
 
@@ -970,7 +1010,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         // todo fix it: works bad, calls too often
         var afterShow = this._get(inst, 'afterShow');
         if (afterShow) {
-            afterShow.apply((inst.input ? inst.input[0] : null));
+            afterShow.apply(null, [inst]);
         }
 
     };
@@ -1134,6 +1174,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         var $c = null,
             $chw = null,
             $ch = null,
+
             controls = {};
 
         config = _.defaults(config || {}, {
@@ -1164,13 +1205,14 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
          * @param $f DOM element like context, usually it's <form/> or <div/>
          * @param c list of all form controls
          */
-        function draw(name, $f, c, ti) {
+        return function (name, $f, c, ti) {
 
             controls = c || {};
             config.tabIndex = ti || 0;
 
             $c = hlf.getContainer($f, 'noDates', name);
             $c.html(config.tplInput(config));
+
             $chw = hlf.getEl($c, 'noDates-input-wrap');
             $ch = hlf.getEl($c, 'noDates-input');
 
@@ -1179,7 +1221,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                     e.target.checked ? controls[name].disable() : controls[name].enable();
                 });
                 config.onChange(e);
-                hlf.goal(config.goalChange, {
+                hlf.goal(config.goalChange, { // reach change goal
                     checked: e.target.checked
                 });
                 e.target.checked ? config.onOn(e) : config.onOff(e);
@@ -1194,21 +1236,11 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             });
 
             return {
-                getParams: getParams,
-                getConfig: getConfig
+                config: config,
+                getParams: getParams
             };
 
-        }
-
-        /**
-         * Returns control config object
-         * @returns {*}
-         */
-        function getConfig() {
-            return config;
-        }
-
-        return draw;
+        };
 
     };
 })(jQuery, _, hlf);
@@ -1232,23 +1264,30 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $chiw = [], // child input wraps
             $chi = [], // child inputs
             $chh = [], // child hints
+
             controls = {};
+
         config = _.defaults(config || {}, {
-            goalOpen: {},
+
+            adults: 2, // adults default value
             adultsMax: 4,
             adultsMin: 1,
-            adults: 2, // adults value
             children: [], // children age
             childrenMax: 3,
             childMaxAge: 17,
-            adultsTitle: 'Adults',
-            childrenTitle: 'Children',
-            childHint: 'Check da age!',
             summary: function(adults, children) {
                 return (adults + children.length);
             },
+
+            adultsTitle: 'Adults',
+            childrenTitle: 'Children',
+            childHint: 'Check da age!',
+
+            goalOpen: {},
+
             tplContainer: hlf.getTpl('guests.container'),
             tplChild: hlf.getTpl('guests.child')
+
         });
 
         /**
@@ -1302,13 +1341,86 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $g.addClass('hlf-state--focus');
         }
 
+        function drawChild(key) {
+
+            $cl.append(config.tplChild({
+                key: key,
+                age: config.children[key],
+                hint: config.childHint
+            }));
+
+            $chc[key] = hlf.getEl($cl, 'child-container', key);
+            $chiw[key] = hlf.getEl($chc[key], 'input-wrap');
+            $chi[key] = hlf.getEl($chc[key], 'input');
+            $chh[key] = hlf.getEl($chc[key], 'hint');
+
+            $chi[key].on('focus', function() {
+                $chiw[key].addClass('hlf-state--focus');
+                $chiw[key].removeClass('hlf-state--error');
+            });
+
+            $chi[key].on('blur', function() {
+                $chiw[key].removeClass('hlf-state--focus');
+            });
+
+            $chi[key].on('keyup', function() {
+                var val = $chi[key].val().trim();
+                if(!val.length || !_.isFinite(val)) {
+                    config.children[key] = null;
+                } else {
+                    config.children[key] = parseInt(val);
+                }
+            });
+
+            $chi[key].on('keydown', function(e) {
+                $chiw[key].removeClass('hlf-state--error');
+            });
+
+            $chh[key].on('click', function() {
+                $chiw[key].removeClass('hlf-state--error');
+            });
+
+            if(config.children[key] == null) {
+                $chi[key].focus();
+            }
+
+        }
+
+        function update() {
+            $s.html(config.summary(config.adults, config.children));
+            $av.html(config.adults);
+            $cv.html(config.children.length);
+
+            config.children.length
+                ? $cl.removeClass('hlf-state--empty')
+                : $cl.addClass('hlf-state--empty');
+
+            config.children.length == config.childrenMax
+                ? $ci.addClass('hlf-state--disabled')
+                : $ci.removeClass('hlf-state--disabled');
+
+            !config.children.length
+                ? $cd.addClass('hlf-state--disabled')
+                : $cd.removeClass('hlf-state--disabled');
+
+            config.adults == config.adultsMax
+                ? $ai.addClass('hlf-state--disabled')
+                : $ai.removeClass('hlf-state--disabled');
+
+            config.adults == config.adultsMin
+                ? $ad.addClass('hlf-state--disabled')
+                : $ad.removeClass('hlf-state--disabled');
+
+        }
+
         /**
+         * Draw in DOM
          * @param name string [hlf-name] container param
          * @param $f DOM element like context, usually it's <form/> or <div/>
          * @param c list of all form controls
          * @param ti tabIndex value
          */
-        function draw(name, $f, c, ti) {
+        return function (name, $f, c, ti) {
 
             controls = c || {};
             config.tabIndex = ti || 0;
@@ -1403,94 +1515,12 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             });
 
             return {
+                config: config,
                 getParams: getParams,
-                getConfig: getConfig,
                 validate: validate
             };
 
-        }
-
-        function drawChild(key) {
-
-            $cl.append(config.tplChild({
-                key: key,
-                age: config.children[key],
-                hint: config.childHint
-            }));
-
-            $chc[key] = hlf.getEl($cl, 'child-container', key);
-            $chiw[key] = hlf.getEl($chc[key], 'input-wrap');
-            $chi[key] = hlf.getEl($chc[key], 'input');
-            $chh[key] = hlf.getEl($chc[key], 'hint');
-
-            $chi[key].on('focus', function() {
-                $chiw[key].addClass('hlf-state--focus');
-                $chiw[key].removeClass('hlf-state--error');
-            });
-
-            $chi[key].on('blur', function() {
-                $chiw[key].removeClass('hlf-state--focus');
-            });
-
-            $chi[key].on('keyup', function() {
-                var val = $chi[key].val().trim();
-                if(!val.length || !_.isFinite(val)) {
-                    config.children[key] = null;
-                } else {
-                    config.children[key] = parseInt(val);
-                }
-            });
-
-            $chi[key].on('keydown', function(e) {
-                $chiw[key].removeClass('hlf-state--error');
-            });
-
-            $chh[key].on('click', function() {
-                $chiw[key].removeClass('hlf-state--error');
-            });
-
-            if(config.children[key] == null) {
-                $chi[key].focus();
-            }
-
-        }
-
-        function update() {
-            $s.html(config.summary(config.adults, config.children));
-            $av.html(config.adults);
-            $cv.html(config.children.length);
-
-            config.children.length
-                ? $cl.removeClass('hlf-state--empty')
-                : $cl.addClass('hlf-state--empty');
-
-            config.children.length == config.childrenMax
-                ? $ci.addClass('hlf-state--disabled')
-                : $ci.removeClass('hlf-state--disabled');
-
-            !config.children.length
-                ? $cd.addClass('hlf-state--disabled')
-                : $cd.removeClass('hlf-state--disabled');
-
-            config.adults == config.adultsMax
-                ? $ai.addClass('hlf-state--disabled')
-                : $ai.removeClass('hlf-state--disabled');
-
-            config.adults == config.adultsMin
-                ? $ad.addClass('hlf-state--disabled')
-                : $ad.removeClass('hlf-state--disabled');
-
-        }
-
-        /**
-         * Returns control config object
-         * @returns {*}
-         */
-        function getConfig() {
-            return config;
-        }
-
-        return draw;
+        };
 
     };
 })(jQuery, _, hlf);
@@ -1499,23 +1529,29 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
     hlf.submit = function (config) {
 
-        var $c = null,
-            $b = null,
+        var $c = null, // container
+            $b = null, // button
+
             controls = {};
 
         config = _.defaults(config || {}, {
-            goalClick: {},
+
             text: 'Submit',
+
+            goalClick: {}, // same as everywhere
+
             tplButton: hlf.getTpl('submit.button')
+
         });
 
-        function draw(name, $f, c, ti) {
+        return function (name, $f, c, ti) {
 
             controls = c || {};
             config.tabIndex = ti || 0;
 
             $c = hlf.getContainer($f, 'submit', name);
             $c.html(config.tplButton(config));
+
             $b = hlf.getEl($c, 'button');
 
             $b.on('click', function() {
@@ -1523,16 +1559,10 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             });
 
             return {
-                getConfig: getConfig
+                config: config
             };
 
-        }
-
-        function getConfig() {
-            return config;
-        }
-
-        return draw;
+        };
 
     };
 

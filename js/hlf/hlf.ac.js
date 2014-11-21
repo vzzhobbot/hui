@@ -10,44 +10,56 @@
             $l = null, // loader
             $sc = null, // samples container
             $sl = null, // samples links
+
             controls = {},
-            goalUseInputSent = false; // flag event 'use' sent
+            goalUseInputSent = false; // flag means event 'use' sent (prevent multisent)
 
         config = _.defaults(config || {}, {
+
             url: (location.protocol == 'file:' ? 'http:' : '') + '//yasen.hotellook.com/autocomplete',
             name: 'destination', // getParams() param name in case
                                  // you select nothing in autocomplete
             text: '', // default input value
             type: '', // default type
             id: 0, // default id
-            limit: 5,
+            limit: 5, // limit for items each category
             locale: 'en-US',
-            // events
+            autoFocus: false, // auto focus if field is empty
+
+            placeholder: 'Type something....',
+            hint: 'panic!', // this control always required, its hint text
+            translateCategory: function(t) {
+                return t;
+            },
+            translateHotelsCount: function(n) {
+                return n + ' hotels';
+            },
+
             goalUseInput: {}, // {ga: 'la-la-la.bla-bla', yam: 'sdasds', as: 'something'}
             goalAcSelect: {},
             goalUseSamples: {},
-            placeholder: 'Type something....',
-            autoFocus: false, // auto focus if field is empty
-            hint: 'panic!', // this control always required, its hint text
-            onSelect: function() {},
+
+            onSelect: function() {}, // select from autocomplete
             onSelectShowCalendar: null,
-            onReset: function() {},
+            onReset: function() {}, // fires when you type something in autocomplete
+                                    // and type & id values resets
             avgPricesUrl: (location.protocol == 'file:' ? 'http:' : '') + '//search.hotellook.com/ajax/location-avg-prices.json?locationId={id}',
             avgPricesCalendars: [], // names if controls
             avgPricesFormatter: function(v) {
                 return '' + Math.round(v);
             },
-            categoryTranslate: function(t) {
-                return t;
-            },
-            hotelsCountTranslate: function(n) {
-                return n + ' hotels';
-            },
+
             samplesText: 'For example: {list}',
-            samplesList: [], // [{id: 15542, type: 'location', text: 'Paris, France', sample: 'Paris'}]
+            samplesList: [], // e.g.:
+                             // [
+                             //     {id: 15542, type: 'location', text: 'Paris, France', sample: 'Paris'},
+                             //     {id: 15298, type: 'location', text: 'Marseille, France', sample: 'Marseille'}
+                             // ]
+
             tplInput: hlf.getTpl('ac.input'),
             tplSamples: hlf.getTpl('ac.samples'),
             tplSamplesLink: hlf.getTpl('ac.samplesLink')
+
         });
 
         function avgPricesRequest (id) {
@@ -107,18 +119,18 @@
                     var cities = _.map(data.cities, function(item) {
                         return {
                             id: item.id,
-                            category: config.categoryTranslate('Locations'),
+                            category: config.translateCategory('Locations'),
                             type: 'location',
                             value: item.fullname,
                             text: item.city,
                             clar: (item.state ? item.state + ', ' : '') + item.country,
-                            comment: config.hotelsCountTranslate(item.hotelsCount)
+                            comment: config.translateHotelsCount(item.hotelsCount)
                         }
                     });
                     var hotels = _.map(data.hotels, function(item) {
                         return {
                             id: item.id,
-                            category: config.categoryTranslate('Hotels'),
+                            category: config.translateCategory('Hotels'),
                             type: 'hotel',
                             value: item.name + ', ' + item.city + ', ' + item.country,
                             text: item.name,
@@ -159,7 +171,16 @@
             }
         }
 
-        function draw(name, $f, c, ti) {
+        function validate() {
+            if(getParams()) {
+                return true;
+            }
+            $i.focus();
+            $iw.addClass('hlf-state--error');
+            return false;
+        }
+
+        return function(name, $f, c, ti) {
 
             if(config.id) {
                 avgPricesRequest(config.id);
@@ -170,6 +191,7 @@
 
             $c = hlf.getContainer($f, 'ac', name);
             $c.html(config.tplInput(config));
+
             $iw = hlf.getEl($c, 'input-wrap');
             $i = hlf.getEl($c, 'input');
             $h = hlf.getEl($c, 'hint');
@@ -244,28 +266,13 @@
             }
 
             return {
+                config: config,
                 select: select,
                 getParams: getParams,
-                getConfig: getConfig,
                 validate: validate
             };
 
-        }
-
-        function getConfig() {
-            return config;
-        }
-
-        function validate() {
-            if(getParams()) {
-                return true;
-            }
-            $i.focus();
-            $iw.addClass('hlf-state--error');
-            return false;
-        }
-
-        return draw;
+        };
 
     };
 
