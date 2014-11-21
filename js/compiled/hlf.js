@@ -340,11 +340,11 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 var first = null;
                 _.each(config.avgPricesCalendars, function(name) {
                     if(!first) {
-                        controls[name].specify(data, config.avgPricesFormatter);
+                        controls[name].specifyDetails(data, config.avgPricesFormatter);
                         controls[name].refresh();
                         first = controls[name];
                     } else {
-                        controls[name].setDetails(first.getDetails());
+                        controls[name].setDetails(_.clone(first.getDetails(), true));
                         controls[name].refresh();
                     }
                 });
@@ -642,32 +642,50 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $iw.removeClass('hlf-state--disabled');
         }
 
-        function show(v) {
-            isAutoShown = !!v;
+        /**
+         * Show calendar
+         * @param flag it means calendar has been shown automatically (by another control)
+         */
+        function show(flag) {
+            isAutoShown = !!flag;
             setTimeout(function(){ // jquery.ui.datepicker show cheat
                 $i.datepicker('show');
             }, 16);
         }
 
+        /**
+         * Hide calendar
+         */
         function hide() {
             $i.datepicker('hide');
         }
 
+        /**
+         * Refresh calendar
+         */
         function refresh() {
             var $widget = $i.datepicker('widget');
-            if($widget.is(':visible') && $widget.attr('__cheat') == uid) {
+            if($widget.is(':visible') && $widget.attr('__cheat') == uid) { // use __cheat to refresh this own calendar
+                                                                           // because in $widget may be any calendar
                 $i.datepicker('refresh');
             }
         }
 
+        /**
+         * Adjust relation calendar
+         */
         function relationAdjust() {
             var relation = controls[config.relationCalendar];
+            // is it has value?
             if(relation && relation.getStamp()) {
+                // for superior relation set to 1 day more
                 if(config.relationSuperior) {
                     if(relation.getStamp() <= getStamp()) {
                         relation.setDate(getDate(), 1);
                     }
-                } else {
+                }
+                // for inferior relation set to -1 day
+                else {
                     if(relation.getStamp() >= getStamp()) {
                         relation.setDate(getDate(), -1);
                     }
@@ -675,23 +693,26 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             }
         }
 
+        /**
+         * Auto set relation calendar value
+         */
         function relationAutoSet() {
             var relation = controls[config.relationCalendar];
+            // auto set value only if there is no value & relationAutoSet = true
             if(relation && !relation.getStamp() && config.relationAutoSet) {
-                if(config.relationSuperior) {
-                    relation.setDate(getDate(), 1);
-                } else {
-                    relation.setDate(getDate(), -1);
-                }
+                relation.setDate(getDate(), config.relationSuperior ? 1 : -1);
             }
         }
 
+        /**
+         * Auto show relation calendar
+         */
         function relationAutoShow() {
             var relation = controls[config.relationCalendar];
-            if(relation && !isAutoShown) {
-                if(config.relationAutoShow) {
-                    relation.show(true);
-                }
+            if(relation && config.relationAutoShow && !isAutoShown) { // if this calendar has been shown by its
+                                                                      // relation (isAutoShown=true), we dont
+                                                                      // show first one
+                relation.show(true);
             }
         }
 
@@ -736,7 +757,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
          * @param data
          * @param formatter function
          */
-        function specify(data, formatter) {
+        function specifyDetails(data, formatter) {
             if(!_.size(data))
                 return false;
             var count = 0,
@@ -801,7 +822,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         }
 
         function getDetails() {
-            return _.clone(details, true);
+            return details;
         }
 
         function resetDetails() {
@@ -839,21 +860,39 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             return cfg;
         }
 
-        function dateHover(e, i) {
-            var $hover = $(this),
-                hoverDate = new Date($hover.data('year') + '-' + ($hover.data('month') + 1) + '-' + $hover.data('day') + ' 00:00:00'),
-                type = config.relationSuperior ? 'in' : 'out';
+        /**
+         * On mouse hover calendar cell
+         * @param e event
+         * @param i datepicker instance
+         */
+        function dateMouseEnter(e, i) {
 
-            $hover.addClass('ui-datepicker-dayRange-hover--' + type);
+            var $hover = $(this),
+                hoverDate = new Date($hover.data('year') + '-' + ($hover.data('month') + 1) + '-' + $hover.data('day') + ' 00:00:00');
+            $hover.addClass('ui-datepicker-dayRange-hover--' + (config.relationSuperior ? 'in' : 'out'));
 
             $('[data-handler=selectDay]', i.dpDiv).each(function() {
                 var $cell = $(this),
                     cellDate = new Date($cell.data('year') + '-' + ($cell.data('month') + 1) + '-' + $cell.data('day') + ' 00:00:00');
-                if(type == 'in' ?
+                if(config.relationSuperior ?
                     cellDate.getTime() >= hoverDate.getTime() && cellDate.getTime() <= range.out.getTime() :
                     cellDate.getTime() <= hoverDate.getTime() && cellDate.getTime() >= range.in.getTime()) {
                     $cell.addClass('ui-datepicker-dayRange-hover');
                 }
+            });
+        }
+
+        /**
+         * On mouse over from calendar cell
+         * @param e event
+         * @param i datepicker instance
+         */
+        function dateMouseLeave(e, i) {
+            // remove all hover classes
+            $('[data-handler=selectDay]', i.dpDiv).each(function() {
+                $(this).removeClass('ui-datepicker-dayRange-hover');
+                $(this).removeClass('ui-datepicker-dayRange-hover--in');
+                $(this).removeClass('ui-datepicker-dayRange-hover--out');
             });
         }
 
@@ -868,10 +907,12 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             return null;
         }
 
+        // todo something wrong here
         function updateRange() {
-            if(controls[config.relationCalendar]) {
+            var rel = controls[config.relationCalendar];
+            if(rel) {
                 range.in = getDate();
-                range.out = controls[config.relationCalendar].getDate();
+                range.out = rel.getDate();
                 if(!config.relationSuperior) {
                     var tmp = range.in;
                     range.in = range.out;
@@ -932,30 +973,25 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                         );
                     }
                     if(controls[config.relationCalendar]) {
-                        $('[data-handler=selectDay]', i.dpDiv).on('mouseenter', _.partialRight(dateHover, i));
-                        $('[data-handler=selectDay]', i.dpDiv).on('mouseleave', _.partialRight(function(e, i) {
-                            $('[data-handler=selectDay]', i.dpDiv).each(function() {
-                                $(this).removeClass('ui-datepicker-dayRange-hover');
-                                $(this).removeClass('ui-datepicker-dayRange-hover--in');
-                                $(this).removeClass('ui-datepicker-dayRange-hover--out');
-                            });
-                        }, i));
+                        $('[data-handler=selectDay]', i.dpDiv)
+                            .on('mouseenter', _.partialRight(dateMouseEnter, i))
+                            .on('mouseleave', _.partialRight(dateMouseLeave, i));
                     }
                 },
                 onClose: function(date, i) {
-                    $('[data-handler=selectDay]', i.dpDiv).off('mouseenter');
+                    $('[data-handler=selectDay]', i.dpDiv).off('mouseenter mouseleave');
                     isAutoShown = false;
                 }
             });
 
-            // maybe set a date?
+            // maybe set a default value?
             if(_.isDate(config.value)) {
                 // correct date by timezone offset
                 config.value.setTime(config.value.getTime() + config.value.getTimezoneOffset() * 60 * 1000);
                 $i.datepicker('setDate', config.value);
             }
 
-            // customize datepicker with locale
+            // customize datepicker with locale, unfortunately only this method works well
             if(config.locale) {
                 $i.datepicker('option', $.datepicker.regional[config.locale]);
             }
@@ -987,7 +1023,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 setDetails: setDetails,
                 getDetails: getDetails,
                 resetDetails: resetDetails,
-                specify: specify,
+                specifyDetails: specifyDetails,
                 validate: validate
             };
 
@@ -1004,9 +1040,10 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
         // add data-day attr to day cell
         if (typeof inst.settings.beforeShowDay == 'function') {
+            // wrap beforeShowDay function and...
             inst.settings.beforeShowDay = _.wrap(inst.settings.beforeShowDay, function(func, date) {
-                var dayConfig = func(date);
-                dayConfig[1] += "' data-day='" + date.getDate();
+                var dayConfig = func(date); // call user function
+                dayConfig[1] += "' data-day='" + date.getDate(); // use quote cheat :)
                 return dayConfig;
             });
         }

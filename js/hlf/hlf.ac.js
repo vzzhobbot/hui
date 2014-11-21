@@ -78,11 +78,11 @@
                 var first = null;
                 _.each(config.avgPricesCalendars, function(name) {
                     if(!first) {
-                        controls[name].specify(data, config.avgPricesFormatter);
+                        controls[name].specifyDetails(data, config.avgPricesFormatter);
                         controls[name].refresh();
                         first = controls[name];
                     } else {
-                        controls[name].setDetails(first.getDetails());
+                        controls[name].setDetails(_.clone(first.getDetails(), true));
                         controls[name].refresh();
                     }
                 });
