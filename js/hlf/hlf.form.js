@@ -3,22 +3,25 @@
 
     /**
      * Form constructor
-     *
-     * @param id form uid hlf-form="maForm"
-     * @param cs control constructors list
-     * @param params additional url params
-     * @param goalSubmit goal submit config
+     * @param config
      * @returns {{controls: {}, param: Function}}
      */
-    hlf.form = function (id, cs, params, goalSubmit) {
+    hlf.form = function (config) {
 
-        var $f = $('[hlf-form="' + id +'"]'),
-            uid = _.uniqueId(),
-            tabIndex = 1,
+        config = _.defaults(config || {}, {
+            id: null,
+            controls: {},
+            params: {},
+            goalSubmit: {}
+        });
+
+        var $f = $('[hlf-form="' + config.id +'"]'), // todo check availability
+            uid = _.uniqueId(), // form uid
+            tabIndex = 1, // controls tabIndex counter
             controls = {};
 
         // draw each control
-        _.each(cs, function(c, n) {
+        _.each(config.controls, function(c, n) {
             controls[n] = c(n, $f, controls, uid + (tabIndex++) + '');
         });
 
@@ -40,22 +43,29 @@
                 return result;
             });
             if(result) {
-                var p =
-                    // collect controls data
-                    _.map(controls, function(i) {
-                        return _.isFunction(i.getParams) ? i.getParams() : null;
-                    })
-                    // additional params if needed
-                    .concat(_.map(params || {}, function(v, k) {
-                        return k + '=' + v;
-                    }));
+                // todo controls must return an object of params
+                // collect controls data
+                var p = _.map(controls, function(i) {
+                    return _.isFunction(i.getParams) ? i.getParams() : null;
+                });
+                // try to find marker in GET, then in cookie
+                if(_.isUndefined(config.params.marker)) {
+                    var marker = hlf.GET('marker') || hlf.cookie('marker') || null;
+                    if(marker) {
+                        config.params.marker = marker;
+                    }
+                }
+                // additional params if needed
+                p = p.concat(_.map(config.params, function(v, k) {
+                    return k + '=' + v;
+                }));
                 // collect ga tracker param
                 p.push(hlf.gaGetLinkerParam());
                 // remove empty strings
                 p = _.filter(p, function(i) {
                     return i;
                 });
-                hlf.goal(goalSubmit, {
+                hlf.goal(config.goalSubmit, {
                     params: p
                 });
                 window.location = $f.attr('action') + '/?' + p.join('&');
@@ -76,9 +86,9 @@
              */
             param: function (name, value) {
                 if(!value) {
-                    return params[name];
+                    return config.params[name];
                 }
-                params[name] = value;
+                config.params[name] = value;
             }
         };
 
