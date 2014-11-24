@@ -291,12 +291,13 @@
                 hoverDate = new Date($hover.data('year') + '-' + ($hover.data('month') + 1) + '-' + $hover.data('day') + ' 00:00:00');
             $hover.addClass('ui-datepicker-dayRange-hover--' + (config.relationSuperior ? 'in' : 'out'));
 
+            // highlight range on hover
             $('[data-handler=selectDay]', i.dpDiv).each(function() {
                 var $cell = $(this),
                     cellDate = new Date($cell.data('year') + '-' + ($cell.data('month') + 1) + '-' + $cell.data('day') + ' 00:00:00');
                 if(config.relationSuperior ?
-                    cellDate.getTime() >= hoverDate.getTime() && cellDate.getTime() <= range.out.getTime() :
-                    cellDate.getTime() <= hoverDate.getTime() && cellDate.getTime() >= range.in.getTime()) {
+                    range.out && cellDate.getTime() >= hoverDate.getTime() && cellDate.getTime() <= range.out.getTime() :
+                    range.in && cellDate.getTime() <= hoverDate.getTime() && cellDate.getTime() >= range.in.getTime()) {
                     $cell.addClass('ui-datepicker-dayRange-hover');
                 }
             });

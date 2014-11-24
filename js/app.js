@@ -56,7 +56,7 @@ var maForm = hlf.form({
             relationAutoSet: true,
             relationAutoShow: true,
             locale: 'ru-RU',
-            value: new Date((new Date()).getTime() + 3 * 24 * 60 * 60 * 1000),
+            //value: new Date((new Date()).getTime() + 3 * 24 * 60 * 60 * 1000),
             min: -1
         }),
         checkOut: hlf.calendar({
@@ -70,7 +70,7 @@ var maForm = hlf.form({
             relationAutoSet: true,
             relationAutoShow: true,
             locale: 'ru-RU',
-            value: new Date((new Date()).getTime() + 6 * 24 * 60 * 60 * 1000),
+            //value: new Date((new Date()).getTime() + 6 * 24 * 60 * 60 * 1000),
             min: 0
         }),
         noDates: hlf.noDates({
