@@ -64,10 +64,8 @@
                     params: p
                 });
 
-                var gaLinker = hlf.gaGetLinkerParam(),
-                    url = $f.attr('action') + '/?' + $.param(p) + (gaLinker ? '&' + gaLinker : '');
-                console.log(url);
-                //window.location = url;
+                var gaLinker = hlf.gaGetLinkerParam();
+                window.location = $f.attr('action') + '/?' + $.param(p) + (gaLinker ? '&' + gaLinker : '');
                 return false;
             }
             return result;
