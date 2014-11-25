@@ -91,16 +91,20 @@
 
         /**
          * Get params string
-         * @returns {string | null}
+         * @returns {object}
          */
         function getParams() {
-            if(!!config.id && config.type) {
-                return config.type + 'Id=' + config.id;
+            var r = {};
+            switch(true) {
+                case !!(config.id && config.type):
+                    r[config.type + 'Id'] = config.id;
+                    break;
+                case !!config.text:
+                    r[config.name] = config.text;
+                    break;
+                default: break;
             }
-            if(config.text) {
-                return config.name + '=' + config.text;
-            }
-            return null;
+            return r;
         }
 
         function source(request, response) {
@@ -172,7 +176,7 @@
         }
 
         function validate() {
-            if(getParams()) {
+            if(_.size(getParams())) {
                 return true;
             }
             $i.focus();

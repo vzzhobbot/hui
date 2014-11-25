@@ -163,7 +163,7 @@
         }
 
         function validate() {
-            if(!config.required || $i.datepicker('option', 'disabled') || !!getParams()) {
+            if(!config.required || $i.datepicker('option', 'disabled') || _.size(getParams())) {
                 return true;
             }
             $iw.addClass('hlf-state--error');
@@ -318,14 +318,15 @@
         }
 
         function getParams() {
+            var r = {};
             if($i.datepicker('option', 'disabled')) {
-                return null;
+                return r;
             }
             var date = getDate();
             if(date) {
-                return config.name + '=' + $.datepicker.formatDate(config.format, date);
+                r[config.name] = $.datepicker.formatDate(config.format, date);
             }
-            return null;
+            return r;
         }
 
         // todo something wrong here

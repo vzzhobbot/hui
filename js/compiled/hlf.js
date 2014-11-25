@@ -30,7 +30,7 @@
 
         /**
          * Return ga linkerParam for cross domain linking
-         * @returns string
+         * @returns string todo wtf? obj needed
          */
         function gaGetLinkerParam() {
             var str = null;
@@ -288,32 +288,31 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 return result;
             });
             if(result) {
-                // todo controls must return an object of params
                 // collect controls data
-                var p = _.map(controls, function(i) {
-                    return _.isFunction(i.getParams) ? i.getParams() : null;
+                var p = _.reduce(_.map(controls, function(i) {
+                    return _.isFunction(i.getParams) ? i.getParams() : {};
+                }), function(result, d) {
+                    return _.merge(result, d);
                 });
-                // try to find marker in GET, then in cookie
-                if(_.isUndefined(config.params.marker)) {
+
+                // additional params if needed
+                if(_.isUndefined(config.params.marker)) { // try to find marker in GET, then in cookie
                     var marker = hlf.GET('marker') || hlf.cookie('marker') || null;
                     if(marker) {
                         config.params.marker = marker;
                     }
                 }
-                // additional params if needed
-                p = p.concat(_.map(config.params, function(v, k) {
-                    return k + '=' + v;
-                }));
-                // collect ga tracker param
-                p.push(hlf.gaGetLinkerParam());
-                // remove empty strings
-                p = _.filter(p, function(i) {
-                    return i;
-                });
+                p = _.merge(p, config.params);
+
+                // send required goals
                 hlf.goal(config.goalSubmit, {
                     params: p
                 });
-                window.location = $f.attr('action') + '/?' + p.join('&');
+
+                var gaLinker = hlf.gaGetLinkerParam(),
+                    url = $f.attr('action') + '/?' + $.param(p) + (gaLinker ? '&' + gaLinker : '');
+                console.log(url);
+                //window.location = url;
                 return false;
             }
             return result;
@@ -433,16 +432,20 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
         /**
          * Get params string
-         * @returns {string | null}
+         * @returns {object}
          */
         function getParams() {
-            if(!!config.id && config.type) {
-                return config.type + 'Id=' + config.id;
+            var r = {};
+            switch(true) {
+                case !!(config.id && config.type):
+                    r[config.type + 'Id'] = config.id;
+                    break;
+                case !!config.text:
+                    r[config.name] = config.text;
+                    break;
+                default: break;
             }
-            if(config.text) {
-                return config.name + '=' + config.text;
-            }
-            return null;
+            return r;
         }
 
         function source(request, response) {
@@ -514,7 +517,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         }
 
         function validate() {
-            if(getParams()) {
+            if(_.size(getParams())) {
                 return true;
             }
             $i.focus();
@@ -823,7 +826,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         }
 
         function validate() {
-            if(!config.required || $i.datepicker('option', 'disabled') || !!getParams()) {
+            if(!config.required || $i.datepicker('option', 'disabled') || _.size(getParams())) {
                 return true;
             }
             $iw.addClass('hlf-state--error');
@@ -978,14 +981,15 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         }
 
         function getParams() {
+            var r = {};
             if($i.datepicker('option', 'disabled')) {
-                return null;
+                return r;
             }
             var date = getDate();
             if(date) {
-                return config.name + '=' + $.datepicker.formatDate(config.format, date);
+                r[config.name] = $.datepicker.formatDate(config.format, date);
             }
-            return null;
+            return r;
         }
 
         // todo something wrong here
@@ -1313,13 +1317,14 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
         /**
          * Returns (if possible) this control value as string to use in URL
-         * @returns {string|null}
+         * @returns {object}
          */
         function getParams() {
+            var r = {};
             if($ch.is(':checked')) {
-                return config.name + '=1';
+                r[config.name] = 1;
             }
-            return null;
+            return r;
         }
 
         /**
@@ -1415,14 +1420,16 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
         /**
          * Returns (if possible) this control value as string to use in URL
-         * @returns {string|null}
+         * @returns {object}
          */
         function getParams() {
-            var str = 'adults=' + config.adults;
+            var r = {
+                'adults': config.adults
+            };
             if(config.children.length) {
-                str += '&children=' + config.children.join(',');
+                r['children'] = config.children.join(',');
             }
-            return str;
+            return r;
         }
 
         function validate() {

@@ -21,13 +21,14 @@
 
         /**
          * Returns (if possible) this control value as string to use in URL
-         * @returns {string|null}
+         * @returns {object}
          */
         function getParams() {
+            var r = {};
             if($ch.is(':checked')) {
-                return config.name + '=1';
+                r[config.name] = 1;
             }
-            return null;
+            return r;
         }
 
         /**

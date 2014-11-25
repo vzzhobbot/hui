@@ -30,7 +30,7 @@
 
         /**
          * Return ga linkerParam for cross domain linking
-         * @returns string
+         * @returns string todo wtf? obj needed
          */
         function gaGetLinkerParam() {
             var str = null;

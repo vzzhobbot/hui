@@ -46,14 +46,16 @@
 
         /**
          * Returns (if possible) this control value as string to use in URL
-         * @returns {string|null}
+         * @returns {object}
          */
         function getParams() {
-            var str = 'adults=' + config.adults;
+            var r = {
+                'adults': config.adults
+            };
             if(config.children.length) {
-                str += '&children=' + config.children.join(',');
+                r['children'] = config.children.join(',');
             }
-            return str;
+            return r;
         }
 
         function validate() {
