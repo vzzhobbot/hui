@@ -43,7 +43,7 @@
             onSelectShowCalendar: null,
             onReset: function() {}, // fires when you type something in autocomplete
                                     // and type & id values resets
-            avgPricesUrl: (location.protocol == 'file:' ? 'http:' : '') + '//search.hotellook.com/ajax/location-avg-prices.json?locationId={id}',
+            avgPricesUrl: (location.protocol == 'file:' ? 'http:' : '') + '//yasen.hotellook.com/minprices/location_year/{id}.json',
             avgPricesCalendars: [], // names if controls
             avgPricesFormatter: function(v) {
                 return '' + Math.round(v);

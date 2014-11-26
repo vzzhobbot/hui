@@ -24,6 +24,7 @@ var maForm = hlf.form({
             placeholder: 'Введите город или название отеля...',
             onSelectShowCalendar: 'checkIn',
             hint: 'Напишите хоть что-нибудь!',
+            avgPricesCalendars: ['checkIn'],
             samplesText: 'Например, {list}',
             samplesList: [
                 {
