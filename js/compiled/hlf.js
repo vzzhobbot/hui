@@ -403,6 +403,11 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
         function avgPricesRequest (id) {
             if(config.avgPricesCalendars.length) {
+                _.each(config.avgPricesCalendars, function(name) {
+                    if(!_.isUndefined(controls[name])) {
+                        controls[name].resetDetails();
+                    }
+                });
                 $.ajax({
                     dataType: 'jsonp',
                     type: 'get',
@@ -490,11 +495,9 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         }
 
         function onReset() {
-            if(config.avgPricesUrl) {
-                _.each(config.avgPricesCalendars, function(name) {
-                    controls[name].resetDetails();
-                });
-            }
+            _.each(config.avgPricesCalendars, function(name) {
+                controls[name].resetDetails();
+            });
             config.onReset();
         }
 
