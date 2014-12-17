@@ -72,6 +72,7 @@
                 $.ajax({
                     dataType: 'jsonp',
                     type: 'get',
+                    cache: true,
                     url: config.avgPricesUrl.replace('{id}', id),
                     success: avgPricesRequestSuccess
                 });

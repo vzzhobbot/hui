@@ -411,6 +411,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 $.ajax({
                     dataType: 'jsonp',
                     type: 'get',
+                    cache: true,
                     url: config.avgPricesUrl.replace('{id}', id),
                     success: avgPricesRequestSuccess
                 });
