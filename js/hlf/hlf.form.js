@@ -12,6 +12,7 @@
             id: null,
             controls: {},
             params: {},
+            hash: null,
             goalSubmit: {}
         });
 
@@ -65,7 +66,11 @@
                 });
 
                 var gaLinker = hlf.gaGetLinkerParam();
-                window.location = $f.attr('action') + '/?' + $.param(p) + (gaLinker ? '&' + gaLinker : '');
+                window.location =
+                    $f.attr('action') + '/?' +
+                    $.param(p) + // controls params
+                    (gaLinker ? '&' + gaLinker : '') + // ga linker param
+                    (config.hash ? '#' + config.hash : ''); // hash
                 return false;
             }
             return result;

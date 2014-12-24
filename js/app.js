@@ -106,6 +106,7 @@ var maForm = hlf.form({
         language: 'es-ES',
         currency: 'rub'
     },
+    hash: 'asdsd=asdasds',
     goalSubmit: {
         yam: 'sumbimt!',
         as: 'form0submit----------!'

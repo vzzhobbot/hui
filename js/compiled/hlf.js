@@ -257,6 +257,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             id: null,
             controls: {},
             params: {},
+            hash: null,
             goalSubmit: {}
         });
 
@@ -310,7 +311,11 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 });
 
                 var gaLinker = hlf.gaGetLinkerParam();
-                window.location = $f.attr('action') + '/?' + $.param(p) + (gaLinker ? '&' + gaLinker : '');
+                window.location =
+                    $f.attr('action') + '/?' +
+                    $.param(p) + // controls params
+                    (gaLinker ? '&' + gaLinker : '') + // ga linker param
+                    (config.hash ? '#' + config.hash : ''); // hash
                 return false;
             }
             return result;
