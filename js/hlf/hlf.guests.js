@@ -58,7 +58,7 @@
             return r;
         }
 
-        function validate() {
+        function validate(silent) {
             // validate each field
             var r = _.map(config.children, function(age, key) {
                 var ok = !(age === null || parseInt(age) < 0 || parseInt(age) > config.childMaxAge);
@@ -70,7 +70,9 @@
             // show hint of first error
             _.each(r, function(ok, key) {
                 if(!ok) {
-                    $chi[key].focus();
+                    if(!silent) {
+                        $chi[key].focus();
+                    }
                     $chiw[key].addClass('hlf-state--error');
                     return false;
                 }
@@ -87,7 +89,7 @@
         }
 
         function guestsClose() {
-            if(validate()) {
+            if(validate(true)) {
                 $g.addClass('hlf-state--closed');
                 $g.removeClass('hlf-state--focus');
             }

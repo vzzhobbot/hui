@@ -104,16 +104,9 @@
     display: none;
   }
 
-  &.hlf-state--focus {
-    .hint {
-      background-color: orange;
-      display: block;
-    }
-  }
-
   &.hlf-state--error {
     .hint {
-      background-color: red;
+      background-color: red !important;
       display: block;
     }
   }
@@ -132,4 +125,15 @@
     }
   }
 
+}
+
+.hlf-guests-children-item {
+  .hlf-input {
+    &.hlf-state--focus {
+      .hint {
+        background-color: orange;
+        display: block;
+      }
+    }
+  }
 }

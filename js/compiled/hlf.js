@@ -1439,7 +1439,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             return r;
         }
 
-        function validate() {
+        function validate(silent) {
             // validate each field
             var r = _.map(config.children, function(age, key) {
                 var ok = !(age === null || parseInt(age) < 0 || parseInt(age) > config.childMaxAge);
@@ -1451,7 +1451,9 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             // show hint of first error
             _.each(r, function(ok, key) {
                 if(!ok) {
-                    $chi[key].focus();
+                    if(!silent) {
+                        $chi[key].focus();
+                    }
                     $chiw[key].addClass('hlf-state--error');
                     return false;
                 }
@@ -1468,7 +1470,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         }
 
         function guestsClose() {
-            if(validate()) {
+            if(validate(true)) {
                 $g.addClass('hlf-state--closed');
                 $g.removeClass('hlf-state--focus');
             }
