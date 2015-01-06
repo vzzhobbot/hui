@@ -83,7 +83,6 @@ var maForm = hlf.form({
         }),
         guests: hlf.guests({
             adults: 2,
-            children: [12],
             goalOpen: {
                 ga: 'hlfcat.guestsitem',
                 as: 'hlf-guests'
