@@ -1597,7 +1597,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             });
             update();
 
-            $doc.on('click', function(ev) {
+            $doc.on('click', function(ev) { // todo check if this own block (multi controls problem)
                 if(!$(ev.target).closest('[hlf-role=guests]').length) {
                     guestsClose();
                 }
