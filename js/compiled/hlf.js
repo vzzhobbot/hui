@@ -697,7 +697,13 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             value: null, // default date Date()
             format: 'yy-mm-dd', // getParams() param value format
             min: 0, // min selectable date (in days from today)
-            months: 2, // num of months visible in datepicker
+            months: (function(){
+                if (window.innerWidth<=700){
+                    return 1
+                } else {
+                    return 2
+                }
+            })(), // num of months visible in datepicker
             locale: 'en-US',
 
             placeholder: 'Choose date...',
@@ -1057,7 +1063,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                         }));
                     }
                     if(_.isArray(details.points) && details.points.length) {
-                        $('.ui-datepicker-row-break', i.dpDiv).html(
+                        $(i.dpDiv).append(
                             config.tplLegend({
                                 'legend': config.legend,
                                 'points': _.map(details.points, details.formatter)

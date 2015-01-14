@@ -8,3 +8,6 @@ node_modules
 .sass-cache
 yii
 assets
+npm-debug.log
+css/compiled/app.css.map
+js/process/hlf.tpls.js
