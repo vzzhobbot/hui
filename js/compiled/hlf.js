@@ -1489,6 +1489,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 }
                 config.children[key] = newValue;
                 $cha[key][0].innerText = newValue;
+                return false;
             }
         }
 

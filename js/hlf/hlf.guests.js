@@ -102,6 +102,7 @@
                 }
                 config.children[key] = newValue;
                 $cha[key][0].innerText = newValue;
+                return false;
             }
         }
 
