@@ -15,7 +15,6 @@
             $cd = null, // children decrement control
             $cl = null, // children list
             $chc = [], // child containers
-            $chiw = [], // child input wraps
             $chi = [], // child age increment control
             $chd = [], // child age decrement control
             $cha = [], // child age value
@@ -30,6 +29,7 @@
             children: [], // children age
             childrenMax: 3,
             childMaxAge: 17,
+            childDefaultAge: 7,
             summary: function(adults, children) {
                 return (adults + children.length);
             },
@@ -59,30 +59,6 @@
             return r;
         }
 
-        function validate(silent) {
-            // validate each field
-            var r = _.map(config.children, function(age, key) {
-                var ok = !(age === null || parseInt(age) < 0 || parseInt(age) > config.childMaxAge);
-                if(ok) {
-                    $chiw[key].removeClass('hlf-state--error');
-                }
-                return ok;
-            });
-            // show hint of first error
-            _.each(r, function(ok, key) {
-                if(!ok) {
-                    if(!silent) {
-                        $chi[key].focus();
-                    }
-                    $chiw[key].addClass('hlf-state--error');
-                    return false;
-                }
-            });
-            // count error results
-            return !_.filter(r, function(ok) {
-                return !ok;
-            }).length;
-        }
 
         function summaryClick() {
             $g.hasClass('hlf-state--closed') ? guestsOpen() : guestsClose();
@@ -90,10 +66,8 @@
         }
 
         function guestsClose() {
-            if(validate(true)) {
-                $g.addClass('hlf-state--closed');
-                $g.removeClass('hlf-state--focus');
-            }
+            $g.addClass('hlf-state--closed');
+            $g.removeClass('hlf-state--focus');
         }
 
         function guestsOpen() {
@@ -104,7 +78,7 @@
 
         function drawChild(key) {
             if (config.children[key]===null) {
-                config.children[key] = 7;
+                config.children[key] = config.childDefaultAge;
             }
             $cl.append(config.tplChild({
                 key: key,
@@ -113,26 +87,22 @@
             }));
 
             $chc[key] = hlf.getEl($cl, 'child-container', key);
-            $chiw[key] = hlf.getEl($chc[key], 'input-wrap');
             $chi[key] = hlf.getEl($chc[key], 'child-age-increment');
             $cha[key] = hlf.getEl($chc[key], 'child-age');
             $chd[key] = hlf.getEl($chc[key], 'child-age-decrement');
 
-            $chi[key].on('click', function() {
-                if (config.children[key]===17){
-                    return false
-                }
-                config.children[key]++ ;
-                $cha[key][0].innerText = config.children[key]
-            });
-            $chd[key].on('click', function() {
-                if (config.children[key]===0){
-                    return false
-                }
-                config.children[key]-- ;
-                $cha[key][0].innerText = config.children[key]
-            });
+            $chi[key].on('click', {operation: 1}, newAge);
+            $chd[key].on('click', {operation: -1}, newAge);
 
+            function newAge(e){
+                var newValue;
+                newValue = config.children[key] + e.data.operation;
+                if ( newValue>config.childMaxAge || newValue<0){
+                    return false
+                }
+                config.children[key] = newValue;
+                $cha[key][0].innerText = newValue;
+            }
         }
 
         function update() {
@@ -256,7 +226,6 @@
                 $chc[config.children.length - 1].remove();
                 config.children.pop();
                 $chc.pop();
-                $chiw.pop();
                 $chi.pop();
                 update();
                 return false;
@@ -265,7 +234,6 @@
             return {
                 config: config,
                 getParams: getParams,
-                validate: validate
             };
 
         };
