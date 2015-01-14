@@ -17,7 +17,8 @@
             $chc = [], // child containers
             $chiw = [], // child input wraps
             $chi = [], // child inputs
-            $chh = [], // child hints
+            $chd = [], // child hints
+            $cha = [],
 
             controls = {};
 
@@ -102,7 +103,9 @@
         }
 
         function drawChild(key) {
-
+            if (config.children[key]===null) {
+                config.children[key] = 7;
+            }
             $cl.append(config.tplChild({
                 key: key,
                 age: config.children[key],
@@ -111,51 +114,75 @@
 
             $chc[key] = hlf.getEl($cl, 'child-container', key);
             $chiw[key] = hlf.getEl($chc[key], 'input-wrap');
-            $chi[key] = hlf.getEl($chc[key], 'input');
-            $chh[key] = hlf.getEl($chc[key], 'hint');
+            $chi[key] = hlf.getEl($chc[key], 'child-age-increment');
+            $cha[key] = hlf.getEl($chc[key], 'child-age');
+            //child-age-decrement
+            $chd[key] = hlf.getEl($chc[key], 'child-age-decrement');
 
-            $chi[key].on('focus', function() {
-                $chiw[key].addClass('hlf-state--focus');
-                $chiw[key].removeClass('hlf-state--error');
-            });
+            //child-age-increment
 
-            $chi[key].on('blur', function() {
-                $chiw[key].removeClass('hlf-state--focus');
-            });
 
-            $chi[key].on('keyup', function() {
-                var val = $chi[key].val().trim();
-                if(!val.length || !_.isFinite(val)) {
-                    config.children[key] = null;
-                } else {
-                    config.children[key] = parseInt(val);
+            $chi[key].on('click', function() {
+                if (config.children[key]===17){
+                    return false
                 }
+                config.children[key]++ ;
+                $cha[key][0].innerText = config.children[key]
             });
-
-            $chi[key].on('keydown', function(e) {
-                // Allow: backspace, delete, tab, escape, enter and .
-                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-                        // Allow: Ctrl+A
-                    (e.keyCode == 65 && e.ctrlKey === true) ||
-                        // Allow: home, end, left, right
-                    (e.keyCode >= 35 && e.keyCode <= 39)) {
-                    // let it happen, don't do anything
-                    return;
+            $chd[key].on('click', function() {
+                if (config.children[key]===0){
+                    return false
                 }
-                // Ensure that it is a number and stop the keypress
-                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-                    e.preventDefault();
-                }
-                $chiw[key].removeClass('hlf-state--error');
+                config.children[key]-- ;
+                $cha[key][0].innerText = config.children[key]
             });
 
-            $chh[key].on('click', function() {
-                $chiw[key].removeClass('hlf-state--error');
-            });
 
-            if(config.children[key] == null) {
-                $chi[key].focus();
-            }
+//            child-age-decrement
+
+
+//            $chi[key].on('focus', function() {
+//                $chiw[key].addClass('hlf-state--focus');
+//                $chiw[key].removeClass('hlf-state--error');
+//            });
+//
+//            $chi[key].on('blur', function() {
+//                $chiw[key].removeClass('hlf-state--focus');
+//            });
+//
+//            $chi[key].on('keyup', function() {
+//                var val = $chi[key].val().trim();
+//                if(!val.length || !_.isFinite(val)) {
+//                    config.children[key] = null;
+//                } else {
+//                    config.children[key] = parseInt(val);
+//                }
+//            });
+//
+//            $chi[key].on('keydown', function(e) {
+//                // Allow: backspace, delete, tab, escape, enter and .
+//                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+//                        // Allow: Ctrl+A
+//                    (e.keyCode == 65 && e.ctrlKey === true) ||
+//                        // Allow: home, end, left, right
+//                    (e.keyCode >= 35 && e.keyCode <= 39)) {
+//                    // let it happen, don't do anything
+//                    return;
+//                }
+//                // Ensure that it is a number and stop the keypress
+//                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+//                    e.preventDefault();
+//                }
+//                $chiw[key].removeClass('hlf-state--error');
+//            });
+//
+//            $chh[key].on('click', function() {
+//                $chiw[key].removeClass('hlf-state--error');
+//            });
+//
+//            if(config.children[key] == null) {
+//                $chi[key].focus();
+//            }
 
         }
 
@@ -282,7 +309,7 @@
                 $chc.pop();
                 $chiw.pop();
                 $chi.pop();
-                $chh.pop();
+//                $chh.pop();
                 update();
                 return false;
             });
