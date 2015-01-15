@@ -1,10 +1,11 @@
 <li class="hlf-guests-children-item" hlf-role="child-container" hlf-name="<%= key %>">
     <div class="hlf-guests-child-age-title">
-        <%= hint %>
+        <%= title %>
+        <div  class="hlf-guests-child-age-hint"><%= hint %></div>
     </div>
     <div class="hlf-guests-child-age-controls">
-        <a href="#" hlf-role="child-age-decrement">-</a>
+        <a class='hlf-control' href="#" hlf-role="child-age-decrement">&minus;</a>
         <div class="hlf-guests-child-age-val" hlf-role="child-age"><%= age %></div>
-        <a href="#" hlf-role="child-age-increment">+</a>
+        <a class='hlf-control' href="#" hlf-role="child-age-increment">+</a>
     </div>
 </li>

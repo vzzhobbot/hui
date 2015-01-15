@@ -229,11 +229,11 @@ this["hlf"]["jst"]["calendar.legend.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"m
   },"useData":true};
 
 this["hlf"]["jst"]["guests.child.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  return "<li class=\"hlf-guests-children-item\" hlf-role=\"child-container\" hlf-name=\"<%= key %>\">\n    <div class=\"hlf-guests-child-age-title\">\n        <%= hint %>\n    </div>\n    <div class=\"hlf-guests-child-age-controls\">\n        <a href=\"#\" hlf-role=\"child-age-decrement\">-</a>\n        <div class=\"hlf-guests-adults-val\" hlf-role=\"child-age\"><%= age %></div>\n        <a href=\"#\" hlf-role=\"child-age-increment\">+</a>\n    </div>\n</li>";
+  return "<li class=\"hlf-guests-children-item\" hlf-role=\"child-container\" hlf-name=\"<%= key %>\">\n    <div class=\"hlf-guests-child-age-title\">\n        <%= title %>\n        <div  class=\"hlf-guests-child-age-hint\"><%= hint %></div>\n    </div>\n    <div class=\"hlf-guests-child-age-controls\">\n        <a class='hlf-control' href=\"#\" hlf-role=\"child-age-decrement\">&minus;</a>\n        <div class=\"hlf-guests-child-age-val\" hlf-role=\"child-age\"><%= age %></div>\n        <a class='hlf-control' href=\"#\" hlf-role=\"child-age-increment\">+</a>\n    </div>\n</li>";
   },"useData":true};
 
 this["hlf"]["jst"]["guests.container.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  return "<div class=\"hlf-guests hlf-state--closed\" hlf-role=\"guests\">\n    <a href=\"#\" class=\"hlf-guests-i\" tabindex=\"<%= tabIndex %>\" hlf-role=\"summary\"></a>\n    <div class=\"hlf-guests-dd\" hlf-role=\"controls\">\n        <div class=\"hlf-guests-adults\">\n            <div class=\"hlf-guests-adults-title\"><%= adultsTitle %></div>\n            <div class=\"hlf-guests-adults-controls\">\n                <a href=\"#\" hlf-role=\"adults-decrement\">-</a>\n                <div class=\"hlf-guests-adults-val\" hlf-role=\"adults-val\"></div>\n                <a href=\"#\" hlf-role=\"adults-increment\">+</a>\n            </div>\n        </div>\n        <div class=\"hlf-guests-children\">\n            <div class=\"hlf-guests-children-title\"><%= childrenTitle %></div>\n            <div class=\"hlf-guests-children-controls\">\n                <a href=\"#\" hlf-role=\"children-decrement\">-</a>\n                <div class=\"hlf-guests-children-val\" hlf-role=\"children-val\"></div>\n                <a href=\"#\" hlf-role=\"children-increment\">+</a>\n            </div>\n            <ul class=\"hlf-guests-children-list\" hlf-role=\"children-list\"></ul>\n        </div>\n    </div>\n</div>";
+  return "<div class=\"hlf-guests hlf-state--closed\" hlf-role=\"guests\">\n    <a href=\"#\" class=\"hlf-guests-i\" tabindex=\"<%= tabIndex %>\" hlf-role=\"summary\"></a>\n    <div class=\"hlf-guests-dd\" hlf-role=\"controls\">\n        <div class=\"hlf-guests-adults\">\n            <div class=\"hlf-guests-adults-title\"><%= adultsTitle %></div>\n            <div class=\"hlf-guests-adults-controls\">\n                <a class='hlf-control' href=\"#\" hlf-role=\"adults-decrement\">&minus;</a>\n                <div class=\"hlf-guests-adults-val\" hlf-role=\"adults-val\"></div>\n                <a class='hlf-control' href=\"#\" hlf-role=\"adults-increment\">+</a>\n            </div>\n        </div>\n        <div class=\"hlf-guests-children\">\n            <div class=\"hlf-guests-children-title\"><%= childrenTitle %></div>\n            <div class=\"hlf-guests-children-controls\">\n                <a class='hlf-control' href=\"#\" hlf-role=\"children-decrement\">&minus;</a>\n                <div class=\"hlf-guests-children-val\" hlf-role=\"children-val\"></div>\n                <a class='hlf-control' href=\"#\" hlf-role=\"children-increment\">+</a>\n            </div>\n            <ul class=\"hlf-guests-children-list\" hlf-role=\"children-list\"></ul>\n        </div>\n    </div>\n</div>";
   },"useData":true};
 
 this["hlf"]["jst"]["noDates.input.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
@@ -1423,6 +1423,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
             adultsTitle: 'Adults',
             childrenTitle: 'Children',
+            childAge: 'Age',
             childHint: 'Check da age!',
 
             goalOpen: {},
@@ -1470,6 +1471,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $cl.append(config.tplChild({
                 key: key,
                 age: config.children[key],
+                title: config.childAge,
                 hint: config.childHint
             }));
 

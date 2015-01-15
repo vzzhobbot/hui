@@ -36,6 +36,7 @@
 
             adultsTitle: 'Adults',
             childrenTitle: 'Children',
+            childAge: 'Age',
             childHint: 'Check da age!',
 
             goalOpen: {},
@@ -83,6 +84,7 @@
             $cl.append(config.tplChild({
                 key: key,
                 age: config.children[key],
+                title: config.childAge,
                 hint: config.childHint
             }));
 

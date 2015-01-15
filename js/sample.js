@@ -51,6 +51,7 @@ var maForm = hlf.form('form111', {
         adults: 2,
         adultsTitle: 'Взрослых',
         childrenTitle: 'Детей',
+        childAge: 'Возраст',
         childHint: 'Укажите возраст ребенка (0-17 лет)',
         summary: function (adults, children) {
             return 'Гостей ' + (adults + children.length);
