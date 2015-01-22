@@ -945,12 +945,12 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             // fill cfg with range details
             if(controls[config.relationCalendar]) {
                 // in range
-                cfg[1] += range.in && range.out && (range.in.getTime() <= date.getTime() && date.getTime() <= range.out.getTime()) ?
+                cfg[1] += range.in && range['out'] && (range.in.getTime() <= date.getTime() && date.getTime() <= range['out'].getTime()) ?
                     ' ui-datepicker-dayRange' :
                     '';
                 // it is in or out date?
                 cfg[1] += range.in && range.in.getTime() == date.getTime() ? ' ui-datepicker-dayRange-in' : '';
-                cfg[1] += range.out && range.out.getTime() == date.getTime() ? ' ui-datepicker-dayRange-out' : '';
+                cfg[1] += range['out'] && range['out'].getTime() == date.getTime() ? ' ui-datepicker-dayRange-out' : '';
             }
 
             return cfg;
@@ -972,8 +972,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 var $cell = $(this),
                     cellDate = new Date($cell.data('year') + '-' + ($cell.data('month') + 1) + '-' + $cell.data('day') + ' 00:00:00');
                 if(config.relationSuperior ?
-                    range.out && cellDate.getTime() >= hoverDate.getTime() && cellDate.getTime() <= range.out.getTime() :
-                    range.in && cellDate.getTime() <= hoverDate.getTime() && cellDate.getTime() >= range.in.getTime()) {
+                    range['out'] && cellDate.getTime() >= hoverDate.getTime() && cellDate.getTime() <= range['out'].getTime() :
+                    range['in'] && cellDate.getTime() <= hoverDate.getTime() && cellDate.getTime() >= range['in'].getTime()) {
                     $cell.addClass('ui-datepicker-dayRange-hover');
                 }
             });
@@ -1009,12 +1009,12 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         function updateRange() {
             var rel = controls[config.relationCalendar];
             if(rel) {
-                range.in = getDate();
-                range.out = rel.getDate();
+                range['in'] = getDate();
+                range['out'] = rel.getDate();
                 if(!config.relationSuperior) {
-                    var tmp = range.in;
-                    range.in = range.out;
-                    range.out = tmp;
+                    var tmp = range['in'];
+                    range['in'] = range['out'];
+                    range['out'] = tmp;
                 }
             }
         }
