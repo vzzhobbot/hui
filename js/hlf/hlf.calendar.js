@@ -275,11 +275,11 @@
             // fill cfg with range details
             if(controls[config.relationCalendar]) {
                 // in range
-                cfg[1] += range.in && range['out'] && (range.in.getTime() <= date.getTime() && date.getTime() <= range['out'].getTime()) ?
+                cfg[1] += range['in'] && range['out'] && (range['in'].getTime() <= date.getTime() && date.getTime() <= range['out'].getTime()) ?
                     ' ui-datepicker-dayRange' :
                     '';
                 // it is in or out date?
-                cfg[1] += range.in && range.in.getTime() == date.getTime() ? ' ui-datepicker-dayRange-in' : '';
+                cfg[1] += range['in'] && range['in'].getTime() == date.getTime() ? ' ui-datepicker-dayRange-in' : '';
                 cfg[1] += range['out'] && range['out'].getTime() == date.getTime() ? ' ui-datepicker-dayRange-out' : '';
             }
 
