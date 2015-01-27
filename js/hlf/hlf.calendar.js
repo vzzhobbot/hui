@@ -142,11 +142,6 @@
             }
         }
 
-        function dateModify (date, modify) {
-            date.setDate(date.getDate() + modify);
-            return date;
-        }
-
         function getStamp () {
             var date = $i.datepicker('getDate');
             if(date) {
@@ -164,7 +159,7 @@
         }
 
         function setDate (date, modify) {
-            $i.datepicker('setDate', dateModify(date, modify));
+            $i.datepicker('setDate', date.setDate(date.getDate() + (modify || 0)));
             $iw.removeClass('hlf-state--error');
         }
 

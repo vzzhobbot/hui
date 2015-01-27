@@ -819,11 +819,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             }
         }
 
-        function dateModify (date, modify) {
-            date.setDate(date.getDate() + modify);
-            return date;
-        }
-
         function getStamp () {
             var date = $i.datepicker('getDate');
             if(date) {
@@ -841,7 +836,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         }
 
         function setDate (date, modify) {
-            $i.datepicker('setDate', dateModify(date, modify));
+            $i.datepicker('setDate', date.setDate(date.getDate() + (modify || 0)));
             $iw.removeClass('hlf-state--error');
         }
 

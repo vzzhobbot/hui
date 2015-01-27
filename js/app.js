@@ -61,7 +61,7 @@ var maForm = hlf.form({
             min: -1
         }),
         checkOut: hlf.calendar({
-            //required: true,
+            required: true,
             head: 'Дата выезда',
             placeholder: 'Дата выезда',
             hintEmpty: 'Нужно указать дату заезда и выезда',
