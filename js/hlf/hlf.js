@@ -190,11 +190,12 @@
      * Working with cookie
      * @param n name
      * @returns {T}
+     * todo deprecated
      */
     hlf.cookie = function (n) {
         var value = "; " + document.cookie;
         var parts = value.split("; " + n + "=");
-        if (parts.length == 2) {
+        if (parts.length == 2) { // todo its mistake
             return parts.pop().split(";").shift();
         }
     };

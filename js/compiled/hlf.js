@@ -190,11 +190,12 @@
      * Working with cookie
      * @param n name
      * @returns {T}
+     * todo deprecated
      */
     hlf.cookie = function (n) {
         var value = "; " + document.cookie;
         var parts = value.split("; " + n + "=");
-        if (parts.length == 2) {
+        if (parts.length == 2) { // todo its mistake
             return parts.pop().split(";").shift();
         }
     };
@@ -298,7 +299,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
                 // additional params if needed
                 if(_.isUndefined(config.params.marker)) { // try to find marker in GET, then in cookie
-                    var marker = hlf.GET('marker') || hlf.cookie('marker') || null;
+                    var marker = hlf.GET('marker') || $.cookie('marker') || null;
                     if(marker) {
                         config.params.marker = marker;
                     }

@@ -53,7 +53,7 @@
 
                 // additional params if needed
                 if(_.isUndefined(config.params.marker)) { // try to find marker in GET, then in cookie
-                    var marker = hlf.GET('marker') || hlf.cookie('marker') || null;
+                    var marker = hlf.GET('marker') || $.cookie('marker') || null;
                     if(marker) {
                         config.params.marker = marker;
                     }
