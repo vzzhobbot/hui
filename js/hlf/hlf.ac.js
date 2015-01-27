@@ -156,6 +156,11 @@
             });
         }
 
+        function setValue(id, type) {
+            config.id = id;
+            config.type = !type ? 'location' : type;
+        }
+
         function onReset() {
             _.each(config.avgPricesCalendars, function(name) {
                 controls[name].resetDetails();
@@ -277,6 +282,7 @@
                 config: config,
                 select: select,
                 getParams: getParams,
+                setValue: setValue,
                 validate: validate
             };
 

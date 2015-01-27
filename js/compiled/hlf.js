@@ -501,6 +501,11 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             });
         }
 
+        function setValue(id, type) {
+            config.id = id;
+            config.type = !type ? 'location' : type;
+        }
+
         function onReset() {
             _.each(config.avgPricesCalendars, function(name) {
                 controls[name].resetDetails();
@@ -622,6 +627,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 config: config,
                 select: select,
                 getParams: getParams,
+                setValue: setValue,
                 validate: validate
             };
 
