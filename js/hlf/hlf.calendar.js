@@ -154,7 +154,6 @@
             var date;
             if (window.calendar) {
                 date = $i[0].value;
-                console.log(date);
             } else {
                 date = $i.datepicker('getDate');
             }
@@ -170,7 +169,6 @@
         }
 
         function validate() {
-            console.log((!config.required || $i.datepicker('option', 'disabled') || _.size(getParams())));
             if(!config.required || $i.datepicker('option', 'disabled') || _.size(getParams())) {
                 return true;
             }
@@ -334,7 +332,6 @@
             if(date) {
                 r[config.name] = $.datepicker.formatDate(config.format, date);
             }
-            console.log(r);
 
             return r;
         }
