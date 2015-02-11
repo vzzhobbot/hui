@@ -831,7 +831,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             var date;
             if (window.calendar) {
                 date = $i[0].value;
-                console.log(date);
             } else {
                 date = $i.datepicker('getDate');
             }
@@ -847,7 +846,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         }
 
         function validate() {
-            console.log((!config.required || $i.datepicker('option', 'disabled') || _.size(getParams())));
             if(!config.required || $i.datepicker('option', 'disabled') || _.size(getParams())) {
                 return true;
             }
@@ -1011,7 +1009,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             if(date) {
                 r[config.name] = $.datepicker.formatDate(config.format, date);
             }
-            console.log(r);
 
             return r;
         }
