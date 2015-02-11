@@ -1047,6 +1047,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
             // draw ui control
             if (Modernizr.inputtypes.date && window.innerWidth<=500) {
+                $i.parent().addClass('html5date');
                 window.calendar = true;
 
             } else {
