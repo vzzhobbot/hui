@@ -151,7 +151,13 @@
         }
 
         function getDate () {
-            var date = $i.datepicker('getDate');
+            var date;
+            if (window.calendar) {
+                date = $i[0].value;
+                console.log(date);
+            } else {
+                date = $i.datepicker('getDate');
+            }
             if(date) {
                 return new Date(date);
             }
@@ -164,6 +170,7 @@
         }
 
         function validate() {
+            console.log((!config.required || $i.datepicker('option', 'disabled') || _.size(getParams())));
             if(!config.required || $i.datepicker('option', 'disabled') || _.size(getParams())) {
                 return true;
             }
@@ -327,6 +334,8 @@
             if(date) {
                 r[config.name] = $.datepicker.formatDate(config.format, date);
             }
+            console.log(r);
+
             return r;
         }
 
@@ -363,50 +372,55 @@
             $h = hlf.getEl($c, 'hint');
 
             // draw ui control
-            $i.datepicker({
-                minDate: config.min,
-                numberOfMonths: config.months,
-                onSelect: function(date, e) {
-                    relationAdjust();
-                    relationAutoSet();
-                    relationAutoShow();
-                    config.onSelect(date, $.datepicker.formatDate(config.format, getDate()), e);
-                    hlf.goal(config.goalSelectDate);
-                    $iw.removeClass('hlf-state--error');
-                },
-                beforeShowDay: function(date) {
-                    return getDayCfg(date);
-                },
-                beforeShow: function(e, i) {
-                    i.dpDiv.attr('__cheat', uid);
-                    updateRange();
-                },
-                afterShow: function(i) {
-                    if(config.head) {
-                        i.dpDiv.prepend(config.tplHead({
-                            head: config.head
-                        }));
-                    }
-                    if(_.isArray(details.points) && details.points.length) {
-                        $(i.dpDiv).append(
-                            config.tplLegend({
-                                'legend': config.legend,
-                                'points': _.map(details.points, details.formatter)
-                            })
-                        );
-                    }
-                    if(controls[config.relationCalendar]) {
-                        $('[data-handler=selectDay]', i.dpDiv)
-                            .on('mouseenter', _.partialRight(dateMouseEnter, i))
-                            .on('mouseleave', _.partialRight(dateMouseLeave, i));
-                    }
-                },
-                onClose: function(date, i) {
-                    $('[data-handler=selectDay]', i.dpDiv).off('mouseenter mouseleave');
-                    isAutoShown = false;
-                }
-            });
+            if (Modernizr.inputtypes.date && window.innerWidth<=500) {
+                window.calendar = true;
 
+            } else {
+                $i[0].type = 'text';
+                $i.datepicker({
+                    minDate: config.min,
+                    numberOfMonths: config.months,
+                    onSelect: function (date, e) {
+                        relationAdjust();
+                        relationAutoSet();
+                        relationAutoShow();
+                        config.onSelect(date, $.datepicker.formatDate(config.format, getDate()), e);
+                        hlf.goal(config.goalSelectDate);
+                        $iw.removeClass('hlf-state--error');
+                    },
+                    beforeShowDay: function (date) {
+                        return getDayCfg(date);
+                    },
+                    beforeShow: function (e, i) {
+                        i.dpDiv.attr('__cheat', uid);
+                        updateRange();
+                    },
+                    afterShow: function (i) {
+                        if (config.head) {
+                            i.dpDiv.prepend(config.tplHead({
+                                head: config.head
+                            }));
+                        }
+                        if (_.isArray(details.points) && details.points.length) {
+                            $(i.dpDiv).append(
+                                config.tplLegend({
+                                    'legend': config.legend,
+                                    'points': _.map(details.points, details.formatter)
+                                })
+                            );
+                        }
+                        if (controls[config.relationCalendar]) {
+                            $('[data-handler=selectDay]', i.dpDiv)
+                                .on('mouseenter', _.partialRight(dateMouseEnter, i))
+                                .on('mouseleave', _.partialRight(dateMouseLeave, i));
+                        }
+                    },
+                    onClose: function (date, i) {
+                        $('[data-handler=selectDay]', i.dpDiv).off('mouseenter mouseleave');
+                        isAutoShown = false;
+                    }
+                });
+            }
             // maybe set a default value?
             if(_.isDate(config.value)) {
                 // correct date by timezone offset
