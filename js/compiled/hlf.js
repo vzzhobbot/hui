@@ -675,7 +675,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
     });
 
 })(jQuery, _, hlf);
-;(function ($, _, hlf) {
+;
+(function ($, _, hlf) {
     'use strict';
 
     hlf.calendar = function (config) {
@@ -687,9 +688,9 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
             controls = {},
             uid = _.uniqueId('hlf.calendar'), /* Unique id for "refresh" cheating.
-                                               * $i.datepicker('widget') returns any opened datepicker,
-                                               * that means we need to mark this calendar with uid
-                                               * to check uid in refresh function */
+         * $i.datepicker('widget') returns any opened datepicker,
+         * that means we need to mark this calendar with uid
+         * to check uid in refresh function */
             details = {}, // day details
             range = {
                 'in': null, // if you use relation calendar here is inferior date value
@@ -704,8 +705,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             value: null, // default date Date()
             format: 'yy-mm-dd', // getParams() param value format
             min: 0, // min selectable date (in days from today)
-            months: (function(){
-                if (window.innerWidth<=700){
+            months: (function () {
+                if (window.innerWidth <= 700) {
                     return 1
                 } else {
                     return 2
@@ -721,7 +722,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             // hintPeriod: 'period-panica!',
 
             goalSelectDate: {}, // goal on select date
-            onSelect: function() {},
+            onSelect: function () {
+            },
 
             relationCalendar: null, // name of control
             relationSuperior: true, // 1 - superior, 0 - inferior
@@ -751,7 +753,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
          */
         function show(flag) {
             isAutoShown = !!flag;
-            setTimeout(function(){ // jquery.ui.datepicker show cheat
+            setTimeout(function () { // jquery.ui.datepicker show cheat
                 $i.datepicker('show');
             }, 16);
         }
@@ -768,8 +770,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
          */
         function refresh() {
             var $widget = $i.datepicker('widget');
-            if($widget.is(':visible') && $widget.attr('__cheat') == uid) { // use __cheat to refresh this own calendar
-                                                                           // because in $widget may be any calendar
+            if ($widget.is(':visible') && $widget.attr('__cheat') == uid) { // use __cheat to refresh this own calendar
+                // because in $widget may be any calendar
                 $i.datepicker('refresh');
             }
         }
@@ -780,16 +782,16 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         function relationAdjust() {
             var relation = controls[config.relationCalendar];
             // is it has value?
-            if(relation && relation.getStamp()) {
+            if (relation && relation.getStamp()) {
                 // for superior relation set to 1 day more
-                if(config.relationSuperior) {
-                    if(relation.getStamp() <= getStamp()) {
+                if (config.relationSuperior) {
+                    if (relation.getStamp() <= getStamp()) {
                         relation.setDate(getDate(), 1);
                     }
                 }
                 // for inferior relation set to -1 day
                 else {
-                    if(relation.getStamp() >= getStamp()) {
+                    if (relation.getStamp() >= getStamp()) {
                         relation.setDate(getDate(), -1);
                     }
                 }
@@ -802,7 +804,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         function relationAutoSet() {
             var relation = controls[config.relationCalendar];
             // auto set value only if there is no value & relationAutoSet = true
-            if(relation && !relation.getStamp() && config.relationAutoSet) {
+            if (relation && !relation.getStamp() && config.relationAutoSet) {
                 relation.setDate(getDate(), config.relationSuperior ? 1 : -1);
             }
         }
@@ -812,41 +814,41 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
          */
         function relationAutoShow() {
             var relation = controls[config.relationCalendar];
-            if(relation && config.relationAutoShow && !isAutoShown) { // if this calendar has been shown by its
-                                                                      // relation (isAutoShown=true), we dont
-                                                                      // show first one
+            if (relation && config.relationAutoShow && !isAutoShown) { // if this calendar has been shown by its
+                // relation (isAutoShown=true), we dont
+                // show first one
                 relation.show(true);
             }
         }
 
-        function getStamp () {
+        function getStamp() {
             var date = $i.datepicker('getDate');
-            if(date) {
+            if (date) {
                 return (new Date($i.datepicker('getDate'))).getTime();
             }
             return null;
         }
 
-        function getDate () {
+        function getDate() {
             var date;
             if (window.calendar) {
                 date = $i[0].value;
             } else {
                 date = $i.datepicker('getDate');
             }
-            if(date) {
+            if (date) {
                 return new Date(date);
             }
             return null;
         }
 
-        function setDate (date, modify) {
+        function setDate(date, modify) {
             $i.datepicker('setDate', date.setDate(date.getDate() + (modify || 0)));
             $iw.removeClass('hlf-state--error');
         }
 
         function validate() {
-            if(!config.required || $i.datepicker('option', 'disabled') || _.size(getParams())) {
+            if (!config.required || $i.datepicker('option', 'disabled') || _.size(getParams())) {
                 return true;
             }
             $iw.addClass('hlf-state--error');
@@ -861,7 +863,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
          * @param formatter function
          */
         function specifyDetails(data, formatter) {
-            if(!_.size(data))
+            if (!_.size(data))
                 return false;
             var count = 0,
                 sum = 0,
@@ -894,12 +896,12 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 if (up) {
                     if (percent > 20)
                         rate = 3;
-                    if(percent > 60)
+                    if (percent > 60)
                         rate = 4;
                 } else {
                     if (percent > 20)
                         rate = 1;
-                    if(percent > 60)
+                    if (percent > 60)
                         rate = 0;
                 }
                 dates[date] = {
@@ -910,11 +912,13 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             setDetails({
                 dates: dates,
                 points: [ // price points for legend
-                    average - diffMin * 0.8,
+                        average - diffMin * 0.8,
                     average,
-                    average + diffMax * 0.8
+                        average + diffMax * 0.8
                 ],
-                formatter: formatter || function(v) {return v}
+                formatter: formatter || function (v) {
+                    return v
+                }
             });
             return true;
         }
@@ -944,13 +948,13 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 cfg = [true, '', ''];
 
             // fill cfg with date details
-            if(!_.isUndefined(details.dates) && details.dates[dateAsStr]) {
+            if (!_.isUndefined(details.dates) && details.dates[dateAsStr]) {
                 cfg[1] += ' ui-datepicker-dayType ui-datepicker-dayType--' + details.dates[dateAsStr].rate; // cell class
                 cfg[2] = details.formatter(details.dates[dateAsStr].value);
             }
 
             // fill cfg with range details
-            if(controls[config.relationCalendar]) {
+            if (controls[config.relationCalendar]) {
                 // in range
                 cfg[1] += range['in'] && range['out'] && (range['in'].getTime() <= date.getTime() && date.getTime() <= range['out'].getTime()) ?
                     ' ui-datepicker-dayRange' :
@@ -975,10 +979,10 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $hover.addClass('ui-datepicker-dayRange-hover--' + (config.relationSuperior ? 'in' : 'out'));
 
             // highlight range on hover
-            $('[data-handler=selectDay]', i.dpDiv).each(function() {
+            $('[data-handler=selectDay]', i.dpDiv).each(function () {
                 var $cell = $(this),
                     cellDate = new Date($cell.data('year') + '-' + ($cell.data('month') + 1) + '-' + $cell.data('day') + ' 00:00:00');
-                if(config.relationSuperior ?
+                if (config.relationSuperior ?
                     range['out'] && cellDate.getTime() >= hoverDate.getTime() && cellDate.getTime() <= range['out'].getTime() :
                     range['in'] && cellDate.getTime() <= hoverDate.getTime() && cellDate.getTime() >= range['in'].getTime()) {
                     $cell.addClass('ui-datepicker-dayRange-hover');
@@ -993,7 +997,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
          */
         function dateMouseLeave(e, i) {
             // remove all hover classes
-            $('[data-handler=selectDay]', i.dpDiv).each(function() {
+            $('[data-handler=selectDay]', i.dpDiv).each(function () {
                 $(this).removeClass('ui-datepicker-dayRange-hover');
                 $(this).removeClass('ui-datepicker-dayRange-hover--in');
                 $(this).removeClass('ui-datepicker-dayRange-hover--out');
@@ -1002,11 +1006,11 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
         function getParams() {
             var r = {};
-            if($i.datepicker('option', 'disabled')) {
+            if ($i.datepicker('option', 'disabled')) {
                 return r;
             }
             var date = getDate();
-            if(date) {
+            if (date) {
                 r[config.name] = $.datepicker.formatDate(config.format, date);
             }
 
@@ -1016,10 +1020,10 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         // todo something wrong here
         function updateRange() {
             var rel = controls[config.relationCalendar];
-            if(rel) {
+            if (rel) {
                 range['in'] = getDate();
                 range['out'] = rel.getDate();
-                if(!config.relationSuperior) {
+                if (!config.relationSuperior) {
                     var tmp = range['in'];
                     range['in'] = range['out'];
                     range['out'] = tmp;
@@ -1046,9 +1050,29 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $h = hlf.getEl($c, 'hint');
 
             // draw ui control
-            if (Modernizr.inputtypes.date && window.innerWidth<=500) {
+            if (Modernizr.inputtypes.date && window.innerWidth <= 500) {
                 $i.parent().addClass('html5date');
                 window.calendar = true;
+                var div = document.createElement('div');
+                div.className = 'pseudo-placeholder';
+                div.innerHTML = $i[0].placeholder;
+                $(div).insertAfter($($i));
+//                $i[0].addEventListener('focus', function (e) {
+//                    console.log(e.target.placeholder)
+//                }, true);
+
+                var elements = document.getElementsByClassName('pseudo-placeholder');
+
+                for (var i = 0; i < elements.length; i++) {
+                    console.log(elements[i]);
+                    elements[i].addEventListener('click', (function(i) {
+                        return function() {
+                            this.style.display = 'none';
+                           this.previousSibling.focus();
+                        };
+                    })(i), false);
+
+                }
 
             } else {
                 $i[0].type = 'text';
@@ -1097,27 +1121,27 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 });
             }
             // maybe set a default value?
-            if(_.isDate(config.value)) {
+            if (_.isDate(config.value)) {
                 // correct date by timezone offset
                 config.value.setTime(config.value.getTime() + config.value.getTimezoneOffset() * 60 * 1000);
                 $i.datepicker('setDate', config.value);
             }
 
             // customize datepicker with locale, unfortunately only this method works well
-            if(config.locale) {
+            if (config.locale) {
                 $i.datepicker('option', $.datepicker.regional[config.locale]);
             }
 
-            $i.on('focus', function() {
+            $i.on('focus', function () {
                 $iw.addClass('hlf-state--focus');
                 $iw.removeClass('hlf-state--error');
             });
 
-            $i.on('blur', function() {
+            $i.on('blur', function () {
                 $iw.removeClass('hlf-state--focus');
             });
 
-            $h.on('click', function() {
+            $h.on('click', function () {
                 $iw.removeClass('hlf-state--error');
             });
 
@@ -1153,7 +1177,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         // add data-day attr to day cell
         if (typeof inst.settings.beforeShowDay == 'function') {
             // wrap beforeShowDay function and...
-            inst.settings.beforeShowDay = _.wrap(inst.settings.beforeShowDay, function(func, date) {
+            inst.settings.beforeShowDay = _.wrap(inst.settings.beforeShowDay, function (func, date) {
                 var dayConfig = func(date); // call user function
                 dayConfig[1] += "' data-day='" + date.getDate(); // use quote cheat :)
                 return dayConfig;
@@ -1214,13 +1238,13 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         prevText: 'Précédent',
         nextText: 'Suivant',
         currentText: 'Aujourd\'hlf',
-        monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin',
-            'Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
-        monthNamesShort: ['janvier','février','mars','avril','mai','juin',
-            'juillet','août','septembre','octobre','novembre','décembre'],
-        dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
-        dayNamesShort: ['Dim.','Lun.','Mar.','Mer.','Jeu.','Ven.','Sam.'],
-        dayNamesMin: ['D','L','M','M','J','V','S'],
+        monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+            'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+        monthNamesShort: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+            'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
+        dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+        dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+        dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
         weekHeader: 'Sem.',
         dateFormat: 'd M yy', firstDay: 1,
         isRTL: false,
@@ -1232,13 +1256,13 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         prevText: '&#x3C;Ant',
         nextText: 'Sig&#x3E;',
         currentText: 'Hoy',
-        monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-            'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
-        monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
-            'Jul','Ago','Sep','Oct','Nov','Dic'],
-        dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
-        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+            'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
         weekHeader: 'Sm',
         dateFormat: 'd MM yy', firstDay: 1,
         isRTL: false,
@@ -1268,13 +1292,13 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         prevText: '&#xAB;&#xA0;ย้อน',
         nextText: 'ถัดไป&#xA0;&#xBB;',
         currentText: 'วันนี้',
-        monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน',
-            'กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
-        monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.',
-            'ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'],
-        dayNames: ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'],
-        dayNamesShort: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
-        dayNamesMin: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
+        monthNames: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+            'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'],
+        monthNamesShort: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.',
+            'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
+        dayNames: ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'],
+        dayNamesShort: ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'],
+        dayNamesMin: ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'],
         weekHeader: 'Wk',
         dateFormat: 'd MM yy', firstDay: 0,
         isRTL: false,
@@ -1286,13 +1310,13 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         prevText: '&#x3C;Prec',
         nextText: 'Succ&#x3E;',
         currentText: 'Oggi',
-        monthNames: ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno',
-            'Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'],
-        monthNamesShort: ['Gen','Feb','Mar','Apr','Mag','Giu',
-            'Lug','Ago','Set','Ott','Nov','Dic'],
-        dayNames: ['Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato'],
-        dayNamesShort: ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'],
-        dayNamesMin: ['Do','Lu','Ma','Me','Gi','Ve','Sa'],
+        monthNames: ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
+            'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'],
+        monthNamesShort: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu',
+            'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'],
+        dayNames: ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'],
+        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'],
+        dayNamesMin: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
         weekHeader: 'Sm',
         dateFormat: 'd MM yy', firstDay: 1,
         isRTL: false,
@@ -1304,13 +1328,13 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         prevText: '&#x3C;Poprzedni',
         nextText: 'Następny&#x3E;',
         currentText: 'Dziś',
-        monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec',
-            'Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
-        monthNamesShort: ['stycznia','lutego','marca','kwietnia','maja','czerwca',
-            'lipca','sierpnia','września','października','listopada','grudnia'],
-        dayNames: ['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'],
-        dayNamesShort: ['Nie','Pn','Wt','Śr','Czw','Pt','So'],
-        dayNamesMin: ['N','Pn','Wt','Śr','Cz','Pt','So'],
+        monthNames: ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec',
+            'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'],
+        monthNamesShort: ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca',
+            'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia'],
+        dayNames: ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'],
+        dayNamesShort: ['Nie', 'Pn', 'Wt', 'Śr', 'Czw', 'Pt', 'So'],
+        dayNamesMin: ['N', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So'],
         weekHeader: 'Tydz',
         dateFormat: 'd M yy', firstDay: 1,
         isRTL: false,
