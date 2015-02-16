@@ -384,7 +384,6 @@
                 var elements = document.getElementsByClassName('pseudo-placeholder');
 
                 for (var i = 0; i < elements.length; i++) {
-                    console.log(elements[i]);
                     elements[i].addEventListener('click', (function(i) {
                         return function() {
                             this.style.display = 'none';

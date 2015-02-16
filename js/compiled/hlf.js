@@ -1049,32 +1049,29 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $i = hlf.getEl($c, 'input');
             $h = hlf.getEl($c, 'hint');
 
-            // draw ui control
             if (Modernizr.inputtypes.date && window.innerWidth <= 500) {
+                // native date input
                 $i.parent().addClass('html5date');
                 window.calendar = true;
                 var div = document.createElement('div');
                 div.className = 'pseudo-placeholder';
                 div.innerHTML = $i[0].placeholder;
                 $(div).insertAfter($($i));
-//                $i[0].addEventListener('focus', function (e) {
-//                    console.log(e.target.placeholder)
-//                }, true);
 
                 var elements = document.getElementsByClassName('pseudo-placeholder');
 
                 for (var i = 0; i < elements.length; i++) {
-                    console.log(elements[i]);
                     elements[i].addEventListener('click', (function(i) {
                         return function() {
                             this.style.display = 'none';
                            this.previousSibling.focus();
                         };
                     })(i), false);
-
                 }
 
             } else {
+                // draw ui control
+
                 $i[0].type = 'text';
                 $i.datepicker({
                     minDate: config.min,
