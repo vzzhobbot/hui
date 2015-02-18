@@ -1069,6 +1069,18 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                     })(i), false);
                 }
 
+                $i[0].addEventListener('focus', function(e){
+                    if ($(e.target).closest('[hlf-calendar=checkOut]').length > 0 && ( $('[hlf-calendar=checkIn]').find('input')[0].value)){
+                        var dateIn = new Date( $('[hlf-calendar=checkIn]').find('input')[0].value) ;
+                        var nextDay = new Date();
+                        nextDay.setDate(dateIn.getDate()+1);
+                        var d = nextDay.getUTCDate();
+                        var m = nextDay.getUTCMonth()+1;
+                        m<10&&(m="0"+m);
+                        d<10&&(d="0"+d);
+                        e.target.value = ((nextDay.getUTCFullYear())+'-'+(m)+'-'+d);
+                    };
+                }, false);;
             } else {
                 // draw ui control
 
