@@ -222,7 +222,7 @@ this["hlf"]["jst"]["calendar.head.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
   },"useData":true};
 
 this["hlf"]["jst"]["calendar.input.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  return "<div class=\"hlf-input hlf-input--calendar\" hlf-role=\"input-wrap\">\n    <input type=\"date\" placeholder=\"<%= placeholder %>\" tabindex=\"<%= tabIndex %>\" hlf-role=\"input\"/>\n    <div class=\"hint\" hlf-role=\"hint\"></div>\n</div>";
+  return "<div class=\"hlf-input hlf-input--calendar\" hlf-role=\"input-wrap\">\n    <input type=\"date\" placeholder=\"<%= placeholder %>\" tabindex=\"<%= tabIndex %>\" hlf-role=\"input\" height=\"60\"  />\n    <div class=\"hint\" hlf-role=\"hint\"></div>\n</div>";
   },"useData":true};
 
 this["hlf"]["jst"]["calendar.legend.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
@@ -1074,19 +1074,68 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                     })(i), false);
                 }
 
+                var today = new Date();
+                var yesterday = new Date();
+                yesterday.setDate(today.getDate()-1);
+
+                var tM = (yesterday.getUTCMonth()+1)
+                var tD = yesterday.getUTCDate();
+                tM<10&&(tM="0"+tM);
+                tD<10&&(tD="0"+tD);
+                $i[0].min = yesterday.getUTCFullYear()+"-"+tM+"-"+tD;
+
                 $i[0].addEventListener('focus', function(e){
                     $i[0].nextSibling.style.display = 'none';
                     if ($(e.target).closest('[hlf-calendar=checkOut]').length > 0 && ( $('[hlf-calendar=checkIn]').find('input')[0].value)){
+
                         var dateIn = new Date( $('[hlf-calendar=checkIn]').find('input')[0].value) ;
+                        var nextDay = new Date();
+                        nextDay.setDate(dateIn.getDate()+1);
+
+                        var d = nextDay.getUTCDate();
+                        var m = nextDay.getUTCMonth()+1;
+                        m<10&&(m="0"+m);
+                        d<10&&(d="0"+d);
+
+//                        var tM = (dateIn.getUTCMonth()+1)
+//                        var tD = dateIn.getUTCDate();
+//                        tM<10&&(tM="0"+tM);
+//                        tD<10&&(tD="0"+tD);
+
+                        e.target.min = nextDay.getUTCFullYear()+"-"+m+"-"+d;
+
+                        e.target.value.length==0&&(e.target.value=nextDay.getUTCFullYear()+"-"+m+"-"+d);
+                    };
+                }, false);
+
+
+                $i[0].addEventListener('blur', function(e){
+                    var form = $(e.target).closest('form');
+                    console.log();
+                    if ($(e.target).closest('[hlf-calendar=checkIn]').length > 0 && ( form.find('[hlf-calendar=checkIn]').find('input')[0].value) && ( form.find('[hlf-calendar=checkOut]').find('input')[0].value.length==0)){
+                        var dateIn = new Date( form.find('[hlf-calendar=checkIn]').find('input')[0].value) ;
                         var nextDay = new Date();
                         nextDay.setDate(dateIn.getDate()+1);
                         var d = nextDay.getUTCDate();
                         var m = nextDay.getUTCMonth()+1;
                         m<10&&(m="0"+m);
                         d<10&&(d="0"+d);
-                        e.target.value = ((nextDay.getUTCFullYear())+'-'+(m)+'-'+d);
+
+//                        var tM = (dateIn.getUTCMonth()+1)
+//                        var tD = dateIn.getUTCDate();
+//                        tM<10&&(tM="0"+tM);
+//                        tD<10&&(tD="0"+tD);
+
+                        form.find('[hlf-calendar=checkOut]').find('input')[0].min=nextDay.getUTCFullYear()+"-"+m+"-"+d;
+                        form.find('[hlf-calendar=checkOut]').find('input')[0].value=nextDay.getUTCFullYear()+"-"+m+"-"+d;
                     };
-                }, false);;
+
+                    if ($(e.target).closest('[hlf-calendar=checkOut]').length > 0 && ( form.find('[hlf-calendar=checkOut]').find('input')[0].value)) {
+                        var maxdate = form.find('[hlf-calendar=checkOut]').find('input')[0].value;
+                        form.find('[hlf-calendar=checkIn]').find('input')[0].max=maxdate;
+
+                    }
+                    }, false);
             } else {
                 // draw ui control
 
