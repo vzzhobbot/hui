@@ -752,10 +752,15 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
          * @param flag it means calendar has been shown automatically (by another control)
          */
         function show(flag) {
-            isAutoShown = !!flag;
-            setTimeout(function () { // jquery.ui.datepicker show cheat
-                $i.datepicker('show');
-            }, 16);
+            if (window.calendar) {
+                return false
+            } else {
+                isAutoShown = !!flag;
+                setTimeout(function () { // jquery.ui.datepicker show cheat
+                    $i.datepicker('show');
+                }, 16);
+            }
+
         }
 
         /**
@@ -1049,7 +1054,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $i = hlf.getEl($c, 'input');
             $h = hlf.getEl($c, 'hint');
 
-            if (Modernizr.inputtypes.date && window.innerWidth <= 500) {
+            if (Modernizr.inputtypes.date && window.innerWidth <= 500 && document.body.clientWidth <= 500) {
                 // native date input
                 $i.parent().addClass('html5date');
                 window.calendar = true;
@@ -1070,6 +1075,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 }
 
                 $i[0].addEventListener('focus', function(e){
+                    $i[0].nextSibling.style.display = 'none';
                     if ($(e.target).closest('[hlf-calendar=checkOut]').length > 0 && ( $('[hlf-calendar=checkIn]').find('input')[0].value)){
                         var dateIn = new Date( $('[hlf-calendar=checkIn]').find('input')[0].value) ;
                         var nextDay = new Date();
