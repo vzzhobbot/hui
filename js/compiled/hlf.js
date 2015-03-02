@@ -751,12 +751,13 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
          * Show calendar
          * @param flag it means calendar has been shown automatically (by another control)
          */
-        function show(flag) {
+        function show(flag, date) {
             if (window.calendar) {
                 return false
             } else {
                 isAutoShown = !!flag;
                 setTimeout(function () { // jquery.ui.datepicker show cheat
+                    $i.datepicker( "setDate", date );
                     $i.datepicker('show');
                 }, 16);
             }
@@ -817,12 +818,12 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         /**
          * Auto show relation calendar
          */
-        function relationAutoShow() {
+        function relationAutoShow(date) {
             var relation = controls[config.relationCalendar];
             if (relation && config.relationAutoShow && !isAutoShown) { // if this calendar has been shown by its
                 // relation (isAutoShown=true), we dont
                 // show first one
-                relation.show(true);
+                relation.show(true, date);
             }
         }
 
@@ -1036,6 +1037,12 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             }
         }
 
+        function selectMonth(date, f) {
+            $c = hlf.getContainer(f, 'calendar', config.relationCalendar);
+            $i = hlf.getEl($c, 'input');
+            $($i).datepicker( "setDate", date );
+        }
+
         /**
          * Draw
          *
@@ -1111,7 +1118,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
                 $i[0].addEventListener('blur', function(e){
                     var form = $(e.target).closest('form');
-                    console.log();
                     if ($(e.target).closest('[hlf-calendar=checkIn]').length > 0 && ( form.find('[hlf-calendar=checkIn]').find('input')[0].value) && ( form.find('[hlf-calendar=checkOut]').find('input')[0].value.length==0)){
                         var dateIn = new Date( form.find('[hlf-calendar=checkIn]').find('input')[0].value) ;
                         var nextDay = new Date();
@@ -1146,8 +1152,9 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                     onSelect: function (date, e) {
                         relationAdjust();
                         relationAutoSet();
-                        relationAutoShow();
+                        relationAutoShow(date);
                         config.onSelect(date, $.datepicker.formatDate(config.format, getDate()), e);
+//                        selectMonth(date, $f);
                         hlf.goal(config.goalSelectDate);
                         $iw.removeClass('hlf-state--error');
                     },
