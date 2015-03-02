@@ -757,8 +757,14 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             } else {
                 isAutoShown = !!flag;
                 setTimeout(function () { // jquery.ui.datepicker show cheat
-                    $i.datepicker( "setDate", date );
+                    if (flag && date && $i.datepicker("getDate")) {
+                        var givenDate = new Date(date);
+                        if ( ($i.datepicker("getDate")).getTime() < givenDate.getTime()) {
+                            $i.datepicker( "setDate", givenDate );
+                        };
+                    }
                     $i.datepicker('show');
+
                 }, 16);
             }
 
@@ -1138,7 +1144,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                     onSelect: function (date, e) {
                         relationAdjust();
                         relationAutoSet();
-                        relationAutoShow(date);
+                        relationAutoShow( $.datepicker.formatDate(config.format, getDate()));
                         config.onSelect(date, $.datepicker.formatDate(config.format, getDate()), e);
                         hlf.goal(config.goalSelectDate);
                         $iw.removeClass('hlf-state--error');
