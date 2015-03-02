@@ -1061,7 +1061,9 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $i = hlf.getEl($c, 'input');
             $h = hlf.getEl($c, 'hint');
 
-            if (Modernizr.inputtypes.date && window.innerWidth <= 500 && document.body.clientWidth <= 500) {
+
+            var x = document.createElement('input'); x.setAttribute('type', 'date');
+            if (x.type == 'date' && window.innerWidth <= 500 && document.body.clientWidth <= 500) {
                 // native date input
                 $i.parent().addClass('html5date');
                 window.calendar = true;
@@ -1094,23 +1096,14 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 $i[0].addEventListener('focus', function(e){
                     $i[0].nextSibling.style.display = 'none';
                     if ($(e.target).closest('[hlf-calendar=checkOut]').length > 0 && ( $('[hlf-calendar=checkIn]').find('input')[0].value)){
-
                         var dateIn = new Date( $('[hlf-calendar=checkIn]').find('input')[0].value) ;
                         var nextDay = new Date();
                         nextDay.setDate(dateIn.getDate()+1);
-
                         var d = nextDay.getUTCDate();
                         var m = nextDay.getUTCMonth()+1;
                         m<10&&(m="0"+m);
                         d<10&&(d="0"+d);
-
-//                        var tM = (dateIn.getUTCMonth()+1)
-//                        var tD = dateIn.getUTCDate();
-//                        tM<10&&(tM="0"+tM);
-//                        tD<10&&(tD="0"+tD);
-
                         e.target.min = nextDay.getUTCFullYear()+"-"+m+"-"+d;
-
                         e.target.value.length==0&&(e.target.value=nextDay.getUTCFullYear()+"-"+m+"-"+d);
                     };
                 }, false);
@@ -1154,7 +1147,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                         relationAutoSet();
                         relationAutoShow(date);
                         config.onSelect(date, $.datepicker.formatDate(config.format, getDate()), e);
-//                        selectMonth(date, $f);
                         hlf.goal(config.goalSelectDate);
                         $iw.removeClass('hlf-state--error');
                     },

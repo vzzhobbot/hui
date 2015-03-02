@@ -384,7 +384,9 @@
             $i = hlf.getEl($c, 'input');
             $h = hlf.getEl($c, 'hint');
 
-            if (Modernizr.inputtypes.date && window.innerWidth <= 500 && document.body.clientWidth <= 500) {
+
+            var x = document.createElement('input'); x.setAttribute('type', 'date');
+            if (x.type == 'date' && window.innerWidth <= 500 && document.body.clientWidth <= 500) {
                 // native date input
                 $i.parent().addClass('html5date');
                 window.calendar = true;
@@ -429,7 +431,6 @@
                     };
                 }, false);
 
-
                 $i[0].addEventListener('blur', function(e){
                     var form = $(e.target).closest('form');
                     if ($(e.target).closest('[hlf-calendar=checkIn]').length > 0 && ( form.find('[hlf-calendar=checkIn]').find('input')[0].value) && ( form.find('[hlf-calendar=checkOut]').find('input')[0].value.length==0)){
@@ -440,12 +441,6 @@
                         var m = nextDay.getUTCMonth()+1;
                         m<10&&(m="0"+m);
                         d<10&&(d="0"+d);
-
-//                        var tM = (dateIn.getUTCMonth()+1)
-//                        var tD = dateIn.getUTCDate();
-//                        tM<10&&(tM="0"+tM);
-//                        tD<10&&(tD="0"+tD);
-
                         form.find('[hlf-calendar=checkOut]').find('input')[0].min=nextDay.getUTCFullYear()+"-"+m+"-"+d;
                         form.find('[hlf-calendar=checkOut]').find('input')[0].value=nextDay.getUTCFullYear()+"-"+m+"-"+d;
                     };
