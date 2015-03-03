@@ -80,9 +80,9 @@
             } else {
                 isAutoShown = !!flag;
                 setTimeout(function () { // jquery.ui.datepicker show cheat
-                    if (flag && date && $i.datepicker("getDate")) {
+                    if (flag && date) {
                         var givenDate = new Date(date);
-                        if ( ($i.datepicker("getDate")).getTime() < givenDate.getTime()) {
+                        if (($i.datepicker("getDate")==null) || ($i.datepicker("getDate")).getTime() < givenDate.getTime() ) {
                             $i.datepicker( "setDate", givenDate );
                         };
                     }
