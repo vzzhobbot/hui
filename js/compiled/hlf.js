@@ -759,6 +759,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 setTimeout(function () { // jquery.ui.datepicker show cheat
                     if (flag && date) {
                         var givenDate = new Date(date);
+                        givenDate.setDate(givenDate.getDate()+1);
                         if (($i.datepicker("getDate")==null) || ($i.datepicker("getDate")).getTime() < givenDate.getTime() ) {
                             $i.datepicker( "setDate", givenDate );
                         };

@@ -82,6 +82,7 @@
                 setTimeout(function () { // jquery.ui.datepicker show cheat
                     if (flag && date) {
                         var givenDate = new Date(date);
+                        givenDate.setDate(givenDate.getDate()+1);
                         if (($i.datepicker("getDate")==null) || ($i.datepicker("getDate")).getTime() < givenDate.getTime() ) {
                             $i.datepicker( "setDate", givenDate );
                         };
