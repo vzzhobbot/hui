@@ -393,7 +393,7 @@
 
 
             var x = document.createElement('input'); x.setAttribute('type', 'date');
-            if (x.type == 'date' && window.innerWidth <= 500 && document.body.clientWidth <= 500) {
+            if (x.type == 'date' && device.mobile()) {
                 // native date input
                 $i.parent().addClass('html5date');
                 window.calendar = true;
