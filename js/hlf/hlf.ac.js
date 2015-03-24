@@ -10,7 +10,7 @@
             $l = null, // loader
             $sc = null, // samples container
             $sl = null, // samples links
-
+            $cl = null, //close button
             controls = {},
             goalUseInputSent = false; // flag means event 'use' sent (prevent multisent)
 
@@ -194,7 +194,6 @@
         }
 
         return function(name, $f, c, ti) {
-
             if(config.id) {
                 avgPricesRequest(config.id);
             }
@@ -209,6 +208,11 @@
             $i = hlf.getEl($c, 'input');
             $h = hlf.getEl($c, 'hint');
             $l = hlf.getEl($c, 'loader');
+            $cl = hlf.getEl($c, 'close'); //close button
+
+            if ($i[0].value!=='') {
+                $iw.addClass('hlf-state--no-empty');
+            };
 
             $i.reachAutocomplete({
                 source: source,
@@ -221,6 +225,10 @@
 
             $i.on('keyup', function() {
                 config.text = $i.val();
+                if (($i[0].value=='') && ($iw[0].className.indexOf('hlf-state--no-empty')>-1)) {
+                    $iw.removeClass('hlf-state--no-empty');
+                };
+
             });
 
             $i.on('keydown', function(e) {
@@ -235,6 +243,9 @@
                     goalUseInputSent = true;
                 }
                 $iw.removeClass('hlf-state--error');
+                if ($i[0].value!='') {
+                    $iw.addClass('hlf-state--no-empty');
+                };
             });
 
             $i.on('focus', function() {
@@ -249,6 +260,11 @@
 
             $h.on('click', function() {
                 $iw.removeClass('hlf-state--error');
+            });
+
+            $cl.on('click', function(){
+                $i[0].value='';
+                $iw.removeClass('hlf-state--no-empty');
             });
 
             if(config.autoFocus && !config.text.length) {

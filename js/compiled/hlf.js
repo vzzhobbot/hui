@@ -206,7 +206,7 @@
 this["hlf"] = this["hlf"] || {};
 this["hlf"]["jst"] = this["hlf"]["jst"] || {};
 this["hlf"]["jst"]["ac.input.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  return "<div class=\"hlf-input hlf-input--ac\" hlf-role=\"input-wrap\">\n    <input type=\"text\"\n           placeholder=\"<%= placeholder %>\"\n           value=\"<%= text %>\"\n           tabindex=\"<%= tabIndex %>\"\n           hlf-role=\"input\"/>\n    <div class=\"loader\" hlf-role=\"loader\"></div>\n    <div class=\"hint\" hlf-role=\"hint\"><%= hint %></div>\n</div>";
+  return "<div class=\"hlf-input hlf-input--ac\" hlf-role=\"input-wrap\">\n    <input type=\"text\"\n           placeholder=\"<%= placeholder %>\"\n           value=\"<%= text %>\"\n           tabindex=\"<%= tabIndex %>\"\n           hlf-role=\"input\"/>\n    <div class=\"loader\" hlf-role=\"loader\"></div>\n    <i class=\"icon-close\" hlf-role=\"close\"></i>\n    <div class=\"hint\" hlf-role=\"hint\"><%= hint %></div>\n</div>";
   },"useData":true};
 
 this["hlf"]["jst"]["ac.samples.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
@@ -230,7 +230,7 @@ this["hlf"]["jst"]["calendar.legend.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"m
   },"useData":true};
 
 this["hlf"]["jst"]["guests.child.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  return "<li class=\"hlf-guests-children-item\" hlf-role=\"child-container\" hlf-name=\"<%= key %>\">\n    <div class=\"hlf-guests-child-age-title\">\n        <%= title %>\n        <div  class=\"hlf-guests-child-age-hint\"><%= hint %></div>\n    </div>\n    <div class=\"hlf-guests-child-age-controls\">\n        <a class='hlf-control' href=\"#\" hlf-role=\"child-age-decrement\">◀︎</a>\n        <div class=\"hlf-guests-child-age-val\" hlf-role=\"child-age\"><%= age %></div>\n        <a class='hlf-control' href=\"#\" hlf-role=\"child-age-increment\">►</a>\n    </div>\n</li>";
+  return "<li class=\"hlf-guests-children-item\" hlf-role=\"child-container\" hlf-name=\"<%= key %>\">\n    <div class=\"hlf-guests-child-age-title\">\n        <%= title %>\n        <div  class=\"hlf-guests-child-age-hint\"><%= hint %></div>\n    </div>\n    <div class=\"hlf-guests-child-age-controls\">\n        <a class='hlf-control' href=\"#\" hlf-role=\"child-age-decrement\"><i class=\"icon-chevron-left\"></i>︎</a>\n        <div class=\"hlf-guests-child-age-val\" hlf-role=\"child-age\"><%= age %></div>\n        <a class='hlf-control' href=\"#\" hlf-role=\"child-age-increment\"><i class=\"icon-chevron-right\"></i></a>\n    </div>\n</li>";
   },"useData":true};
 
 this["hlf"]["jst"]["guests.container.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
@@ -355,7 +355,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $l = null, // loader
             $sc = null, // samples container
             $sl = null, // samples links
-
+            $cl = null, //close button
             controls = {},
             goalUseInputSent = false; // flag means event 'use' sent (prevent multisent)
 
@@ -539,7 +539,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         }
 
         return function(name, $f, c, ti) {
-
             if(config.id) {
                 avgPricesRequest(config.id);
             }
@@ -554,6 +553,11 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $i = hlf.getEl($c, 'input');
             $h = hlf.getEl($c, 'hint');
             $l = hlf.getEl($c, 'loader');
+            $cl = hlf.getEl($c, 'close'); //close button
+
+            if ($i[0].value!=='') {
+                $iw.addClass('hlf-state--no-empty');
+            };
 
             $i.reachAutocomplete({
                 source: source,
@@ -566,6 +570,10 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
             $i.on('keyup', function() {
                 config.text = $i.val();
+                if (($i[0].value=='') && ($iw[0].className.indexOf('hlf-state--no-empty')>-1)) {
+                    $iw.removeClass('hlf-state--no-empty');
+                };
+
             });
 
             $i.on('keydown', function(e) {
@@ -580,6 +588,9 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                     goalUseInputSent = true;
                 }
                 $iw.removeClass('hlf-state--error');
+                if ($i[0].value!='') {
+                    $iw.addClass('hlf-state--no-empty');
+                };
             });
 
             $i.on('focus', function() {
@@ -594,6 +605,11 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
             $h.on('click', function() {
                 $iw.removeClass('hlf-state--error');
+            });
+
+            $cl.on('click', function(){
+                $i[0].value='';
+                $iw.removeClass('hlf-state--no-empty');
             });
 
             if(config.autoFocus && !config.text.length) {
