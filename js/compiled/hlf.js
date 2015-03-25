@@ -383,6 +383,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             goalUseInput: {}, // {ga: 'la-la-la.bla-bla', yam: 'sdasds', as: 'something'}
             goalAcSelect: {},
             goalUseSamples: {},
+            goalUseClear: {},
 
             onSelect: function() {}, // select from autocomplete
             onSelectShowCalendar: null,
@@ -610,6 +611,10 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $cl.on('click', function(){
                 $i[0].value='';
                 $iw.removeClass('hlf-state--no-empty');
+                config.type = '';
+                config.id = 0;
+                onReset();
+                hlf.goal(config.goalUseClear);
             });
 
             if(config.autoFocus && !config.text.length) {
@@ -634,6 +639,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                     var $this = $(this);
                     select($this.data('type'), $this.data('id'), $this.data('text'));
                     hlf.goal(config.goalUseSamples);
+                    $iw.addClass('hlf-state--no-empty');
                     return false;
                 });
 
