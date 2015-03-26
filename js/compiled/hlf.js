@@ -206,7 +206,7 @@
 this["hlf"] = this["hlf"] || {};
 this["hlf"]["jst"] = this["hlf"]["jst"] || {};
 this["hlf"]["jst"]["ac.input.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  return "<div class=\"hlf-input hlf-input--ac\" hlf-role=\"input-wrap\">\n    <input type=\"text\"\n           placeholder=\"<%= placeholder %>\"\n           value=\"<%= text %>\"\n           tabindex=\"<%= tabIndex %>\"\n           hlf-role=\"input\"/>\n    <div class=\"loader\" hlf-role=\"loader\"></div>\n    <i class=\"icon-close\" hlf-role=\"close\"></i>\n    <div class=\"hint\" hlf-role=\"hint\"><%= hint %></div>\n</div>";
+  return "<div class=\"hlf-input hlf-input--ac\" hlf-role=\"input-wrap\">\n    <input type=\"text\"\n           placeholder=\"<%= placeholder %>\"\n           value=\"<%= text %>\"\n           tabindex=\"<%= tabIndex %>\"\n           hlf-role=\"input\"/>\n    <div class=\"icon-load\" hlf-role=\"loader\"></div>\n    <i class=\"icon-close\" hlf-role=\"close\"></i>\n    <div class=\"hint\" hlf-role=\"hint\"><%= hint %></div>\n</div>";
   },"useData":true};
 
 this["hlf"]["jst"]["ac.samples.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
