@@ -274,7 +274,7 @@
                 hlf.goal(config.goalUseClear);
             });
 
-            if(config.autoFocus && !config.text.length) {
+            if(config.autoFocus && !config.text.length && !device.mobile()) {
                 $i.focus();
             }
 
