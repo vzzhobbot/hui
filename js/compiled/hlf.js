@@ -614,6 +614,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 config.type = '';
                 config.id = 0;
                 onReset();
+                config.text='';
                 $i.focus();
                 hlf.goal(config.goalUseClear);
             });

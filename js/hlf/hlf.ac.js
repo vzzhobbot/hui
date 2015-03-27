@@ -269,6 +269,7 @@
                 config.type = '';
                 config.id = 0;
                 onReset();
+                config.text='';
                 $i.focus();
                 hlf.goal(config.goalUseClear);
             });
