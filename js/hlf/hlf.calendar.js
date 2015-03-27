@@ -423,40 +423,14 @@
                 tD<10&&(tD="0"+tD);
                 $i[0].min = yesterday.getUTCFullYear()+"-"+tM+"-"+tD;
 
-                $i[0].addEventListener('focus', function(e){
-                    $i[0].nextSibling.style.display = 'none';
-                    if ($(e.target).closest('[hlf-calendar=checkOut]').length > 0 && ( $('[hlf-calendar=checkIn]').find('input')[0].value)){
-                        var dateIn = new Date( $('[hlf-calendar=checkIn]').find('input')[0].value) ;
-                        var nextDay = new Date();
-                        nextDay.setDate(dateIn.getDate()+1);
-                        var d = nextDay.getUTCDate();
-                        var m = nextDay.getUTCMonth()+1;
-                        m<10&&(m="0"+m);
-                        d<10&&(d="0"+d);
-                        e.target.min = nextDay.getUTCFullYear()+"-"+m+"-"+d;
-                        e.target.value.length==0&&(e.target.value=nextDay.getUTCFullYear()+"-"+m+"-"+d);
-                    };
-                }, false);
-
                 $i[0].addEventListener('blur', function(e){
                     var form = $(e.target).closest('form');
                     if ($(e.target).closest('[hlf-calendar=checkIn]').length > 0 && ( form.find('[hlf-calendar=checkIn]').find('input')[0].value) && ( form.find('[hlf-calendar=checkOut]').find('input')[0].value.length==0)){
-                        var dateIn = new Date( form.find('[hlf-calendar=checkIn]').find('input')[0].value) ;
-                        var nextDay = new Date();
-                        nextDay.setDate(dateIn.getDate()+1);
-                        var d = nextDay.getUTCDate();
-                        var m = nextDay.getUTCMonth()+1;
-                        m<10&&(m="0"+m);
-                        d<10&&(d="0"+d);
-                        form.find('[hlf-calendar=checkOut]').find('input')[0].min=nextDay.getUTCFullYear()+"-"+m+"-"+d;
-                        form.find('[hlf-calendar=checkOut]').find('input')[0].value=nextDay.getUTCFullYear()+"-"+m+"-"+d;
+                        var dateIn = moment($('[hlf-calendar=checkIn]').find('input')[0].value);
+                        var tomorrow = moment(dateIn).add(1, 'days').format('YYYY-MM-DD');
+                        form.find('[hlf-calendar=checkOut]').find('input')[0].value=tomorrow ;
                     };
 
-                    if ($(e.target).closest('[hlf-calendar=checkOut]').length > 0 && ( form.find('[hlf-calendar=checkOut]').find('input')[0].value)) {
-                        var maxdate = form.find('[hlf-calendar=checkOut]').find('input')[0].value;
-                        form.find('[hlf-calendar=checkIn]').find('input')[0].max=maxdate;
-
-                    }
                     }, false);
             } else {
                 // draw ui control
