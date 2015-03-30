@@ -1054,6 +1054,16 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             return r;
         }
 
+        function dateToString(date) {
+            var str;
+            var tM = (date.getUTCMonth()+1)
+            var tD = date.getUTCDate();
+            tM<10&&(tM="0"+tM);
+            tD<10&&(tD="0"+tD);
+            str = date.getUTCFullYear()+"-"+tM+"-"+tD;
+            return str;
+        }
+
         // todo something wrong here
         function updateRange() {
             var rel = controls[config.relationCalendar];
@@ -1116,20 +1126,17 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
                 var today = new Date();
                 var yesterday = new Date();
+
                 yesterday.setDate(today.getDate()-1);
+                $i[0].min =  dateToString(yesterday);
 
-                var tM = (yesterday.getUTCMonth()+1)
-                var tD = yesterday.getUTCDate();
-                tM<10&&(tM="0"+tM);
-                tD<10&&(tD="0"+tD);
-                $i[0].min = yesterday.getUTCFullYear()+"-"+tM+"-"+tD;
-
-                $i[0].addEventListener('blur', function(e){
+                $i[0].addEventListener('blur', function(e){  //exit checkin enter chekout
                     var form = $(e.target).closest('form');
                     if ($(e.target).closest('[hlf-calendar=checkIn]').length > 0 && ( form.find('[hlf-calendar=checkIn]').find('input')[0].value) && ( form.find('[hlf-calendar=checkOut]').find('input')[0].value.length==0)){
-                        var dateIn = moment($('[hlf-calendar=checkIn]').find('input')[0].value);
-                        var tomorrow = moment(dateIn).add(1, 'days').format('YYYY-MM-DD');
-                        form.find('[hlf-calendar=checkOut]').find('input')[0].value=tomorrow ;
+                        var dateIn = new Date($('[hlf-calendar=checkIn]').find('input')[0].value);
+                        var dateOut = new Date(dateIn);
+                        dateOut.setDate(dateOut.getDate()+1); //format('YYYY-MM-DD');
+                        form.find('[hlf-calendar=checkOut]').find('input')[0].value=dateToString(dateOut) ;
                     };
 
                     }, false);
