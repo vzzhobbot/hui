@@ -222,7 +222,7 @@ this["hlf"]["jst"]["calendar.head.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
   },"useData":true};
 
 this["hlf"]["jst"]["calendar.input.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  return "<div class=\"hlf-input hlf-input--calendar\" hlf-role=\"input-wrap\">\n    <input type=\"date\" placeholder=\"<%= placeholder %>\" tabindex=\"<%= tabIndex %>\" hlf-role=\"input\" height=\"60\"  />\n    <div class=\"hint\" hlf-role=\"hint\"></div>\n</div>";
+  return "<div class=\"hlf-input hlf-input--calendar\" hlf-role=\"input-wrap\">\n    <input type=\"text\" placeholder=\"<%= placeholder %>\" tabindex=\"<%= tabIndex %>\" hlf-role=\"input\" height=\"60\"  />\n    <div class=\"hint\" hlf-role=\"hint\"></div>\n</div>";
   },"useData":true};
 
 this["hlf"]["jst"]["calendar.legend.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
@@ -1104,8 +1104,9 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
 
             var x = document.createElement('input'); x.setAttribute('type', 'date');
-            if (x.type == 'date' && device.mobile()) {
+            if (x.type == 'date' && device.mobile() && $i[0]) {
                 // native date input
+                $i[0].type = 'date';
                 $i.parent().addClass('html5date');
                 window.calendar = true;
                 var div = document.createElement('div');
@@ -1143,7 +1144,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             } else {
                 // draw ui control
 
-                $i[0].type = 'text';
                 $i.datepicker({
                     minDate: config.min,
                     numberOfMonths: config.months,

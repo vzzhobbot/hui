@@ -403,8 +403,9 @@
 
 
             var x = document.createElement('input'); x.setAttribute('type', 'date');
-            if (x.type == 'date' && device.mobile()) {
+            if (x.type == 'date' && device.mobile() && $i[0]) {
                 // native date input
+                $i[0].type = 'date';
                 $i.parent().addClass('html5date');
                 window.calendar = true;
                 var div = document.createElement('div');
@@ -442,7 +443,6 @@
             } else {
                 // draw ui control
 
-                $i[0].type = 'text';
                 $i.datepicker({
                     minDate: config.min,
                     numberOfMonths: config.months,
