@@ -133,9 +133,14 @@
                 pair = [pair[0], pair.slice(1).join("=")]
             }
 
-            var key = decodeURIComponent(pair[0].replace(plus, " ")),
-                value = decodeURIComponent(pair[1].replace(plus, " ")),
-                parts = key.match(keyBreaker);
+            try {
+                var key = decodeURIComponent(pair[0].replace(plus, " ")),
+                    value = decodeURIComponent(pair[1].replace(plus, " ")),
+                    parts = key.match(keyBreaker);
+            }
+            catch (err) {
+                parts=null;
+            }
 
             if (parts !== null) {
                 for (var j = 0; j < parts.length - 1; j++) {
