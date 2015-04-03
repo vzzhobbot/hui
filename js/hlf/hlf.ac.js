@@ -19,6 +19,7 @@
             url: (location.protocol == 'file:' ? 'http:' : '') + '//yasen.hotellook.com/autocomplete',
             name: 'destination', // getParams() param name in case
                                  // you select nothing in autocomplete
+            className: '',
             text: '', // default input value
             type: '', // default type
             id: 0, // default id
@@ -204,12 +205,12 @@
 
             $c = hlf.getContainer($f, 'ac', name);
             $c.html(config.tplInput(config));
-
             $iw = hlf.getEl($c, 'input-wrap');
             $i = hlf.getEl($c, 'input');
             $h = hlf.getEl($c, 'hint');
             $l = hlf.getEl($c, 'loader');
             $cl = hlf.getEl($c, 'close'); //close button
+            config.className&&$iw.addClass(config.className);
 
             if ($i[0].value!=='') {
                 $iw.addClass('hlf-state--no-empty');

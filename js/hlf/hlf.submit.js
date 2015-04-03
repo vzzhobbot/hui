@@ -27,7 +27,7 @@
             $c.html(config.tplButton(config));
 
             $b = hlf.getEl($c, 'button');
-
+            config.className&&$b.addClass(config.className);
             $b.on('click', function() {
                 hlf.goal(config.goalClick);
             });

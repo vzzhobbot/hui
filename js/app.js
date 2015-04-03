@@ -24,6 +24,7 @@ var maForm = hlf.form({
             placeholder: 'Введите город или название отеля...',
             onSelectShowCalendar: 'checkIn',
             hint: 'Напишите хоть что-нибудь!',
+            className: 'super-puper-input',
             avgPricesCalendars: ['checkIn'],
             samplesText: 'Например, {list}',
             samplesList: [
@@ -52,6 +53,7 @@ var maForm = hlf.form({
             placeholder: 'Дата заезда',
             hintEmpty: 'Нужно указать дату заезда и выезда',
             name: 'checkIn',
+            className: 'super-puper-checkin',
             relationCalendar: 'checkOut',
             relationSuperior: true,
             relationAutoSet: true,
@@ -65,6 +67,7 @@ var maForm = hlf.form({
             head: 'Дата выезда',
             placeholder: 'Дата выезда',
             hintEmpty: 'Нужно указать дату заезда и выезда',
+            className: 'super-puper-checkout',
             name: 'checkOut',
             relationCalendar: 'checkIn',
             relationSuperior: false,
@@ -88,6 +91,7 @@ var maForm = hlf.form({
                 as: 'hlf-guests'
             },
             adultsTitle: 'Взрослых',
+            className: 'super-puper-quests',
             childrenTitle: 'Детей',
             childHint: 'Укажите возраст ребенка (0-17 лет)',
             summary: function (adults, children) {
@@ -95,6 +99,7 @@ var maForm = hlf.form({
             }
         }),
         submit: hlf.submit({
+            className: 'super-puper-submit',
             text: 'Узнать цены',
             goalClick: {
                 as: 'form111--------button'

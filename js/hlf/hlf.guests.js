@@ -160,6 +160,7 @@
             $cd = hlf.getEl($c, 'children-decrement');
             $ci = hlf.getEl($c, 'children-increment');
             $cl = hlf.getEl($c, 'children-list');
+            config.className&&$g.addClass(config.className);
             _.each(config.children, function(v, key) {
                 drawChild(key);
             });

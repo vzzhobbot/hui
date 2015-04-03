@@ -24,6 +24,7 @@
         config = _.defaults(config || {}, {
 
             required: false,
+            className: '',
             name: 'date', // getParams() param name
             value: null, // default date Date()
             format: 'yy-mm-dd', // getParams() param value format
@@ -400,7 +401,7 @@
             $iw = hlf.getEl($c, 'input-wrap');
             $i = hlf.getEl($c, 'input');
             $h = hlf.getEl($c, 'hint');
-
+            config.className&&$iw.addClass(config.className);
 
             var x = document.createElement('input'); x.setAttribute('type', 'date');
             if (x.type == 'date' && device.mobile() && $i[0]) {

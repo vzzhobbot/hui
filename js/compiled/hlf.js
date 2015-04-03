@@ -364,6 +364,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             url: (location.protocol == 'file:' ? 'http:' : '') + '//yasen.hotellook.com/autocomplete',
             name: 'destination', // getParams() param name in case
                                  // you select nothing in autocomplete
+            className: '',
             text: '', // default input value
             type: '', // default type
             id: 0, // default id
@@ -549,12 +550,12 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
             $c = hlf.getContainer($f, 'ac', name);
             $c.html(config.tplInput(config));
-
             $iw = hlf.getEl($c, 'input-wrap');
             $i = hlf.getEl($c, 'input');
             $h = hlf.getEl($c, 'hint');
             $l = hlf.getEl($c, 'loader');
             $cl = hlf.getEl($c, 'close'); //close button
+            config.className&&$iw.addClass(config.className);
 
             if ($i[0].value!=='') {
                 $iw.addClass('hlf-state--no-empty');
@@ -725,6 +726,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         config = _.defaults(config || {}, {
 
             required: false,
+            className: '',
             name: 'date', // getParams() param name
             value: null, // default date Date()
             format: 'yy-mm-dd', // getParams() param value format
@@ -1101,7 +1103,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $iw = hlf.getEl($c, 'input-wrap');
             $i = hlf.getEl($c, 'input');
             $h = hlf.getEl($c, 'hint');
-
+            config.className&&$iw.addClass(config.className);
 
             var x = document.createElement('input'); x.setAttribute('type', 'date');
             if (x.type == 'date' && device.mobile() && $i[0]) {
@@ -1653,6 +1655,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $cd = hlf.getEl($c, 'children-decrement');
             $ci = hlf.getEl($c, 'children-increment');
             $cl = hlf.getEl($c, 'children-list');
+            config.className&&$g.addClass(config.className);
             _.each(config.children, function(v, key) {
                 drawChild(key);
             });
@@ -1765,7 +1768,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $c.html(config.tplButton(config));
 
             $b = hlf.getEl($c, 'button');
-
+            config.className&&$b.addClass(config.className);
             $b.on('click', function() {
                 hlf.goal(config.goalClick);
             });
