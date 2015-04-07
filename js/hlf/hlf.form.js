@@ -58,7 +58,14 @@
                         config.params.marker = marker;
                     }
                 }
+
                 p = _.merge(p, config.params);
+
+                _.each(p, function(val, key){
+                    if (!val || val == null || val == '') {
+                        delete p[key];
+                    }
+                });
 
                 // send required goals
                 hlf.goal(config.goalSubmit, {
