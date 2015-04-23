@@ -158,9 +158,13 @@
             });
         }
 
-        function setValue(id, type) {
+        function setValue(id, type, title) {
             config.id = id;
             config.type = !type ? 'location' : type;
+            if (title) {
+                config.text = title;
+                $i.val(title);
+            }
         }
 
         function onReset() {
