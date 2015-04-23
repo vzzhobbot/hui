@@ -103,7 +103,7 @@
                     return false
                 }
                 config.children[key] = newValue;
-                $cha[key][0].innerText = newValue;
+                $cha[key][0].textContent = newValue;
                 return false;
             }
         }
