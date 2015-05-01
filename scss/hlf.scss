@@ -142,3 +142,14 @@
 .hlf-guests-children-val {
   display: inline-block;
 }
+.pseudo-placeholder{
+  display: none;
+}
+.html5date{
+  .pseudo-placeholder{
+    display: block;
+    &.hidden{
+      display: none;
+    }
+  }
+}

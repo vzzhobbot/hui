@@ -390,7 +390,7 @@
          * @param name
          * @returns {*[]}
          */
-        return function (name, $f, c, ti) {
+        return function (name, $f, c, ti, $pl) {
 
             controls = c || {};
             config.tabIndex = ti || 0;
@@ -402,28 +402,15 @@
             $i = hlf.getEl($c, 'input');
             $h = hlf.getEl($c, 'hint');
             config.className&&$iw.addClass(config.className);
+            $pl = hlf.getEl($c, 'placeholder');
 
             var x = document.createElement('input'); x.setAttribute('type', 'date');
             if (x.type == 'date' && device.mobile() && $i[0]) {
                 // native date input
+                console.log($i);
                 $i[0].type = 'date';
-                $i.parent().addClass('html5date');
+                $iw.addClass('html5date');
                 window.calendar = true;
-                var div = document.createElement('div');
-                div.className = 'pseudo-placeholder';
-                div.innerHTML = $i[0].placeholder;
-                $(div).insertAfter($($i));
-
-                var elements = document.getElementsByClassName('pseudo-placeholder');
-
-                for (var i = 0; i < elements.length; i++) {
-                    elements[i].addEventListener('click', (function(i) {
-                        return function() {
-                            this.style.display = 'none';
-                           this.previousSibling.focus();
-                        };
-                    })(i), false);
-                }
 
                 var today = new Date();
                 var yesterday = new Date();
@@ -438,6 +425,8 @@
                         var dateOut = new Date(dateIn);
                         dateOut.setDate(dateOut.getDate()+1); //format('YYYY-MM-DD');
                         form.find('[hlf-calendar=checkOut]').find('input')[0].value=dateToString(dateOut) ;
+                        console.log($i.parent());
+                        $i.parent().addClass('html5date_no-empty');
                     };
 
                     }, false);
@@ -503,6 +492,7 @@
             $i.on('focus', function () {
                 $iw.addClass('hlf-state--focus');
                 $iw.removeClass('hlf-state--error');
+                $pl.addClass('hidden');
             });
 
             $i.on('blur', function () {
