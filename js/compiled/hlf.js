@@ -901,7 +901,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 if (config.mobileMode) {
                     date = $i[0].value;
                 } else {
-                    console.log($i);
                     date = $i.datepicker('getDate');
                 }
                 if (date) {
@@ -1150,10 +1149,16 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
                 yesterday.setDate(today.getDate()-1);
                 $i[0].min =  dateToString(yesterday);
+                if (name=='checkIn' ){
+                    $i[0].min =  dateToString(yesterday);
+
+                } else if (name=='checkOut') {
+                    $i[0].min =  dateToString(today);
+
+                }
 
             } else {
                 // draw ui control
-                console.log($i);
                 $i.datepicker({
                     minDate: config.min,
                     numberOfMonths: config.months,
@@ -1218,17 +1223,30 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
             $i.on('blur', function () {
                 $iw.removeClass('hlf-state--focus');
-                  if (config.mobileMode === true) {
-                      if (name=='checkIn' ){
-                          var $co = hlf.getContainer($f, 'calendar', config.relationCalendar);
-                          var $io = hlf.getEl($co, 'input');
-                          if (getDate($io)==null || getDate($io) < getDate($i)) {
-                              var tomorrow = getDate($i);
-                              tomorrow.setDate(tomorrow.getDate() +1);
-                              $io[0].value = dateToString(tomorrow);
-                          };
-                      }
-                  }
+                if (config.mobileMode === true) {
+                    var $co = hlf.getContainer($f, 'calendar', config.relationCalendar);
+                    console.log(config.relationCalendar);
+                    var $io = hlf.getEl($co, 'input');
+                    if (name == 'checkIn' && (getDate($io) == null || getDate($io) < getDate($i))) {
+                        var tomorrow = getDate($i);
+                        if (tomorrow !== null) {
+                            console.log(console.log($io));
+                            tomorrow.setDate(tomorrow.getDate() + 1);
+                            $io[0].value = dateToString(tomorrow);
+                        }
+                    }
+                    else if (name == 'checkOut' && (getDate($io) == null || getDate($io) > getDate($i))) {
+
+                        var tomorrow = getDate($i);
+                        if (tomorrow !== null) {
+                            console.log(console.log($io));
+                            tomorrow.setDate(tomorrow.getDate() - 1);
+                            $io[0].value = dateToString(tomorrow);
+                        }
+                    }
+                    ;
+
+                }
             });
 
             $h.on('click', function () {
