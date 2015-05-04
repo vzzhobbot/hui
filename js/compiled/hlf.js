@@ -887,18 +887,29 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
         function getDate(i) {
             if (i) {
-                var $i = i;
-            }
-            var date;
-            if (config.mobileMode) {
-                date = $i[0].value;
+                var date;
+                if (config.mobileMode) {
+                    date = i[0].value;
+                }
+                if (date) {
+                    return new Date(date);
+                }
+                return null;
+
             } else {
-                date = $i.datepicker('getDate');
+                var date;
+                if (config.mobileMode) {
+                    date = $i[0].value;
+                } else {
+                    console.log($i);
+                    date = $i.datepicker('getDate');
+                }
+                if (date) {
+                    return new Date(date);
+                }
+                return null;
             }
-            if (date) {
-                return new Date(date);
-            }
-            return null;
+
         }
 
         function setDate(date, modify) {
@@ -1142,7 +1153,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
             } else {
                 // draw ui control
-
+                console.log($i);
                 $i.datepicker({
                     minDate: config.min,
                     numberOfMonths: config.months,
@@ -1212,11 +1223,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                           var $co = hlf.getContainer($f, 'calendar', config.relationCalendar);
                           var $io = hlf.getEl($co, 'input');
                           if (getDate($io)==null || getDate($io) < getDate($i)) {
-                              console.log('Найс');
                               var tomorrow = getDate($i);
                               tomorrow.setDate(tomorrow.getDate() +1);
-                              console.log(tomorrow);
-
                               $io[0].value = dateToString(tomorrow);
                           };
                       }

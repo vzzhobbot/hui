@@ -169,18 +169,29 @@
 
         function getDate(i) {
             if (i) {
-                var $i = i;
-            }
-            var date;
-            if (config.mobileMode) {
-                date = $i[0].value;
+                var date;
+                if (config.mobileMode) {
+                    date = i[0].value;
+                }
+                if (date) {
+                    return new Date(date);
+                }
+                return null;
+
             } else {
-                date = $i.datepicker('getDate');
+                var date;
+                if (config.mobileMode) {
+                    date = $i[0].value;
+                } else {
+                    console.log($i);
+                    date = $i.datepicker('getDate');
+                }
+                if (date) {
+                    return new Date(date);
+                }
+                return null;
             }
-            if (date) {
-                return new Date(date);
-            }
-            return null;
+
         }
 
         function setDate(date, modify) {
@@ -424,7 +435,7 @@
 
             } else {
                 // draw ui control
-
+                console.log($i);
                 $i.datepicker({
                     minDate: config.min,
                     numberOfMonths: config.months,
