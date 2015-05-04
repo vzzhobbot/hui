@@ -29,6 +29,7 @@
             value: null, // default date Date()
             format: 'yy-mm-dd', // getParams() param value format
             min: 0, // min selectable date (in days from today)
+            mobileMode: false,
             months: (function () {
                 if (window.innerWidth <= 700) {
                     return 1
@@ -76,7 +77,7 @@
          * @param flag it means calendar has been shown automatically (by another control)
          */
         function show(flag, date) {
-            if (window.calendar) {
+            if (config.mobileMode) {
                 return false
             } else {
                 isAutoShown = !!flag;
@@ -166,9 +167,12 @@
             return null;
         }
 
-        function getDate() {
+        function getDate(i) {
+            if (i) {
+                var $i = i;
+            }
             var date;
-            if (window.calendar) {
+            if (config.mobileMode) {
                 date = $i[0].value;
             } else {
                 date = $i.datepicker('getDate');
@@ -403,14 +407,14 @@
             $h = hlf.getEl($c, 'hint');
             config.className&&$iw.addClass(config.className);
             $pl = hlf.getEl($c, 'placeholder');
-
             var x = document.createElement('input'); x.setAttribute('type', 'date');
             if (x.type == 'date' && device.mobile() && $i[0]) {
+                config.mobileMode = true;
+            }
+            if ( config.mobileMode === true ) {
                 // native date input
-                console.log($i);
                 $i[0].type = 'date';
                 $iw.addClass('html5date');
-                window.calendar = true;
 
                 var today = new Date();
                 var yesterday = new Date();
@@ -418,18 +422,6 @@
                 yesterday.setDate(today.getDate()-1);
                 $i[0].min =  dateToString(yesterday);
 
-                $i[0].addEventListener('blur', function(e){  //exit checkin enter chekout
-                    var form = $(e.target).closest('form');
-                    if ($(e.target).closest('[hlf-calendar=checkIn]').length > 0 && ( form.find('[hlf-calendar=checkIn]').find('input')[0].value) && ( form.find('[hlf-calendar=checkOut]').find('input')[0].value.length==0)){
-                        var dateIn = new Date($('[hlf-calendar=checkIn]').find('input')[0].value);
-                        var dateOut = new Date(dateIn);
-                        dateOut.setDate(dateOut.getDate()+1); //format('YYYY-MM-DD');
-                        form.find('[hlf-calendar=checkOut]').find('input')[0].value=dateToString(dateOut) ;
-                        console.log($i.parent());
-                        $i.parent().addClass('html5date_no-empty');
-                    };
-
-                    }, false);
             } else {
                 // draw ui control
 
@@ -497,6 +489,17 @@
 
             $i.on('blur', function () {
                 $iw.removeClass('hlf-state--focus');
+                  if (config.mobileMode === true) {
+                      if (name=='checkIn' ){
+                          var $co = hlf.getContainer($f, 'calendar', config.relationCalendar);
+                          var $io = hlf.getEl($co, 'input');
+                          if (getDate($io)==null || getDate($io) < getDate($i)) {
+                              var tomorrow = getDate($i);
+                              tomorrow.setDate(tomorrow.getDate() +1);
+                              $io[0].value = dateToString(tomorrow);
+                          };
+                      }
+                  }
             });
 
             $h.on('click', function () {
