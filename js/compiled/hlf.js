@@ -1225,12 +1225,10 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 $iw.removeClass('hlf-state--focus');
                 if (config.mobileMode === true) {
                     var $co = hlf.getContainer($f, 'calendar', config.relationCalendar);
-                    console.log(config.relationCalendar);
                     var $io = hlf.getEl($co, 'input');
                     if (name == 'checkIn' && (getDate($io) == null || getDate($io) < getDate($i))) {
                         var tomorrow = getDate($i);
                         if (tomorrow !== null) {
-                            console.log(console.log($io));
                             tomorrow.setDate(tomorrow.getDate() + 1);
                             $io[0].value = dateToString(tomorrow);
                         }
@@ -1239,7 +1237,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
                         var tomorrow = getDate($i);
                         if (tomorrow !== null) {
-                            console.log(console.log($io));
                             tomorrow.setDate(tomorrow.getDate() - 1);
                             $io[0].value = dateToString(tomorrow);
                         }
