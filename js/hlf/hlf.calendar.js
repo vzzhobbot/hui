@@ -183,7 +183,6 @@
                 if (config.mobileMode) {
                     date = $i[0].value;
                 } else {
-                    console.log($i);
                     date = $i.datepicker('getDate');
                 }
                 if (date) {
@@ -435,7 +434,6 @@
 
             } else {
                 // draw ui control
-                console.log($i);
                 $i.datepicker({
                     minDate: config.min,
                     numberOfMonths: config.months,
