@@ -845,6 +845,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
          * Auto set relation calendar value
          */
         function relationAutoSet() {
+
             var relation = controls[config.relationCalendar];
             // auto set value only if there is no value & relationAutoSet = true
             if (relation && !relation.getStamp() && config.relationAutoSet) {
@@ -887,12 +888,13 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         }
 
         function setAnotherDate(date, modify) {
-            var newdate = new Date();
-            newdate.setDate(date.getDate() + (modify || 0));
+            var newDateStamp = new Date();
+            newDateStamp.setTime(date.getTime() + ((modify || 0) * 86400000));
+            var newDate = new Date(newDateStamp);
             if (config.mobileMode) {
-                $i[0].value= dateToString(newdate)
+                $i[0].value= dateToString(newDate)
             } else {
-                $i.datepicker('setDate', newdate);
+                $i.datepicker('setDate', newDate);
             }
             $iw.removeClass('hlf-state--error');
         }
@@ -1107,7 +1109,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
             controls = c || {};
             config.tabIndex = ti || 0;
-
             $c = hlf.getContainer($f, 'calendar', name);
             $c.html(config.tplInput(config));
 
