@@ -155,12 +155,11 @@
             return null;
         }
 
-        function getDate(i) { //argument - input, if no argument, function use default input ($i)
+        function getDate(i) { //argument for this function - input; if function called without argument, it uses the default input
+
             var input;
             input= i ? i : $i;
-
             var date;
-
             date=config.mobileMode?input[0].value:input.datepicker("getDate");
             if (date) {
                 return new Date(date);
@@ -404,14 +403,11 @@
                 config.mobileMode = true;
             }
             if ( config.mobileMode === true ) {
-                // native date input
+                // initialization native date input
                 $i[0].type = 'date';
                 $iw.addClass('html5date');
 
-                var today = new Date();
-                var mindate = new Date();
-
-                mindate.setDate(today.getDate() + config.min);
+                var today=new Date,mindate=new Date;mindate.setDate(today.getDate()+config.min);
                 $i[0].min =  dateToString(mindate);
 
             } else {
@@ -480,29 +476,10 @@
 
             $i.on('blur', function () {
                 $iw.removeClass('hlf-state--focus');
+
                 if (config.mobileMode === true) {
-                    var $co = hlf.getContainer($f, 'calendar', config.relationCalendar);
-                    var $io = hlf.getEl($co, 'input');
-
-                    relationAdjust();
+                    relationAdjust();   //check the correct date in inputs
                     relationAutoSet();
-//                    if (name == 'checkIn' && (getDate($io) == null || getDate($io) < getDate($i))) {
-//                        var tomorrow = getDate($i);
-//                        if (tomorrow !== null) {
-//                            tomorrow.setDate(tomorrow.getDate() + 1);
-//                            $io[0].value = dateToString(tomorrow);
-//                        }
-//                    }
-//                    else if (name == 'checkOut' && (getDate($io) == null || getDate($io) > getDate($i))) {
-//
-//                        var tomorrow = getDate($i);
-//                        if (tomorrow !== null) {
-//                            tomorrow.setDate(tomorrow.getDate() - 1);
-//                            $io[0].value = dateToString(tomorrow);
-//                        }
-//                    }
-                    ;
-
                 }
             });
 
