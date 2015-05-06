@@ -167,30 +167,18 @@
             return null;
         }
 
-        function getDate(i) {
-            if (i) {
-                var date;
-                if (config.mobileMode) {
-                    date = i[0].value;
-                }
-                if (date) {
-                    return new Date(date);
-                }
-                return null;
+        function getDate(i) { //argument - input, if no argument, function use default input ($i)
+            var input;
+            input= i ? i : $i;
 
-            } else {
-                var date;
-                if (config.mobileMode) {
-                    date = $i[0].value;
-                } else {
-                    date = $i.datepicker('getDate');
-                }
-                if (date) {
-                    return new Date(date);
-                }
-                return null;
+            var date;
+
+            date=config.mobileMode?input[0].value:input.datepicker("getDate");
+            if (date) {
+                return new Date(date);
             }
 
+            return null;
         }
 
         function setDate(date, modify) {
@@ -427,17 +415,10 @@
                 $iw.addClass('html5date');
 
                 var today = new Date();
-                var yesterday = new Date();
+                var mindate = new Date();
 
-                yesterday.setDate(today.getDate()-1);
+                mindate.setDate(today.getDate() + config.min);
                 $i[0].min =  dateToString(yesterday);
-                if (name=='checkIn' ){
-                    $i[0].min =  dateToString(yesterday);
-
-                } else if (name=='checkOut') {
-                    $i[0].min =  dateToString(today);
-
-                }
 
             } else {
                 // draw ui control
@@ -508,6 +489,9 @@
                 if (config.mobileMode === true) {
                     var $co = hlf.getContainer($f, 'calendar', config.relationCalendar);
                     var $io = hlf.getEl($co, 'input');
+
+                    console.log(relationAdjust());
+
                     if (name == 'checkIn' && (getDate($io) == null || getDate($io) < getDate($i))) {
                         var tomorrow = getDate($i);
                         if (tomorrow !== null) {
