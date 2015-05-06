@@ -51,7 +51,7 @@
             },
 
             relationCalendar: null, // name of control
-            relationSuperior: true, // 1 - superior, 0 - inferior
+            relationSuperior: false, // 1 - superior, 0 - inferior
             relationAutoSet: false,
             relationAutoShow: false,
 
@@ -76,24 +76,11 @@
          * Show calendar
          * @param flag it means calendar has been shown automatically (by another control)
          */
-        function show(flag, date) {
-            if (config.mobileMode) {
-                return false
-            } else {
-                isAutoShown = !!flag;
-                setTimeout(function () { // jquery.ui.datepicker show cheat
-                    if (flag && date) {
-                        var givenDate = new Date(date);
-                        givenDate.setDate(givenDate.getDate()+1);
-                        if (($i.datepicker("getDate")==null) || ($i.datepicker("getDate")).getTime() < givenDate.getTime() ) {
-                            $i.datepicker( "setDate", givenDate );
-                        };
-                    }
-                    $i.datepicker('show');
-
-                }, 16);
-            }
-
+        function show(flag) {
+            isAutoShown = !!flag;
+            setTimeout(function () { // jquery.ui.datepicker show cheat
+                $i.datepicker('show');
+            }, 16);
         }
 
         /**
@@ -124,13 +111,13 @@
                 // for superior relation set to 1 day more
                 if (config.relationSuperior) {
                     if (relation.getStamp() <= getStamp()) {
-                        relation.setDate(getDate(), 1);
+                        relation.setAnotherDate(getDate(), 1);
                     }
                 }
                 // for inferior relation set to -1 day
                 else {
                     if (relation.getStamp() >= getStamp()) {
-                        relation.setDate(getDate(), -1);
+                        relation.setAnotherDate(getDate(), -1);
                     }
                 }
             }
@@ -143,7 +130,7 @@
             var relation = controls[config.relationCalendar];
             // auto set value only if there is no value & relationAutoSet = true
             if (relation && !relation.getStamp() && config.relationAutoSet) {
-                relation.setDate(getDate(), config.relationSuperior ? 1 : -1);
+                relation.setAnotherDate(getDate(), config.relationSuperior ? 1 : -1);
             }
         }
 
@@ -160,9 +147,10 @@
         }
 
         function getStamp() {
-            var date = $i.datepicker('getDate');
+            var date=config.mobileMode?$i[0].value:$i.datepicker('getDate');
+
             if (date) {
-                return (new Date($i.datepicker('getDate'))).getTime();
+                return (new Date(date)).getTime();
             }
             return null;
         }
@@ -181,8 +169,14 @@
             return null;
         }
 
-        function setDate(date, modify) {
-            $i.datepicker('setDate', date.setDate(date.getDate() + (modify || 0)));
+        function setAnotherDate(date, modify) {
+            var newdate = new Date();
+            newdate.setDate(date.getDate() + (modify || 0));
+            if (config.mobileMode) {
+                $i[0].value= dateToString(newdate)
+            } else {
+                $i.datepicker('setDate', newdate);
+            }
             $iw.removeClass('hlf-state--error');
         }
 
@@ -418,7 +412,7 @@
                 var mindate = new Date();
 
                 mindate.setDate(today.getDate() + config.min);
-                $i[0].min =  dateToString(yesterday);
+                $i[0].min =  dateToString(mindate);
 
             } else {
                 // draw ui control
@@ -490,23 +484,23 @@
                     var $co = hlf.getContainer($f, 'calendar', config.relationCalendar);
                     var $io = hlf.getEl($co, 'input');
 
-                    console.log(relationAdjust());
-
-                    if (name == 'checkIn' && (getDate($io) == null || getDate($io) < getDate($i))) {
-                        var tomorrow = getDate($i);
-                        if (tomorrow !== null) {
-                            tomorrow.setDate(tomorrow.getDate() + 1);
-                            $io[0].value = dateToString(tomorrow);
-                        }
-                    }
-                    else if (name == 'checkOut' && (getDate($io) == null || getDate($io) > getDate($i))) {
-
-                        var tomorrow = getDate($i);
-                        if (tomorrow !== null) {
-                            tomorrow.setDate(tomorrow.getDate() - 1);
-                            $io[0].value = dateToString(tomorrow);
-                        }
-                    }
+                    relationAdjust();
+                    relationAutoSet();
+//                    if (name == 'checkIn' && (getDate($io) == null || getDate($io) < getDate($i))) {
+//                        var tomorrow = getDate($i);
+//                        if (tomorrow !== null) {
+//                            tomorrow.setDate(tomorrow.getDate() + 1);
+//                            $io[0].value = dateToString(tomorrow);
+//                        }
+//                    }
+//                    else if (name == 'checkOut' && (getDate($io) == null || getDate($io) > getDate($i))) {
+//
+//                        var tomorrow = getDate($i);
+//                        if (tomorrow !== null) {
+//                            tomorrow.setDate(tomorrow.getDate() - 1);
+//                            $io[0].value = dateToString(tomorrow);
+//                        }
+//                    }
                     ;
 
                 }
@@ -525,7 +519,7 @@
                 hide: hide,
                 getStamp: getStamp,
                 getDate: getDate,
-                setDate: setDate,
+                setAnotherDate: setAnotherDate,
                 getParams: getParams,
                 setDetails: setDetails,
                 getDetails: getDetails,
