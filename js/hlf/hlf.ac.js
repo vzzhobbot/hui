@@ -216,7 +216,7 @@
             $cl = hlf.getEl($c, 'close'); //close button
             config.className&&$iw.addClass(config.className);
 
-            if ($i[0].value!=='') {
+            if (_.size(getParams())) {
                 $iw.addClass('hlf-state--no-empty');
             };
 
@@ -231,7 +231,7 @@
 
             $i.on('keyup', function() {
                 config.text = $i.val();
-                if (($i[0].value=='') && ($iw[0].className.indexOf('hlf-state--no-empty')>-1)) {
+                if (!(_.size(getParams())) && $iw.hasClass('hlf-state--no-empty')) {
                     $iw.removeClass('hlf-state--no-empty');
                 };
 
