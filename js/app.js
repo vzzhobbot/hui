@@ -106,6 +106,7 @@ var maForm = hlf.form({
             }
         })
     },
+    target: '_blank',
     params: {
         language: 'es-ES',
         currency: 'rub'

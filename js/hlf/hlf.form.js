@@ -12,6 +12,7 @@
             id: null,
             controls: {},
             params: {},
+            target: '_self',
             hash: null,
             goalSubmit: {}
         });
@@ -73,11 +74,12 @@
                 });
 
                 var gaLinker = hlf.gaGetLinkerParam();
-                window.location =
+
+                window.open (
                     $f.attr('action') + '/?' +
                     $.param(p) + // controls params
                     (gaLinker ? '&' + gaLinker : '') + // ga linker param
-                    (config.hash ? '#' + config.hash : ''); // hash
+                    (config.hash ? '#' + config.hash : ''), config.target); // hash and target (open in new window or not)
                 return false;
             }
             return result;

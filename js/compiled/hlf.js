@@ -213,39 +213,30 @@ this["hlf"]["jst"] = this["hlf"]["jst"] || {};
 this["hlf"]["jst"]["ac.input.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   return "<div class=\"hlf-input hlf-input--ac\" hlf-role=\"input-wrap\">\n    <input type=\"text\"\n           placeholder=\"<%= placeholder %>\"\n           value=\"<%= text %>\"\n           tabindex=\"<%= tabIndex %>\"\n           hlf-role=\"input\"/>\n    <div class=\"icon-load\" hlf-role=\"loader\"></div>\n    <i class=\"icon-close\" hlf-role=\"close\"></i>\n    <div class=\"hint\" hlf-role=\"hint\"><%= hint %></div>\n</div>";
   },"useData":true};
-
 this["hlf"]["jst"]["ac.samples.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   return "<div class=\"hlf-input--ac-samples\" hlf-role=\"samples\"><%= samplesText %></div>";
   },"useData":true};
-
 this["hlf"]["jst"]["ac.samplesLink.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   return "<a href=\"#\" hlf-role=\"samples-link\" data-type=\"<%= type %>\" data-id=\"<%= id %>\" data-text=\"<%= text %>\"><%= sample %></a>";
   },"useData":true};
-
 this["hlf"]["jst"]["calendar.head.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   return "<div class=\"ui-datepicker-head\"><%= head %></div>";
   },"useData":true};
-
 this["hlf"]["jst"]["calendar.input.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   return "<div class=\"hlf-input hlf-input--calendar\" hlf-role=\"input-wrap\">\n    <input type=\"text\" placeholder=\"<%= placeholder %>\" tabindex=\"<%= tabIndex %>\" hlf-role=\"input\" height=\"60\"  />\n    <div class=\"hint\" hlf-role=\"hint\"></div>\n    <div class=\"pseudo-placeholder\" hlf-role=\"placeholder\"><%= placeholder %></div>\n</div>";
   },"useData":true};
-
 this["hlf"]["jst"]["calendar.legend.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   return "<div class=\"ui-datepicker-legend\">\n    <div class=\"ui-datepicker-legend-head\"><%= legend %></div>\n    <div class=\"ui-datepicker-legend-points\">\n        <div class=\"ui-datepicker-legend-points-line\"></div>\n        <ul class=\"ui-datepicker-legend-points-list\">\n            <% _.each(points, function(point, i) { %>\n            <li class=\"ui-datepicker-legend-points-item ui-datepicker-legend-points-item--<%= i %>\"><%= point %></li>\n            <% }); %>\n        </ul>\n    </div>\n</div>";
   },"useData":true};
-
 this["hlf"]["jst"]["guests.child.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   return "<li class=\"hlf-guests-children-item\" hlf-role=\"child-container\" hlf-name=\"<%= key %>\">\n    <div class=\"hlf-guests-child-age-title\">\n        <%= title %>\n        <div  class=\"hlf-guests-child-age-hint\"><%= hint %></div>\n    </div>\n    <div class=\"hlf-guests-child-age-controls\">\n        <a class='hlf-control' href=\"#\" hlf-role=\"child-age-decrement\"><i class=\"icon-chevron-left\"></i>︎</a>\n        <div class=\"hlf-guests-child-age-val\" hlf-role=\"child-age\"><%= age %></div>\n        <a class='hlf-control' href=\"#\" hlf-role=\"child-age-increment\"><i class=\"icon-chevron-right\"></i></a>\n    </div>\n</li>";
   },"useData":true};
-
 this["hlf"]["jst"]["guests.container.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   return "<div class=\"hlf-guests hlf-state--closed\" hlf-role=\"guests\">\n    <a href=\"#\" class=\"hlf-guests-i\" tabindex=\"<%= tabIndex %>\" hlf-role=\"summary\"></a>\n    <div class=\"hlf-guests-dd\" hlf-role=\"controls\">\n        <div class=\"hlf-guests-adults\">\n            <div class=\"hlf-guests-adults-title\"><%= adultsTitle %></div>\n            <div class=\"hlf-guests-adults-controls\">\n                <a class='hlf-control' href=\"#\" hlf-role=\"adults-decrement\">&minus;</a>\n                <div class=\"hlf-guests-adults-val\" hlf-role=\"adults-val\"></div>\n                <a class='hlf-control' href=\"#\" hlf-role=\"adults-increment\">+</a>\n            </div>\n        </div>\n        <div class=\"hlf-guests-children\">\n            <div class=\"hlf-guests-children-title\"><%= childrenTitle %></div>\n            <div class=\"hlf-guests-children-controls\">\n                <a class='hlf-control' href=\"#\" hlf-role=\"children-decrement\">&minus;</a>\n                <div class=\"hlf-guests-children-val\" hlf-role=\"children-val\"></div>\n                <a class='hlf-control' href=\"#\" hlf-role=\"children-increment\">+</a>\n            </div>\n            <ul class=\"hlf-guests-children-list\" hlf-role=\"children-list\"></ul>\n        </div>\n    </div>\n</div>";
   },"useData":true};
-
 this["hlf"]["jst"]["noDates.input.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   return "<label hlf-role=\"noDates-input-wrap\">\n    <input type=\"checkbox\" tabindex=\"<%= tabIndex %>\" hlf-role=\"noDates-input\"><%= text %>\n</label>";
   },"useData":true};
-
 this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   return "<button tabindex=\"<%= tabIndex %>\" hlf-role=\"button\"><%= text %></button>";
   },"useData":true};
@@ -263,6 +254,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             id: null,
             controls: {},
             params: {},
+            target: '_self',
             hash: null,
             goalSubmit: {}
         });
@@ -324,11 +316,12 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 });
 
                 var gaLinker = hlf.gaGetLinkerParam();
-                window.location =
+
+                window.open (
                     $f.attr('action') + '/?' +
                     $.param(p) + // controls params
                     (gaLinker ? '&' + gaLinker : '') + // ga linker param
-                    (config.hash ? '#' + config.hash : ''); // hash
+                    (config.hash ? '#' + config.hash : ''), config.target); // hash and target (open in new window or not)
                 return false;
             }
             return result;
