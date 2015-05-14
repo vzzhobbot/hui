@@ -16,6 +16,11 @@ var maForm = hlf.form({
                 yam: 'form111-goalAcSelect',
                 as: 'hlf-form111-goalAcSelect'
             },
+            goalAcSelectType: {
+                ga: 'form111.goalAcSelectType',
+                yam: 'form111-goalAcSelectType',
+                as: 'hlf-form111-goalAcSelectType'
+            },
             goalUseSamples: {
                 ga: 'form111.goalUseSamples',
                 yam: 'form111-goalUseSamples',
