@@ -180,6 +180,16 @@
         return $c.find('[hlf-' + place + '="' + value + '"]');
     };
 
+    hlf.readCookie = function(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    };
     /**
      * GET params
      * @param n
@@ -305,7 +315,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
                 // additional params if needed
                 if(_.isUndefined(config.params.marker)) { // try to find marker in GET, then in cookie
-                    var marker = hlf.GET('marker') || $.cookie('marker') || null;
+                    var marker = hlf.GET('marker') || hlf.readCookie('marker') || null;
+                    console.log('marker', marker);
                     if(marker) {
                         config.params.marker = marker;
                     }
