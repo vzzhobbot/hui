@@ -316,7 +316,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 // additional params if needed
                 if(_.isUndefined(config.params.marker)) { // try to find marker in GET, then in cookie
                     var marker = hlf.GET('marker') || hlf.readCookie('marker') || null;
-                    console.log('marker', marker);
                     if(marker) {
                         config.params.marker = marker;
                     }
@@ -595,7 +594,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 select: function(ev, data) {
                     select(data.item.type, data.item.id);
                     hlf.goal(config.goalAcSelect, data.item);
-                    hlf.goal(config.goalAcSelectType, data.item.category);
+                    hlf.goal(config.goalAcSelectType, data.item.type);
                 },
                 minLength: 3
             });

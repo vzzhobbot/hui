@@ -225,7 +225,7 @@
                 select: function(ev, data) {
                     select(data.item.type, data.item.id);
                     hlf.goal(config.goalAcSelect, data.item);
-                    hlf.goal(config.goalAcSelectType, data.item.category);
+                    hlf.goal(config.goalAcSelectType, data.item.type);
                 },
                 minLength: 3
             });
