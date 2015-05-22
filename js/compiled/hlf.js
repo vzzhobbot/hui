@@ -4,8 +4,17 @@
     var hlf = function() {
 
         var config = {
-            asGoalUrl: (location.protocol == 'file:' ? 'http:' : '') + '//metrics.aviasales.ru'
+            asGoalUrl: (location.protocol == 'file:' ? 'http:' : '') + '//metrics.aviasales.ru',
+            mobileMode: mobileDetect(),
+
         };
+
+        /** Check mobile verison **/
+
+        function mobileDetect(){
+            var x = document.createElement('input'); x.setAttribute('type', 'date');
+            if (x.type == 'date' && device.mobile()){return true}else{return false}
+        }
 
         /**
          * Check google analytics (GA) exists on page
@@ -385,6 +394,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             id: 0, // default id
             limit: 5, // limit for items each category
             locale: 'en-US',
+            mobileMode: hlf.config.mobileMode,
             autoFocus: false, // auto focus if field is empty
 
             placeholder: 'Type something....',
@@ -544,7 +554,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             avgPricesRequest(id);
             config.onSelect(type, id);
             if(config.onSelectShowCalendar) {
-                if(!controls[config.onSelectShowCalendar].getStamp()) {
+                if(!controls[config.onSelectShowCalendar].getStamp() && !config.mobileMode) {
                     controls[config.onSelectShowCalendar].show();
                 }
             }
@@ -751,7 +761,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             value: null, // default date Date()
             format: 'yy-mm-dd', // getParams() param value format
             min: 0, // min selectable date (in days from today)
-            mobileMode: false,
             months: (function () {
                 if (window.innerWidth <= 700) {
                     return 1
@@ -760,7 +769,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 }
             })(), // num of months visible in datepicker
             locale: 'en-US',
-
+            mobileMode: hlf.config.mobileMode,
             placeholder: 'Choose date...',
             hintEmpty: 'Its required field', // hint text if required calendar field is empty
             head: null, // datepicker head text
@@ -1125,11 +1134,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $h = hlf.getEl($c, 'hint');
             config.className&&$iw.addClass(config.className);
             $pl = hlf.getEl($c, 'placeholder');
-            var x = document.createElement('input'); x.setAttribute('type', 'date');
-            if (x.type == 'date' && device.mobile() && $i[0]) {
-                config.mobileMode = true;
-            }
-            if ( config.mobileMode === true ) {
+            if ( config.mobileMode === true && $i[0]) {
                 // initialization native date input
                 $i[0].type = 'date';
                 $iw.addClass('html5date');

@@ -25,6 +25,7 @@
             id: 0, // default id
             limit: 5, // limit for items each category
             locale: 'en-US',
+            mobileMode: hlf.config.mobileMode,
             autoFocus: false, // auto focus if field is empty
 
             placeholder: 'Type something....',
@@ -184,7 +185,7 @@
             avgPricesRequest(id);
             config.onSelect(type, id);
             if(config.onSelectShowCalendar) {
-                if(!controls[config.onSelectShowCalendar].getStamp()) {
+                if(!controls[config.onSelectShowCalendar].getStamp() && !config.mobileMode) {
                     controls[config.onSelectShowCalendar].show();
                 }
             }

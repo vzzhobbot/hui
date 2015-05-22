@@ -4,8 +4,17 @@
     var hlf = function() {
 
         var config = {
-            asGoalUrl: (location.protocol == 'file:' ? 'http:' : '') + '//metrics.aviasales.ru'
+            asGoalUrl: (location.protocol == 'file:' ? 'http:' : '') + '//metrics.aviasales.ru',
+            mobileMode: mobileDetect(),
+
         };
+
+        /** Check mobile verison **/
+
+        function mobileDetect(){
+            var x = document.createElement('input'); x.setAttribute('type', 'date');
+            if (x.type == 'date' && device.mobile()){return true}else{return false}
+        }
 
         /**
          * Check google analytics (GA) exists on page

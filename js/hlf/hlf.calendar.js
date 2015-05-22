@@ -29,7 +29,6 @@
             value: null, // default date Date()
             format: 'yy-mm-dd', // getParams() param value format
             min: 0, // min selectable date (in days from today)
-            mobileMode: false,
             months: (function () {
                 if (window.innerWidth <= 700) {
                     return 1
@@ -38,7 +37,7 @@
                 }
             })(), // num of months visible in datepicker
             locale: 'en-US',
-
+            mobileMode: hlf.config.mobileMode,
             placeholder: 'Choose date...',
             hintEmpty: 'Its required field', // hint text if required calendar field is empty
             head: null, // datepicker head text
@@ -403,11 +402,7 @@
             $h = hlf.getEl($c, 'hint');
             config.className&&$iw.addClass(config.className);
             $pl = hlf.getEl($c, 'placeholder');
-            var x = document.createElement('input'); x.setAttribute('type', 'date');
-            if (x.type == 'date' && device.mobile() && $i[0]) {
-                config.mobileMode = true;
-            }
-            if ( config.mobileMode === true ) {
+            if ( config.mobileMode === true && $i[0]) {
                 // initialization native date input
                 $i[0].type = 'date';
                 $iw.addClass('html5date');
