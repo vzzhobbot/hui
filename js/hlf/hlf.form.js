@@ -60,6 +60,13 @@
                     }
                 }
 
+                if(_.isUndefined(config.params.hls)) { // try to find hls in GET
+                    var hls = hlf.GET('hls') || null;
+                    if(hls) {
+                        config.params.hls = hls;
+                    }
+                }
+
                 p = _.merge(p, config.params);
 
                 _.each(p, function(val, key){
