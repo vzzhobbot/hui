@@ -64,7 +64,8 @@ var maForm = hlf.form({
             relationAutoSet: true,
             relationAutoShow: true,
             locale: 'ru-RU',
-            value: new Date((new Date()).getTime()),
+            value: '',
+            isAutoShown: true,
             min: -1
         }),
         checkOut: hlf.calendar({
@@ -78,6 +79,7 @@ var maForm = hlf.form({
             relationSuperior: false,
             relationAutoSet: true,
             relationAutoShow: true,
+            isAutoShown: true,
             locale: 'ru-RU',
             //value: new Date((new Date()).getTime() + 6 * 24 * 60 * 60 * 1000),
             min: 0

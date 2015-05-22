@@ -78,9 +78,15 @@
          */
         function show(flag) {
             isAutoShown = !!flag;
-            setTimeout(function () { // jquery.ui.datepicker show cheat
-                $i.datepicker('show');
-            }, 16);
+            if ( config.mobileMode === true ) {
+                $i.focus();
+
+            } else {
+                setTimeout(function () { // jquery.ui.datepicker show cheat
+                    $i.datepicker('show');
+                }, 16);
+            }
+
         }
 
         /**
@@ -107,7 +113,7 @@
         function relationAdjust() {
             var relation = controls[config.relationCalendar];
             // is it has value?
-            if (relation && relation.getStamp()) {
+            if (relation && relation.getStamp() && getStamp() && getDate()) {
                 // for superior relation set to 1 day more
                 if (config.relationSuperior) {
                     if (relation.getStamp() <= getStamp()) {
@@ -130,7 +136,7 @@
 
             var relation = controls[config.relationCalendar];
             // auto set value only if there is no value & relationAutoSet = true
-            if (relation && !relation.getStamp() && config.relationAutoSet) {
+            if (relation && !relation.getStamp() && config.relationAutoSet && getDate()) {
                 relation.setAnotherDate(getDate(), config.relationSuperior ? 1 : -1);
             }
         }
@@ -141,8 +147,6 @@
         function relationAutoShow(date) {
             var relation = controls[config.relationCalendar];
             if (relation && config.relationAutoShow && !isAutoShown) { // if this calendar has been shown by its
-                // relation (isAutoShown=true), we dont
-                // show first one
                 relation.show(true, date);
             }
         }
@@ -482,6 +486,7 @@
                     relationAdjust();   //check the correct date in inputs
                     relationAutoSet();
                 }
+
             });
 
             $h.on('click', function () {
