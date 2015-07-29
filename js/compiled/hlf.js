@@ -248,7 +248,7 @@ this["hlf"]["jst"]["calendar.legend.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"m
   return "<div class=\"ui-datepicker-legend\">\n    <div class=\"ui-datepicker-legend-head\"><%= legend %></div>\n    <div class=\"ui-datepicker-legend-points\">\n        <div class=\"ui-datepicker-legend-points-line\"></div>\n        <ul class=\"ui-datepicker-legend-points-list\">\n            <% _.each(points, function(point, i) { %>\n            <li class=\"ui-datepicker-legend-points-item ui-datepicker-legend-points-item--<%= i %>\"><%= point %></li>\n            <% }); %>\n        </ul>\n    </div>\n</div>";
   },"useData":true};
 this["hlf"]["jst"]["guests.child.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  return "<li class=\"hlf-guests-children-item\" hlf-role=\"child-container\" hlf-name=\"<%= key %>\">\n    <div class=\"hlf-guests-child-age-title\">\n        <%= title %>\n        <div  class=\"hlf-guests-child-age-hint\"><%= hint %></div>\n    </div>\n    <div class=\"hlf-guests-child-age-controls\">\n        <% if (childValSep) { %>\n            <div class=\"hlf-guests-child-age-val\">\n                <span hlf-role=\"child-age\"><%= age %></span>\n            </div>\n            <div class=\"hlf-guests-child-controls\">\n                <a class='hlf-control' href=\"#\" hlf-role=\"child-age-decrement\"><%= decControlContent %>︎</a>\n                <a class='hlf-control' href=\"#\" hlf-role=\"child-age-increment\"><%= incControlContent %></a>\n            </div>\n        <% } else { %>\n            <a class='hlf-control' href=\"#\" hlf-role=\"child-age-decrement\"><%= decControlContent %>︎</a>\n            <div class=\"hlf-guests-child-age-val\">\n                <span hlf-role=\"child-age\"><%= age %></span>\n            </div>\n            <a class='hlf-control' href=\"#\" hlf-role=\"child-age-increment\"><%= incControlContent %></a>\n        <% } %>\n    </div>\n</li>";
+  return "<li class=\"hlf-guests-children-item\" hlf-role=\"child-container\" hlf-name=\"<%= key %>\">\n    <div class=\"hlf-guests-child-age-title\">\n        <%= title %>\n        <div  class=\"hlf-guests-child-age-hint\"><%= hint %></div>\n    </div>\n    <div class=\"hlf-guests-child-age-controls\">\n        <% if (childValSep) { %>\n            <div class=\"hlf-guests-child-age-val\">\n                <span hlf-role=\"child-age\"><%= age %></span>\n            </div>\n            <div class=\"hlf-guests-child-controls\">\n                <a class='hlf-control' href=\"#\" hlf-role=\"child-age-decrement\"><%= decControlContentChld %>︎</a>\n                <a class='hlf-control' href=\"#\" hlf-role=\"child-age-increment\"><%= incControlContentChld %></a>\n            </div>\n        <% } else { %>\n            <a class='hlf-control' href=\"#\" hlf-role=\"child-age-decrement\"><%= decControlContentChld %>︎</a>\n            <div class=\"hlf-guests-child-age-val\">\n                <span hlf-role=\"child-age\"><%= age %></span>\n            </div>\n            <a class='hlf-control' href=\"#\" hlf-role=\"child-age-increment\"><%= incControlContentChld %></a>\n        <% } %>\n    </div>\n</li>";
   },"useData":true};
 this["hlf"]["jst"]["guests.container.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   return "<div class=\"hlf-guests hlf-state--closed\" hlf-role=\"guests\">\n    <a href=\"#\" class=\"hlf-guests-i\" tabindex=\"<%= tabIndex %>\" hlf-role=\"summary\"></a>\n    <div class=\"hlf-guests-dd\" hlf-role=\"controls\">\n        <div class=\"hlf-guests-adults\">\n            <% if (titlesPosInside) { %>\n                <div class=\"hlf-guests-adults-controls\">\n                    <a class='hlf-control' href=\"#\" hlf-role=\"adults-decrement\"><span><%= decControlContent %></span></a>\n                    <div class=\"hlf-guests-adults-val\">\n                        <span hlf-role=\"adults-val\"></span>\n                        <span class=\"hlf-guests-adults-title\"><%= adultsTitle %></span>\n                    </div>\n                    <a class='hlf-control' href=\"#\" hlf-role=\"adults-increment\"><span><%= incControlContent %></span></a>\n                </div>\n            <% } else { %>\n                <div class=\"hlf-guests-adults-title\"><%= adultsTitle %></div>\n                <div class=\"hlf-guests-adults-controls\">\n                    <a class='hlf-control' href=\"#\" hlf-role=\"adults-decrement\"><span><%= decControlContent %></span></a>\n                    <div class=\"hlf-guests-adults-val\" hlf-role=\"adults-val\"></div>\n                    <a class='hlf-control' href=\"#\" hlf-role=\"adults-increment\"><span><%= incControlContent %></span></a>\n                </div>\n            <% } %>\n        </div>\n        <div class=\"hlf-guests-children\">\n            <% if (titlesPosInside) { %>\n                <div class=\"hlf-guests-children-controls\">\n                    <a class='hlf-control' href=\"#\" hlf-role=\"children-decrement\"><span><%= decControlContent %></span></a>\n                    <div class=\"hlf-guests-children-val\">\n                        <span hlf-role=\"children-val\"></span>\n                        <span class=\"hlf-guests-children-title\"><%= childrenTitle %></span>\n                    </div>\n                    <a class='hlf-control' href=\"#\" hlf-role=\"children-increment\"><span><%= incControlContent %></span></a>\n                </div>\n            <% } else { %>\n                <div class=\"hlf-guests-children-title\"><%= childrenTitle %></div>\n                <div class=\"hlf-guests-children-controls\">\n                    <a class='hlf-control' href=\"#\" hlf-role=\"children-decrement\"><span><%= decControlContent %></span></a>\n                    <div class=\"hlf-guests-children-val\" hlf-role=\"children-val\"></div>\n                    <a class='hlf-control' href=\"#\" hlf-role=\"children-increment\"><span><%= incControlContent %></span></a>\n                </div>\n            <% } %>\n            <div class=\"hlf-guests-children-list-title\" hlf-role=\"children-list-title\"><%= childrenListTitle %></div>\n            <ul class=\"hlf-guests-children-list\" hlf-role=\"children-list\"></ul>\n        </div>\n    </div>\n</div>";
@@ -345,10 +345,11 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 var gaLinker = hlf.gaGetLinkerParam();
 
                 window.open (
+                    //todo: $f.attr('target') || config.target
                     $f.attr('action') + '/?' +
                     $.param(p) + // controls params
                     (gaLinker ? '&' + gaLinker : '') + // ga linker param
-                    (config.hash ? '#' + config.hash : ''), config.target); // hash and target (open in new window or not)
+                    (config.hash ? '#' + config.hash : ''), $f.attr('target') || config.target); // hash and target (open in new window or not)
                 return false;
             }
             return result;
@@ -642,12 +643,14 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             });
 
             $i.on('focus', function() {
+                $c.addClass('hlf-state--focus');
                 $iw.addClass('hlf-state--focus');
                 $iw.removeClass('hlf-state--error');
                 goalUseInputSent = false;
             });
 
             $i.on('blur', function() {
+                $c.removeClass('hlf-state--focus');
                 $iw.removeClass('hlf-state--focus');
             });
 
@@ -734,7 +737,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             });
         },
         _renderItem: function (ul, item) {
-            var label = '<span class="ui-menu-item-text">' + item.text + (item.clar ? '<span class="ui-menu-item-clar">, ' + item.clar + '</span>' : '') + '</span>';
+            var label = '<span class="ui-menu-item-text">' + item.text + (item.clar ? ', <span class="ui-menu-item-clar">' + item.clar + '</span>' : '') + '</span>';
             if (item.comment)
                 label += '<span class="ui-menu-item-comment">' + item.comment + '</span>';
             if (item.photo)
@@ -1218,12 +1221,14 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             }
 
             $i.on('focus', function () {
+                $c.addClass('hlf-state--focus');
                 $iw.addClass('hlf-state--focus');
                 $iw.removeClass('hlf-state--error');
                 $pl.addClass('hidden');
             });
 
             $i.on('blur', function () {
+                $c.removeClass('hlf-state--focus');
                 $iw.removeClass('hlf-state--focus');
 
                 if (config.mobileMode === true) {
@@ -1300,7 +1305,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
         dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
         dayStatus: 'Использовать DD как первый день недели', dateStatus: 'Выбрать DD, MM d',
-        dateFormat: 'D, d M yy', firstDay: 1,
+        dateFormat: 'D, d M', firstDay: 1,
         initStatus: 'Выбрать дату', isRTL: false
     };
     $.datepicker.regional['en-US'] = {
@@ -1316,7 +1321,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         dayNamesMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
         weekHeader: 'Wk',
-        dateFormat: 'D, MM d, yy', firstDay: 0,
+        dateFormat: 'D, MM d', firstDay: 0,
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -1338,7 +1343,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
         dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
         weekHeader: 'Sem.',
-        dateFormat: 'd M yy', firstDay: 1,
+        dateFormat: 'd M', firstDay: 1,
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -1356,7 +1361,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
         dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
         weekHeader: 'Sm',
-        dateFormat: 'd MM yy', firstDay: 1,
+        dateFormat: 'd MM', firstDay: 1,
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -1374,7 +1379,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         dayNamesShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
         dayNamesMin: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
         weekHeader: 'KW',
-        dateFormat: 'd MM yy', firstDay: 1,
+        dateFormat: 'd MM', firstDay: 1,
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -1392,7 +1397,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         dayNamesShort: ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'],
         dayNamesMin: ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'],
         weekHeader: 'Wk',
-        dateFormat: 'd MM yy', firstDay: 0,
+        dateFormat: 'd MM', firstDay: 0,
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -1410,7 +1415,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'],
         dayNamesMin: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
         weekHeader: 'Sm',
-        dateFormat: 'd MM yy', firstDay: 1,
+        dateFormat: 'd MM', firstDay: 1,
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -1428,7 +1433,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         dayNamesShort: ['Nie', 'Pn', 'Wt', 'Śr', 'Czw', 'Pt', 'So'],
         dayNamesMin: ['N', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So'],
         weekHeader: 'Tydz',
-        dateFormat: 'd M yy', firstDay: 1,
+        dateFormat: 'd M', firstDay: 1,
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -1446,7 +1451,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         dayNamesShort: ['Min','Sen','Sel','Rab','kam','Jum','Sab'],
         dayNamesMin: ['Mg','Sn','Sl','Rb','Km','jm','Sb'],
         weekHeader: 'Mg',
-        dateFormat: 'dd/mm/yy',
+        dateFormat: 'dd/mm',
         firstDay: 0,
         isRTL: false,
         showMonthAfterYear: false,
@@ -1581,6 +1586,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             titlesPosInside: false, // are titles inside 'val' container or not
             decControlContent: '&minus;',
             incControlContent: '&plus;',
+            decControlContentChld: '&minus;',
+            incControlContentChld: '&plus;',
 
             goalOpen: {},
 
@@ -1612,12 +1619,14 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         function guestsClose() {
             $g.addClass('hlf-state--closed');
             $g.removeClass('hlf-state--focus');
+            $c.removeClass('hlf-state--focus');
         }
 
         function guestsOpen() {
             hlf.goal(config.goalOpen);
             $g.removeClass('hlf-state--closed');
             $g.addClass('hlf-state--focus');
+            $c.addClass('hlf-state--focus');
         }
 
         function drawChild(key) {
@@ -1631,7 +1640,10 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 hint: config.childHint,
                 childValSep: config.childValSep,
                 decControlContent: config.decControlContent,
-                incControlContent: config.incControlContent
+                incControlContent: config.incControlContent,
+                decControlContentChld: config.decControlContentChld,
+                incControlContentChld: config.incControlContentChld
+
             }));
 
             $chc[key] = hlf.getEl($cl, 'child-container', key);
@@ -1740,10 +1752,12 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
             $s.on('focus', function() {
                 $s.addClass('hlf-state--focus');
+                $c.addClass('hlf-state--focus');
             });
 
             $s.on('blur', function() {
                 $s.removeClass('hlf-state--focus');
+                $c.removeClass('hlf-state--focus');
             });
 
             $ai.on('click', function() {

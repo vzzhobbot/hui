@@ -1,4 +1,4 @@
-var maForm = hlf.form({
+window.maForm = hlf.form({
     id: 'form111',
     controls: {
         destination: hlf.ac({
@@ -56,7 +56,7 @@ var maForm = hlf.form({
                 yam: 'form111-checkInSelectDate',
                 as: 'hlf-form111-checkInSelectDate'
             },
-            //required: true,
+            required: false,
             head: 'Дата заезда',
             placeholder: 'Дата заезда',
             hintEmpty: 'Нужно указать дату заезда и выезда',
@@ -73,7 +73,7 @@ var maForm = hlf.form({
             min: -1
         }),
         checkOut: hlf.calendar({
-            required: true,
+            required: false,
             head: 'Дата выезда',
             placeholder: 'Дата выезда',
             hintEmpty: 'Нужно указать дату заезда и выезда',
@@ -107,6 +107,8 @@ var maForm = hlf.form({
             titlesPosInside: true,
             decControlContent: '&minus;',
             incControlContent: '&plus;',
+            decControlContentChld: 'bebebe',
+            incControlContentChld: 'rrrrr',
             childrenTitle: 'Детей',
             childValSep: true,
             childHint: 'Укажите возраст ребенка (0-17 лет)',

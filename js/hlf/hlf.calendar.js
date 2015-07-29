@@ -470,12 +470,14 @@
             }
 
             $i.on('focus', function () {
+                $c.addClass('hlf-state--focus');
                 $iw.addClass('hlf-state--focus');
                 $iw.removeClass('hlf-state--error');
                 $pl.addClass('hidden');
             });
 
             $i.on('blur', function () {
+                $c.removeClass('hlf-state--focus');
                 $iw.removeClass('hlf-state--focus');
 
                 if (config.mobileMode === true) {
@@ -552,7 +554,7 @@
         dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
         dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
         dayStatus: 'Использовать DD как первый день недели', dateStatus: 'Выбрать DD, MM d',
-        dateFormat: 'D, d M yy', firstDay: 1,
+        dateFormat: 'D, d M', firstDay: 1,
         initStatus: 'Выбрать дату', isRTL: false
     };
     $.datepicker.regional['en-US'] = {
@@ -568,7 +570,7 @@
         dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         dayNamesMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
         weekHeader: 'Wk',
-        dateFormat: 'D, MM d, yy', firstDay: 0,
+        dateFormat: 'D, MM d', firstDay: 0,
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -590,7 +592,7 @@
         dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
         dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
         weekHeader: 'Sem.',
-        dateFormat: 'd M yy', firstDay: 1,
+        dateFormat: 'd M', firstDay: 1,
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -608,7 +610,7 @@
         dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
         dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
         weekHeader: 'Sm',
-        dateFormat: 'd MM yy', firstDay: 1,
+        dateFormat: 'd MM', firstDay: 1,
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -626,7 +628,7 @@
         dayNamesShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
         dayNamesMin: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
         weekHeader: 'KW',
-        dateFormat: 'd MM yy', firstDay: 1,
+        dateFormat: 'd MM', firstDay: 1,
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -644,7 +646,7 @@
         dayNamesShort: ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'],
         dayNamesMin: ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'],
         weekHeader: 'Wk',
-        dateFormat: 'd MM yy', firstDay: 0,
+        dateFormat: 'd MM', firstDay: 0,
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -662,7 +664,7 @@
         dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'],
         dayNamesMin: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
         weekHeader: 'Sm',
-        dateFormat: 'd MM yy', firstDay: 1,
+        dateFormat: 'd MM', firstDay: 1,
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -680,7 +682,7 @@
         dayNamesShort: ['Nie', 'Pn', 'Wt', 'Śr', 'Czw', 'Pt', 'So'],
         dayNamesMin: ['N', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So'],
         weekHeader: 'Tydz',
-        dateFormat: 'd M yy', firstDay: 1,
+        dateFormat: 'd M', firstDay: 1,
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -698,7 +700,7 @@
         dayNamesShort: ['Min','Sen','Sel','Rab','kam','Jum','Sab'],
         dayNamesMin: ['Mg','Sn','Sl','Rb','Km','jm','Sb'],
         weekHeader: 'Mg',
-        dateFormat: 'dd/mm/yy',
+        dateFormat: 'dd/mm',
         firstDay: 0,
         isRTL: false,
         showMonthAfterYear: false,

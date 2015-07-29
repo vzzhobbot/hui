@@ -84,10 +84,11 @@
                 var gaLinker = hlf.gaGetLinkerParam();
 
                 window.open (
+                    //todo: $f.attr('target') || config.target
                     $f.attr('action') + '/?' +
                     $.param(p) + // controls params
                     (gaLinker ? '&' + gaLinker : '') + // ga linker param
-                    (config.hash ? '#' + config.hash : ''), config.target); // hash and target (open in new window or not)
+                    (config.hash ? '#' + config.hash : ''), $f.attr('target') || config.target); // hash and target (open in new window or not)
                 return false;
             }
             return result;

@@ -45,6 +45,8 @@
             titlesPosInside: false, // are titles inside 'val' container or not
             decControlContent: '&minus;',
             incControlContent: '&plus;',
+            decControlContentChld: '&minus;',
+            incControlContentChld: '&plus;',
 
             goalOpen: {},
 
@@ -76,12 +78,14 @@
         function guestsClose() {
             $g.addClass('hlf-state--closed');
             $g.removeClass('hlf-state--focus');
+            $c.removeClass('hlf-state--focus');
         }
 
         function guestsOpen() {
             hlf.goal(config.goalOpen);
             $g.removeClass('hlf-state--closed');
             $g.addClass('hlf-state--focus');
+            $c.addClass('hlf-state--focus');
         }
 
         function drawChild(key) {
@@ -95,7 +99,10 @@
                 hint: config.childHint,
                 childValSep: config.childValSep,
                 decControlContent: config.decControlContent,
-                incControlContent: config.incControlContent
+                incControlContent: config.incControlContent,
+                decControlContentChld: config.decControlContentChld,
+                incControlContentChld: config.incControlContentChld
+
             }));
 
             $chc[key] = hlf.getEl($cl, 'child-container', key);
@@ -204,10 +211,12 @@
 
             $s.on('focus', function() {
                 $s.addClass('hlf-state--focus');
+                $c.addClass('hlf-state--focus');
             });
 
             $s.on('blur', function() {
                 $s.removeClass('hlf-state--focus');
+                $c.removeClass('hlf-state--focus');
             });
 
             $ai.on('click', function() {

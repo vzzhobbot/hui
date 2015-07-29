@@ -265,12 +265,14 @@
             });
 
             $i.on('focus', function() {
+                $c.addClass('hlf-state--focus');
                 $iw.addClass('hlf-state--focus');
                 $iw.removeClass('hlf-state--error');
                 goalUseInputSent = false;
             });
 
             $i.on('blur', function() {
+                $c.removeClass('hlf-state--focus');
                 $iw.removeClass('hlf-state--focus');
             });
 
@@ -357,7 +359,7 @@
             });
         },
         _renderItem: function (ul, item) {
-            var label = '<span class="ui-menu-item-text">' + item.text + (item.clar ? '<span class="ui-menu-item-clar">, ' + item.clar + '</span>' : '') + '</span>';
+            var label = '<span class="ui-menu-item-text">' + item.text + (item.clar ? ', <span class="ui-menu-item-clar">' + item.clar + '</span>' : '') + '</span>';
             if (item.comment)
                 label += '<span class="ui-menu-item-comment">' + item.comment + '</span>';
             if (item.photo)
