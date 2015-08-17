@@ -4,9 +4,10 @@
     /**
      * Form constructor
      * @param config
+     * @param noMarker bool dont try to find marker
      * @returns {{controls: {}, param: Function}}
      */
-    hlf.form = function (config) {
+    hlf.form = function (config, noMarker) {
 
         config = _.defaults(config || {}, {
             id: null,
@@ -53,7 +54,7 @@
                 });
 
                 // additional params if needed
-                if(_.isUndefined(config.params.marker)) { // try to find marker in GET, then in cookie
+                if(_.isUndefined(config.params.marker) && !noMarker) { // try to find marker in GET, then in cookie
                     var marker = hlf.GET('marker') || hlf.readCookie('marker') || null;
                     if(marker) {
                         config.params.marker = marker;
