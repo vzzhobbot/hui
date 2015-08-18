@@ -27,6 +27,9 @@
             locale: 'en-US',
             mobileMode: hlf.config.mobileMode,
             autoFocus: false, // auto focus if field is empty
+            needLocationPhotos: false,
+            locationPhotoSize: '240x75',
+            onlyLocations: false,
 
             placeholder: 'Type something....',
             hint: 'panic!', // this control always required, its hint text
@@ -137,20 +140,25 @@
                             value: item.fullname,
                             text: item.city,
                             clar: (item.state ? item.state + ', ' : '') + item.country,
-                            comment: config.translateHotelsCount(item.hotelsCount)
+                            comment: config.translateHotelsCount(item.hotelsCount),
+                            photo: config.needLocationPhotos ? 'https://photo2.hotellook.com/static/cities/' + config.locationPhotoSize + '/' + item.id + '.auto' : false
                         }
                     });
-                    var hotels = _.map(data.hotels, function(item) {
-                        return {
-                            id: item.id,
-                            category: config.translateCategory('Hotels'),
-                            type: 'hotel',
-                            value: item.name + ', ' + item.city + ', ' + item.country,
-                            text: item.name,
-                            clar: item.city + ', ' + item.country
-                        }
-                    });
-                    response(_.union(cities, hotels));
+                    if (!config.onlyLocations) {
+                        var hotels = _.map(data.hotels, function (item) {
+                            return {
+                                id: item.id,
+                                category: config.translateCategory('Hotels'),
+                                type: 'hotel',
+                                value: item.name + ', ' + item.city + ', ' + item.country,
+                                text: item.name,
+                                clar: item.city + ', ' + item.country
+                            }
+                        });
+                        response(_.union(cities, hotels));
+                    } else {
+                        response(_.union(cities));
+                    }
                     $iw.removeClass('hlf-state--loading');
                 },
                 error: function() {
@@ -349,11 +357,11 @@
             });
         },
         _renderItem: function (ul, item) {
-            var label = '<span class="ui-menu-item-text">' + item.text + '</span>';
-            if (item.clar)
-                label += '<span class="ui-menu-item-clar">, ' + item.clar + '</span>';
+            var label = '<span class="ui-menu-item-text">' + item.text + (item.clar ? '<span class="ui-menu-item-clar">, ' + item.clar + '</span>' : '') + '</span>';
             if (item.comment)
                 label += '<span class="ui-menu-item-comment">' + item.comment + '</span>';
+            if (item.photo)
+                label += '<img src="' + item.photo + '" class="ui-menu-item-img" />';
             return $("<li>")
                 .append($("<a>").html(label))
                 .appendTo(ul);

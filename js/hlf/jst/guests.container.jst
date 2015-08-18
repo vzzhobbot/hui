@@ -2,20 +2,43 @@
     <a href="#" class="hlf-guests-i" tabindex="<%= tabIndex %>" hlf-role="summary"></a>
     <div class="hlf-guests-dd" hlf-role="controls">
         <div class="hlf-guests-adults">
-            <div class="hlf-guests-adults-title"><%= adultsTitle %></div>
-            <div class="hlf-guests-adults-controls">
-                <a class='hlf-control' href="#" hlf-role="adults-decrement">&minus;</a>
-                <div class="hlf-guests-adults-val" hlf-role="adults-val"></div>
-                <a class='hlf-control' href="#" hlf-role="adults-increment">+</a>
-            </div>
+            <% if (titlesPosInside) { %>
+                <div class="hlf-guests-adults-controls">
+                    <a class='hlf-control' href="#" hlf-role="adults-decrement"><span><%= decControlContent %></span></a>
+                    <div class="hlf-guests-adults-val">
+                        <span hlf-role="adults-val"></span>
+                        <span class="hlf-guests-adults-title"><%= adultsTitle %></span>
+                    </div>
+                    <a class='hlf-control' href="#" hlf-role="adults-increment"><span><%= incControlContent %></span></a>
+                </div>
+            <% } else { %>
+                <div class="hlf-guests-adults-title"><%= adultsTitle %></div>
+                <div class="hlf-guests-adults-controls">
+                    <a class='hlf-control' href="#" hlf-role="adults-decrement"><span><%= decControlContent %></span></a>
+                    <div class="hlf-guests-adults-val" hlf-role="adults-val"></div>
+                    <a class='hlf-control' href="#" hlf-role="adults-increment"><span><%= incControlContent %></span></a>
+                </div>
+            <% } %>
         </div>
         <div class="hlf-guests-children">
-            <div class="hlf-guests-children-title"><%= childrenTitle %></div>
-            <div class="hlf-guests-children-controls">
-                <a class='hlf-control' href="#" hlf-role="children-decrement">&minus;</a>
-                <div class="hlf-guests-children-val" hlf-role="children-val"></div>
-                <a class='hlf-control' href="#" hlf-role="children-increment">+</a>
-            </div>
+            <% if (titlesPosInside) { %>
+                <div class="hlf-guests-children-controls">
+                    <a class='hlf-control' href="#" hlf-role="children-decrement"><span><%= decControlContent %></span></a>
+                    <div class="hlf-guests-children-val">
+                        <span hlf-role="children-val"></span>
+                        <span class="hlf-guests-children-title"><%= childrenTitle %></span>
+                    </div>
+                    <a class='hlf-control' href="#" hlf-role="children-increment"><span><%= incControlContent %></span></a>
+                </div>
+            <% } else { %>
+                <div class="hlf-guests-children-title"><%= childrenTitle %></div>
+                <div class="hlf-guests-children-controls">
+                    <a class='hlf-control' href="#" hlf-role="children-decrement"><span><%= decControlContent %></span></a>
+                    <div class="hlf-guests-children-val" hlf-role="children-val"></div>
+                    <a class='hlf-control' href="#" hlf-role="children-increment"><span><%= incControlContent %></span></a>
+                </div>
+            <% } %>
+            <div class="hlf-guests-children-list-title" hlf-role="children-list-title"><%= childrenListTitle %></div>
             <ul class="hlf-guests-children-list" hlf-role="children-list"></ul>
         </div>
     </div>

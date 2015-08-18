@@ -37,6 +37,7 @@
                 }
             })(), // num of months visible in datepicker
             locale: 'en-US',
+            inline: false,
             mobileMode: hlf.config.mobileMode,
             placeholder: 'Choose date...',
             hintEmpty: 'Its required field', // hint text if required calendar field is empty

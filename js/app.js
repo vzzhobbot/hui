@@ -5,6 +5,9 @@ var maForm = hlf.form({
             id: 15542,
             type: 'location',
             text: 'Париж, Франция',
+            onlyLocations: true,
+            needLocationPhotos: true,
+            locationPhotoSize: '240x75',
             locale: 'ru-RU',
             goalUseInput: {
                 ga: 'form111.goalUseInput',
@@ -65,6 +68,7 @@ var maForm = hlf.form({
             relationAutoShow: true,
             locale: 'ru-RU',
             value: '',
+            inline: false,
             isAutoShown: true,
             min: -1
         }),
@@ -79,6 +83,7 @@ var maForm = hlf.form({
             relationSuperior: false,
             relationAutoSet: true,
             relationAutoShow: true,
+            inline: false,
             isAutoShown: true,
             locale: 'ru-RU',
             //value: new Date((new Date()).getTime() + 6 * 24 * 60 * 60 * 1000),
@@ -99,7 +104,11 @@ var maForm = hlf.form({
             },
             adultsTitle: 'Взрослых',
             className: 'super-puper-quests',
+            titlesPosInside: true,
+            decControlContent: '&minus;',
+            incControlContent: '&plus;',
             childrenTitle: 'Детей',
+            childValSep: true,
             childHint: 'Укажите возраст ребенка (0-17 лет)',
             summary: function (adults, children) {
                 return 'Гостей ' + (adults + children.length);

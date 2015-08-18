@@ -1,5 +1,9 @@
 <div class="hlf-input hlf-input--calendar" hlf-role="input-wrap">
-    <input type="text" placeholder="<%= placeholder %>" tabindex="<%= tabIndex %>" hlf-role="input" height="60"  />
+    <% if (inline) { %>
+        <div hlf-role="input" /></div>
+    <% } else { %>
+        <input type="text" placeholder="<%= placeholder %>" tabindex="<%= tabIndex %>" hlf-role="input" height="60"  />
+    <% } %>
     <div class="hint" hlf-role="hint"></div>
     <div class="pseudo-placeholder" hlf-role="placeholder"><%= placeholder %></div>
 </div>

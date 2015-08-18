@@ -4,8 +4,20 @@
         <div  class="hlf-guests-child-age-hint"><%= hint %></div>
     </div>
     <div class="hlf-guests-child-age-controls">
-        <a class='hlf-control' href="#" hlf-role="child-age-decrement"><i class="icon-chevron-left"></i>︎</a>
-        <div class="hlf-guests-child-age-val" hlf-role="child-age"><%= age %></div>
-        <a class='hlf-control' href="#" hlf-role="child-age-increment"><i class="icon-chevron-right"></i></a>
+        <% if (childValSep) { %>
+            <div class="hlf-guests-child-age-val">
+                <span hlf-role="child-age"><%= age %></span>
+            </div>
+            <div class="hlf-guests-child-controls">
+                <a class='hlf-control' href="#" hlf-role="child-age-decrement"><%= decControlContent %>︎</a>
+                <a class='hlf-control' href="#" hlf-role="child-age-increment"><%= incControlContent %></a>
+            </div>
+        <% } else { %>
+            <a class='hlf-control' href="#" hlf-role="child-age-decrement"><%= decControlContent %>︎</a>
+            <div class="hlf-guests-child-age-val">
+                <span hlf-role="child-age"><%= age %></span>
+            </div>
+            <a class='hlf-control' href="#" hlf-role="child-age-increment"><%= incControlContent %></a>
+        <% } %>
     </div>
 </li>

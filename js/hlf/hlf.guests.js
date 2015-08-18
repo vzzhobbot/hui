@@ -14,6 +14,7 @@
             $ci = null, // children increment control
             $cd = null, // children decrement control
             $cl = null, // children list
+            $clt = '', // children list title
             $chc = [], // child containers
             $chi = [], // child age increment control
             $chd = [], // child age decrement control
@@ -38,6 +39,12 @@
             childrenTitle: 'Children',
             childAge: 'Age',
             childHint: 'Check da age!',
+            childrenListTitle: 'It is children list',
+            childValSep: false,
+
+            titlesPosInside: false, // are titles inside 'val' container or not
+            decControlContent: '&minus;',
+            incControlContent: '&plus;',
 
             goalOpen: {},
 
@@ -85,7 +92,10 @@
                 key: key,
                 age: config.children[key],
                 title: config.childAge,
-                hint: config.childHint
+                hint: config.childHint,
+                childValSep: config.childValSep,
+                decControlContent: config.decControlContent,
+                incControlContent: config.incControlContent
             }));
 
             $chc[key] = hlf.getEl($cl, 'child-container', key);
@@ -113,9 +123,13 @@
             $av.html(config.adults);
             $cv.html(config.children.length);
 
-            config.children.length
-                ? $cl.removeClass('hlf-state--empty')
-                : $cl.addClass('hlf-state--empty');
+            if (config.children.length){
+                $cl.removeClass('hlf-state--empty')
+                $clt.removeClass('hlf-state--disabled');
+            } else {
+                $cl.addClass('hlf-state--empty');
+                $clt.addClass('hlf-state--disabled');
+            }
 
             config.children.length == config.childrenMax
                 ? $ci.addClass('hlf-state--disabled')
@@ -160,6 +174,7 @@
             $cd = hlf.getEl($c, 'children-decrement');
             $ci = hlf.getEl($c, 'children-increment');
             $cl = hlf.getEl($c, 'children-list');
+            $clt = hlf.getEl($c, 'children-list-title');
             config.className&&$g.addClass(config.className);
             _.each(config.children, function(v, key) {
                 drawChild(key);

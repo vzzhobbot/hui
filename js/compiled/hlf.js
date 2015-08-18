@@ -242,16 +242,16 @@ this["hlf"]["jst"]["calendar.head.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
   return "<div class=\"ui-datepicker-head\"><%= head %></div>";
   },"useData":true};
 this["hlf"]["jst"]["calendar.input.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  return "<div class=\"hlf-input hlf-input--calendar\" hlf-role=\"input-wrap\">\n    <input type=\"text\" placeholder=\"<%= placeholder %>\" tabindex=\"<%= tabIndex %>\" hlf-role=\"input\" height=\"60\"  />\n    <div class=\"hint\" hlf-role=\"hint\"></div>\n    <div class=\"pseudo-placeholder\" hlf-role=\"placeholder\"><%= placeholder %></div>\n</div>";
+  return "<div class=\"hlf-input hlf-input--calendar\" hlf-role=\"input-wrap\">\n    <% if (inline) { %>\n        <div hlf-role=\"input\" /></div>\n    <% } else { %>\n        <input type=\"text\" placeholder=\"<%= placeholder %>\" tabindex=\"<%= tabIndex %>\" hlf-role=\"input\" height=\"60\"  />\n    <% } %>\n    <div class=\"hint\" hlf-role=\"hint\"></div>\n    <div class=\"pseudo-placeholder\" hlf-role=\"placeholder\"><%= placeholder %></div>\n</div>";
   },"useData":true};
 this["hlf"]["jst"]["calendar.legend.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   return "<div class=\"ui-datepicker-legend\">\n    <div class=\"ui-datepicker-legend-head\"><%= legend %></div>\n    <div class=\"ui-datepicker-legend-points\">\n        <div class=\"ui-datepicker-legend-points-line\"></div>\n        <ul class=\"ui-datepicker-legend-points-list\">\n            <% _.each(points, function(point, i) { %>\n            <li class=\"ui-datepicker-legend-points-item ui-datepicker-legend-points-item--<%= i %>\"><%= point %></li>\n            <% }); %>\n        </ul>\n    </div>\n</div>";
   },"useData":true};
 this["hlf"]["jst"]["guests.child.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  return "<li class=\"hlf-guests-children-item\" hlf-role=\"child-container\" hlf-name=\"<%= key %>\">\n    <div class=\"hlf-guests-child-age-title\">\n        <%= title %>\n        <div  class=\"hlf-guests-child-age-hint\"><%= hint %></div>\n    </div>\n    <div class=\"hlf-guests-child-age-controls\">\n        <a class='hlf-control' href=\"#\" hlf-role=\"child-age-decrement\"><i class=\"icon-chevron-left\"></i>︎</a>\n        <div class=\"hlf-guests-child-age-val\" hlf-role=\"child-age\"><%= age %></div>\n        <a class='hlf-control' href=\"#\" hlf-role=\"child-age-increment\"><i class=\"icon-chevron-right\"></i></a>\n    </div>\n</li>";
+  return "<li class=\"hlf-guests-children-item\" hlf-role=\"child-container\" hlf-name=\"<%= key %>\">\n    <div class=\"hlf-guests-child-age-title\">\n        <%= title %>\n        <div  class=\"hlf-guests-child-age-hint\"><%= hint %></div>\n    </div>\n    <div class=\"hlf-guests-child-age-controls\">\n        <% if (childValSep) { %>\n            <div class=\"hlf-guests-child-age-val\">\n                <span hlf-role=\"child-age\"><%= age %></span>\n            </div>\n            <div class=\"hlf-guests-child-controls\">\n                <a class='hlf-control' href=\"#\" hlf-role=\"child-age-decrement\"><%= decControlContent %>︎</a>\n                <a class='hlf-control' href=\"#\" hlf-role=\"child-age-increment\"><%= incControlContent %></a>\n            </div>\n        <% } else { %>\n            <a class='hlf-control' href=\"#\" hlf-role=\"child-age-decrement\"><%= decControlContent %>︎</a>\n            <div class=\"hlf-guests-child-age-val\">\n                <span hlf-role=\"child-age\"><%= age %></span>\n            </div>\n            <a class='hlf-control' href=\"#\" hlf-role=\"child-age-increment\"><%= incControlContent %></a>\n        <% } %>\n    </div>\n</li>";
   },"useData":true};
 this["hlf"]["jst"]["guests.container.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  return "<div class=\"hlf-guests hlf-state--closed\" hlf-role=\"guests\">\n    <a href=\"#\" class=\"hlf-guests-i\" tabindex=\"<%= tabIndex %>\" hlf-role=\"summary\"></a>\n    <div class=\"hlf-guests-dd\" hlf-role=\"controls\">\n        <div class=\"hlf-guests-adults\">\n            <div class=\"hlf-guests-adults-title\"><%= adultsTitle %></div>\n            <div class=\"hlf-guests-adults-controls\">\n                <a class='hlf-control' href=\"#\" hlf-role=\"adults-decrement\">&minus;</a>\n                <div class=\"hlf-guests-adults-val\" hlf-role=\"adults-val\"></div>\n                <a class='hlf-control' href=\"#\" hlf-role=\"adults-increment\">+</a>\n            </div>\n        </div>\n        <div class=\"hlf-guests-children\">\n            <div class=\"hlf-guests-children-title\"><%= childrenTitle %></div>\n            <div class=\"hlf-guests-children-controls\">\n                <a class='hlf-control' href=\"#\" hlf-role=\"children-decrement\">&minus;</a>\n                <div class=\"hlf-guests-children-val\" hlf-role=\"children-val\"></div>\n                <a class='hlf-control' href=\"#\" hlf-role=\"children-increment\">+</a>\n            </div>\n            <ul class=\"hlf-guests-children-list\" hlf-role=\"children-list\"></ul>\n        </div>\n    </div>\n</div>";
+  return "<div class=\"hlf-guests hlf-state--closed\" hlf-role=\"guests\">\n    <a href=\"#\" class=\"hlf-guests-i\" tabindex=\"<%= tabIndex %>\" hlf-role=\"summary\"></a>\n    <div class=\"hlf-guests-dd\" hlf-role=\"controls\">\n        <div class=\"hlf-guests-adults\">\n            <% if (titlesPosInside) { %>\n                <div class=\"hlf-guests-adults-controls\">\n                    <a class='hlf-control' href=\"#\" hlf-role=\"adults-decrement\"><span><%= decControlContent %></span></a>\n                    <div class=\"hlf-guests-adults-val\">\n                        <span hlf-role=\"adults-val\"></span>\n                        <span class=\"hlf-guests-adults-title\"><%= adultsTitle %></span>\n                    </div>\n                    <a class='hlf-control' href=\"#\" hlf-role=\"adults-increment\"><span><%= incControlContent %></span></a>\n                </div>\n            <% } else { %>\n                <div class=\"hlf-guests-adults-title\"><%= adultsTitle %></div>\n                <div class=\"hlf-guests-adults-controls\">\n                    <a class='hlf-control' href=\"#\" hlf-role=\"adults-decrement\"><span><%= decControlContent %></span></a>\n                    <div class=\"hlf-guests-adults-val\" hlf-role=\"adults-val\"></div>\n                    <a class='hlf-control' href=\"#\" hlf-role=\"adults-increment\"><span><%= incControlContent %></span></a>\n                </div>\n            <% } %>\n        </div>\n        <div class=\"hlf-guests-children\">\n            <% if (titlesPosInside) { %>\n                <div class=\"hlf-guests-children-controls\">\n                    <a class='hlf-control' href=\"#\" hlf-role=\"children-decrement\"><span><%= decControlContent %></span></a>\n                    <div class=\"hlf-guests-children-val\">\n                        <span hlf-role=\"children-val\"></span>\n                        <span class=\"hlf-guests-children-title\"><%= childrenTitle %></span>\n                    </div>\n                    <a class='hlf-control' href=\"#\" hlf-role=\"children-increment\"><span><%= incControlContent %></span></a>\n                </div>\n            <% } else { %>\n                <div class=\"hlf-guests-children-title\"><%= childrenTitle %></div>\n                <div class=\"hlf-guests-children-controls\">\n                    <a class='hlf-control' href=\"#\" hlf-role=\"children-decrement\"><span><%= decControlContent %></span></a>\n                    <div class=\"hlf-guests-children-val\" hlf-role=\"children-val\"></div>\n                    <a class='hlf-control' href=\"#\" hlf-role=\"children-increment\"><span><%= incControlContent %></span></a>\n                </div>\n            <% } %>\n            <div class=\"hlf-guests-children-list-title\" hlf-role=\"children-list-title\"><%= childrenListTitle %></div>\n            <ul class=\"hlf-guests-children-list\" hlf-role=\"children-list\"></ul>\n        </div>\n    </div>\n</div>";
   },"useData":true};
 this["hlf"]["jst"]["noDates.input.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   return "<label hlf-role=\"noDates-input-wrap\">\n    <input type=\"checkbox\" tabindex=\"<%= tabIndex %>\" hlf-role=\"noDates-input\"><%= text %>\n</label>";
@@ -404,6 +404,9 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             locale: 'en-US',
             mobileMode: hlf.config.mobileMode,
             autoFocus: false, // auto focus if field is empty
+            needLocationPhotos: false,
+            locationPhotoSize: '240x75',
+            onlyLocations: false,
 
             placeholder: 'Type something....',
             hint: 'panic!', // this control always required, its hint text
@@ -514,20 +517,25 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                             value: item.fullname,
                             text: item.city,
                             clar: (item.state ? item.state + ', ' : '') + item.country,
-                            comment: config.translateHotelsCount(item.hotelsCount)
+                            comment: config.translateHotelsCount(item.hotelsCount),
+                            photo: config.needLocationPhotos ? 'https://photo2.hotellook.com/static/cities/' + config.locationPhotoSize + '/' + item.id + '.auto' : false
                         }
                     });
-                    var hotels = _.map(data.hotels, function(item) {
-                        return {
-                            id: item.id,
-                            category: config.translateCategory('Hotels'),
-                            type: 'hotel',
-                            value: item.name + ', ' + item.city + ', ' + item.country,
-                            text: item.name,
-                            clar: item.city + ', ' + item.country
-                        }
-                    });
-                    response(_.union(cities, hotels));
+                    if (!config.onlyLocations) {
+                        var hotels = _.map(data.hotels, function (item) {
+                            return {
+                                id: item.id,
+                                category: config.translateCategory('Hotels'),
+                                type: 'hotel',
+                                value: item.name + ', ' + item.city + ', ' + item.country,
+                                text: item.name,
+                                clar: item.city + ', ' + item.country
+                            }
+                        });
+                        response(_.union(cities, hotels));
+                    } else {
+                        response(_.union(cities));
+                    }
                     $iw.removeClass('hlf-state--loading');
                 },
                 error: function() {
@@ -726,11 +734,11 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             });
         },
         _renderItem: function (ul, item) {
-            var label = '<span class="ui-menu-item-text">' + item.text + '</span>';
-            if (item.clar)
-                label += '<span class="ui-menu-item-clar">, ' + item.clar + '</span>';
+            var label = '<span class="ui-menu-item-text">' + item.text + (item.clar ? '<span class="ui-menu-item-clar">, ' + item.clar + '</span>' : '') + '</span>';
             if (item.comment)
                 label += '<span class="ui-menu-item-comment">' + item.comment + '</span>';
+            if (item.photo)
+                label += '<img src="' + item.photo + '" class="ui-menu-item-img" />';
             return $("<li>")
                 .append($("<a>").html(label))
                 .appendTo(ul);
@@ -777,6 +785,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 }
             })(), // num of months visible in datepicker
             locale: 'en-US',
+            inline: false,
             mobileMode: hlf.config.mobileMode,
             placeholder: 'Choose date...',
             hintEmpty: 'Its required field', // hint text if required calendar field is empty
@@ -1541,6 +1550,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $ci = null, // children increment control
             $cd = null, // children decrement control
             $cl = null, // children list
+            $clt = '', // children list title
             $chc = [], // child containers
             $chi = [], // child age increment control
             $chd = [], // child age decrement control
@@ -1565,6 +1575,12 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             childrenTitle: 'Children',
             childAge: 'Age',
             childHint: 'Check da age!',
+            childrenListTitle: 'It is children list',
+            childValSep: false,
+
+            titlesPosInside: false, // are titles inside 'val' container or not
+            decControlContent: '&minus;',
+            incControlContent: '&plus;',
 
             goalOpen: {},
 
@@ -1612,7 +1628,10 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 key: key,
                 age: config.children[key],
                 title: config.childAge,
-                hint: config.childHint
+                hint: config.childHint,
+                childValSep: config.childValSep,
+                decControlContent: config.decControlContent,
+                incControlContent: config.incControlContent
             }));
 
             $chc[key] = hlf.getEl($cl, 'child-container', key);
@@ -1640,9 +1659,13 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $av.html(config.adults);
             $cv.html(config.children.length);
 
-            config.children.length
-                ? $cl.removeClass('hlf-state--empty')
-                : $cl.addClass('hlf-state--empty');
+            if (config.children.length){
+                $cl.removeClass('hlf-state--empty')
+                $clt.removeClass('hlf-state--disabled');
+            } else {
+                $cl.addClass('hlf-state--empty');
+                $clt.addClass('hlf-state--disabled');
+            }
 
             config.children.length == config.childrenMax
                 ? $ci.addClass('hlf-state--disabled')
@@ -1687,6 +1710,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $cd = hlf.getEl($c, 'children-decrement');
             $ci = hlf.getEl($c, 'children-increment');
             $cl = hlf.getEl($c, 'children-list');
+            $clt = hlf.getEl($c, 'children-list-title');
             config.className&&$g.addClass(config.className);
             _.each(config.children, function(v, key) {
                 drawChild(key);
