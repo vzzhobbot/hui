@@ -102,14 +102,22 @@ window.maForm = hlf.form({
                 ga: 'hlfcat.guestsitem',
                 as: 'hlf-guests'
             },
-            adultsTitle: 'Взрослых',
+            adultsTitle: function(adults) {
+                var string = 'Взрослый';
+                if (adults > 1) {
+                    string = 'Взрослых'
+                }
+                return string;
+            },
+            childrenTitle: function(children) {
+                return 'Детей';
+            },
             className: 'super-puper-quests',
             titlesPosInside: true,
             decControlContent: '&minus;',
             incControlContent: '&plus;',
             decControlContentChld: 'bebebe',
             incControlContentChld: 'rrrrr',
-            childrenTitle: 'Детей',
             childValSep: true,
             childHint: 'Укажите возраст ребенка (0-17 лет)',
             summary: function (adults, children) {
@@ -125,40 +133,6 @@ window.maForm = hlf.form({
         })
     },
     target: '_blank',
-    params: {
-        language: 'es-ES',
-        currency: 'rub'
-    },
-    hash: 'asdsd=asdasds',
-    goalSubmit: {
-        yam: 'sumbimt!',
-        as: 'form0submit----------!'
-    }
-});
-
-var maForm2 = hlf.form({
-    id: 'form2',
-    controls: {
-        guests: hlf.guests({
-            adults: 2,
-            goalOpen: {
-                ga: 'hlfcat.guestsitem',
-                as: 'hlf-guests'
-            },
-            adultsTitle: 'Взрослых',
-            childrenTitle: 'Детей',
-            childHint: 'Укажите возраст ребенка (0-17 лет)',
-            summary: function (adults, children) {
-                return 'Гостей ' + (adults + children.length);
-            }
-        }),
-        submit: hlf.submit({
-            text: 'Узнать цены',
-            goalClick: {
-                as: 'form111--------button'
-            }
-        })
-    },
     params: {
         language: 'es-ES',
         currency: 'rub'

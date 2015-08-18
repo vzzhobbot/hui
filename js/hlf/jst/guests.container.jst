@@ -7,12 +7,12 @@
                     <a class='hlf-control' href="#" hlf-role="adults-decrement"><span><%= decControlContent %></span></a>
                     <div class="hlf-guests-adults-val">
                         <span hlf-role="adults-val"></span>
-                        <span class="hlf-guests-adults-title"><%= adultsTitle %></span>
+                        <span hlf-role="adults-title" class="hlf-guests-adults-title"></span>
                     </div>
                     <a class='hlf-control' href="#" hlf-role="adults-increment"><span><%= incControlContent %></span></a>
                 </div>
             <% } else { %>
-                <div class="hlf-guests-adults-title"><%= adultsTitle %></div>
+                <div hlf-role="adults-title" class="hlf-guests-adults-title"></div>
                 <div class="hlf-guests-adults-controls">
                     <a class='hlf-control' href="#" hlf-role="adults-decrement"><span><%= decControlContent %></span></a>
                     <div class="hlf-guests-adults-val" hlf-role="adults-val"></div>
@@ -26,12 +26,12 @@
                     <a class='hlf-control' href="#" hlf-role="children-decrement"><span><%= decControlContent %></span></a>
                     <div class="hlf-guests-children-val">
                         <span hlf-role="children-val"></span>
-                        <span class="hlf-guests-children-title"><%= childrenTitle %></span>
+                        <span hlf-role="children-title" class="hlf-guests-children-title"></span>
                     </div>
                     <a class='hlf-control' href="#" hlf-role="children-increment"><span><%= incControlContent %></span></a>
                 </div>
             <% } else { %>
-                <div class="hlf-guests-children-title"><%= childrenTitle %></div>
+                <div hlf-role="children-title" class="hlf-guests-children-title"></div>
                 <div class="hlf-guests-children-controls">
                     <a class='hlf-control' href="#" hlf-role="children-decrement"><span><%= decControlContent %></span></a>
                     <div class="hlf-guests-children-val" hlf-role="children-val"></div>

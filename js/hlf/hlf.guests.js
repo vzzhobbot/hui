@@ -8,9 +8,11 @@
             $s = null, // summary
             $cc = null, // controls container
             $av = null, // adults value
+            $at = null, // adults title
             $ai = null, // adults increment control
             $ad = null, // adults decrement control
             $cv = null, // children value
+            $ct = null, // children title
             $ci = null, // children increment control
             $cd = null, // children decrement control
             $cl = null, // children list
@@ -34,9 +36,12 @@
             summary: function(adults, children) {
                 return (adults + children.length);
             },
-
-            adultsTitle: 'Adults',
-            childrenTitle: 'Children',
+            adultsTitle: function(adults) {
+                return 'Adults';
+            },
+            childrenTitle: function(children) {
+                return 'Children';
+            },
             childAge: 'Age',
             childHint: 'Check da age!',
             childrenListTitle: 'It is children list',
@@ -129,6 +134,8 @@
             $s.html(config.summary(config.adults, config.children));
             $av.html(config.adults);
             $cv.html(config.children.length);
+            $at.html(config.adultsTitle(config.adults));
+            $ct.html(config.childrenTitle(config.children));
 
             if (config.children.length){
                 $cl.removeClass('hlf-state--empty')
@@ -175,9 +182,11 @@
             $s = hlf.getEl($c, 'summary');
             $cc = hlf.getEl($c, 'controls');
             $av = hlf.getEl($c, 'adults-val');
+            $at = hlf.getEl($c, 'adults-title');
             $ad = hlf.getEl($c, 'adults-decrement');
             $ai = hlf.getEl($c, 'adults-increment');
             $cv = hlf.getEl($c, 'children-val');
+            $ct = hlf.getEl($c, 'children-title');
             $cd = hlf.getEl($c, 'children-decrement');
             $ci = hlf.getEl($c, 'children-increment');
             $cl = hlf.getEl($c, 'children-list');

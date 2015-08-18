@@ -425,6 +425,7 @@
                         $iw.removeClass('hlf-state--error');
                     },
                     beforeShowDay: function (date) {
+                        updateRange();
                         return getDayCfg(date);
                     },
                     beforeShow: function (e, i) {

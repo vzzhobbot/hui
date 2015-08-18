@@ -25,6 +25,7 @@
             id: 0, // default id
             limit: 5, // limit for items each category
             locale: 'en-US',
+            latinLocationFullName: '',
             mobileMode: hlf.config.mobileMode,
             autoFocus: false, // auto focus if field is empty
             needLocationPhotos: false,
@@ -139,6 +140,7 @@
                             type: 'location',
                             value: item.fullname,
                             text: item.city,
+                            latinLocationFullName: item.latinFullName,
                             clar: (item.state ? item.state + ', ' : '') + item.country,
                             comment: config.translateHotelsCount(item.hotelsCount),
                             photo: config.needLocationPhotos ? 'https://photo2.hotellook.com/static/cities/' + config.locationPhotoSize + '/' + item.id + '.auto' : false
@@ -150,6 +152,7 @@
                                 id: item.id,
                                 category: config.translateCategory('Hotels'),
                                 type: 'hotel',
+                                latinLocationFullName: item.latinLocationFullName,
                                 value: item.name + ', ' + item.city + ', ' + item.country,
                                 text: item.name,
                                 clar: item.city + ', ' + item.country
@@ -183,10 +186,13 @@
             config.onReset();
         }
 
-        function select(type, id, text) {
+        function select(type, id, text, locationName) {
             $iw.removeClass('hlf-state--error');
             config.type = type;
             config.id = id;
+            if (locationName) {
+                config.latinLocationFullName = locationName;
+            }
             if(text) {
                 $i.val(text);
             }
@@ -232,7 +238,7 @@
             $i.reachAutocomplete({
                 source: source,
                 select: function(ev, data) {
-                    select(data.item.type, data.item.id);
+                    select(data.item.type, data.item.id, '', data.item.latinLocationFullName);
                     hlf.goal(config.goalAcSelect, data.item);
                     hlf.goal(config.goalAcSelectType, data.item.type);
                 },
@@ -324,7 +330,8 @@
                 select: select,
                 getParams: getParams,
                 setValue: setValue,
-                validate: validate
+                validate: validate,
+                input: $i
             };
 
         };

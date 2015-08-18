@@ -251,7 +251,7 @@ this["hlf"]["jst"]["guests.child.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main
   return "<li class=\"hlf-guests-children-item\" hlf-role=\"child-container\" hlf-name=\"<%= key %>\">\n    <div class=\"hlf-guests-child-age-title\">\n        <%= title %>\n        <div  class=\"hlf-guests-child-age-hint\"><%= hint %></div>\n    </div>\n    <div class=\"hlf-guests-child-age-controls\">\n        <% if (childValSep) { %>\n            <div class=\"hlf-guests-child-age-val\">\n                <span hlf-role=\"child-age\"><%= age %></span>\n            </div>\n            <div class=\"hlf-guests-child-controls\">\n                <a class='hlf-control' href=\"#\" hlf-role=\"child-age-decrement\"><%= decControlContentChld %>︎</a>\n                <a class='hlf-control' href=\"#\" hlf-role=\"child-age-increment\"><%= incControlContentChld %></a>\n            </div>\n        <% } else { %>\n            <a class='hlf-control' href=\"#\" hlf-role=\"child-age-decrement\"><%= decControlContentChld %>︎</a>\n            <div class=\"hlf-guests-child-age-val\">\n                <span hlf-role=\"child-age\"><%= age %></span>\n            </div>\n            <a class='hlf-control' href=\"#\" hlf-role=\"child-age-increment\"><%= incControlContentChld %></a>\n        <% } %>\n    </div>\n</li>";
   },"useData":true};
 this["hlf"]["jst"]["guests.container.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  return "<div class=\"hlf-guests hlf-state--closed\" hlf-role=\"guests\">\n    <a href=\"#\" class=\"hlf-guests-i\" tabindex=\"<%= tabIndex %>\" hlf-role=\"summary\"></a>\n    <div class=\"hlf-guests-dd\" hlf-role=\"controls\">\n        <div class=\"hlf-guests-adults\">\n            <% if (titlesPosInside) { %>\n                <div class=\"hlf-guests-adults-controls\">\n                    <a class='hlf-control' href=\"#\" hlf-role=\"adults-decrement\"><span><%= decControlContent %></span></a>\n                    <div class=\"hlf-guests-adults-val\">\n                        <span hlf-role=\"adults-val\"></span>\n                        <span class=\"hlf-guests-adults-title\"><%= adultsTitle %></span>\n                    </div>\n                    <a class='hlf-control' href=\"#\" hlf-role=\"adults-increment\"><span><%= incControlContent %></span></a>\n                </div>\n            <% } else { %>\n                <div class=\"hlf-guests-adults-title\"><%= adultsTitle %></div>\n                <div class=\"hlf-guests-adults-controls\">\n                    <a class='hlf-control' href=\"#\" hlf-role=\"adults-decrement\"><span><%= decControlContent %></span></a>\n                    <div class=\"hlf-guests-adults-val\" hlf-role=\"adults-val\"></div>\n                    <a class='hlf-control' href=\"#\" hlf-role=\"adults-increment\"><span><%= incControlContent %></span></a>\n                </div>\n            <% } %>\n        </div>\n        <div class=\"hlf-guests-children\">\n            <% if (titlesPosInside) { %>\n                <div class=\"hlf-guests-children-controls\">\n                    <a class='hlf-control' href=\"#\" hlf-role=\"children-decrement\"><span><%= decControlContent %></span></a>\n                    <div class=\"hlf-guests-children-val\">\n                        <span hlf-role=\"children-val\"></span>\n                        <span class=\"hlf-guests-children-title\"><%= childrenTitle %></span>\n                    </div>\n                    <a class='hlf-control' href=\"#\" hlf-role=\"children-increment\"><span><%= incControlContent %></span></a>\n                </div>\n            <% } else { %>\n                <div class=\"hlf-guests-children-title\"><%= childrenTitle %></div>\n                <div class=\"hlf-guests-children-controls\">\n                    <a class='hlf-control' href=\"#\" hlf-role=\"children-decrement\"><span><%= decControlContent %></span></a>\n                    <div class=\"hlf-guests-children-val\" hlf-role=\"children-val\"></div>\n                    <a class='hlf-control' href=\"#\" hlf-role=\"children-increment\"><span><%= incControlContent %></span></a>\n                </div>\n            <% } %>\n            <div class=\"hlf-guests-children-list-title\" hlf-role=\"children-list-title\"><%= childrenListTitle %></div>\n            <ul class=\"hlf-guests-children-list\" hlf-role=\"children-list\"></ul>\n        </div>\n    </div>\n</div>";
+  return "<div class=\"hlf-guests hlf-state--closed\" hlf-role=\"guests\">\n    <a href=\"#\" class=\"hlf-guests-i\" tabindex=\"<%= tabIndex %>\" hlf-role=\"summary\"></a>\n    <div class=\"hlf-guests-dd\" hlf-role=\"controls\">\n        <div class=\"hlf-guests-adults\">\n            <% if (titlesPosInside) { %>\n                <div class=\"hlf-guests-adults-controls\">\n                    <a class='hlf-control' href=\"#\" hlf-role=\"adults-decrement\"><span><%= decControlContent %></span></a>\n                    <div class=\"hlf-guests-adults-val\">\n                        <span hlf-role=\"adults-val\"></span>\n                        <span hlf-role=\"adults-title\" class=\"hlf-guests-adults-title\"></span>\n                    </div>\n                    <a class='hlf-control' href=\"#\" hlf-role=\"adults-increment\"><span><%= incControlContent %></span></a>\n                </div>\n            <% } else { %>\n                <div hlf-role=\"adults-title\" class=\"hlf-guests-adults-title\"></div>\n                <div class=\"hlf-guests-adults-controls\">\n                    <a class='hlf-control' href=\"#\" hlf-role=\"adults-decrement\"><span><%= decControlContent %></span></a>\n                    <div class=\"hlf-guests-adults-val\" hlf-role=\"adults-val\"></div>\n                    <a class='hlf-control' href=\"#\" hlf-role=\"adults-increment\"><span><%= incControlContent %></span></a>\n                </div>\n            <% } %>\n        </div>\n        <div class=\"hlf-guests-children\">\n            <% if (titlesPosInside) { %>\n                <div class=\"hlf-guests-children-controls\">\n                    <a class='hlf-control' href=\"#\" hlf-role=\"children-decrement\"><span><%= decControlContent %></span></a>\n                    <div class=\"hlf-guests-children-val\">\n                        <span hlf-role=\"children-val\"></span>\n                        <span hlf-role=\"children-title\" class=\"hlf-guests-children-title\"></span>\n                    </div>\n                    <a class='hlf-control' href=\"#\" hlf-role=\"children-increment\"><span><%= incControlContent %></span></a>\n                </div>\n            <% } else { %>\n                <div hlf-role=\"children-title\" class=\"hlf-guests-children-title\"></div>\n                <div class=\"hlf-guests-children-controls\">\n                    <a class='hlf-control' href=\"#\" hlf-role=\"children-decrement\"><span><%= decControlContent %></span></a>\n                    <div class=\"hlf-guests-children-val\" hlf-role=\"children-val\"></div>\n                    <a class='hlf-control' href=\"#\" hlf-role=\"children-increment\"><span><%= incControlContent %></span></a>\n                </div>\n            <% } %>\n            <div class=\"hlf-guests-children-list-title\" hlf-role=\"children-list-title\"><%= childrenListTitle %></div>\n            <ul class=\"hlf-guests-children-list\" hlf-role=\"children-list\"></ul>\n        </div>\n    </div>\n</div>";
   },"useData":true};
 this["hlf"]["jst"]["noDates.input.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   return "<label hlf-role=\"noDates-input-wrap\">\n    <input type=\"checkbox\" tabindex=\"<%= tabIndex %>\" hlf-role=\"noDates-input\"><%= text %>\n</label>";
@@ -403,6 +403,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             id: 0, // default id
             limit: 5, // limit for items each category
             locale: 'en-US',
+            latinLocationFullName: '',
             mobileMode: hlf.config.mobileMode,
             autoFocus: false, // auto focus if field is empty
             needLocationPhotos: false,
@@ -517,6 +518,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                             type: 'location',
                             value: item.fullname,
                             text: item.city,
+                            latinLocationFullName: item.latinFullName,
                             clar: (item.state ? item.state + ', ' : '') + item.country,
                             comment: config.translateHotelsCount(item.hotelsCount),
                             photo: config.needLocationPhotos ? 'https://photo2.hotellook.com/static/cities/' + config.locationPhotoSize + '/' + item.id + '.auto' : false
@@ -528,6 +530,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                                 id: item.id,
                                 category: config.translateCategory('Hotels'),
                                 type: 'hotel',
+                                latinLocationFullName: item.latinLocationFullName,
                                 value: item.name + ', ' + item.city + ', ' + item.country,
                                 text: item.name,
                                 clar: item.city + ', ' + item.country
@@ -561,10 +564,13 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             config.onReset();
         }
 
-        function select(type, id, text) {
+        function select(type, id, text, locationName) {
             $iw.removeClass('hlf-state--error');
             config.type = type;
             config.id = id;
+            if (locationName) {
+                config.latinLocationFullName = locationName;
+            }
             if(text) {
                 $i.val(text);
             }
@@ -610,7 +616,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $i.reachAutocomplete({
                 source: source,
                 select: function(ev, data) {
-                    select(data.item.type, data.item.id);
+                    select(data.item.type, data.item.id, '', data.item.latinLocationFullName);
                     hlf.goal(config.goalAcSelect, data.item);
                     hlf.goal(config.goalAcSelectType, data.item.type);
                 },
@@ -702,7 +708,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 select: select,
                 getParams: getParams,
                 setValue: setValue,
-                validate: validate
+                validate: validate,
+                input: $i
             };
 
         };
@@ -1176,6 +1183,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                         $iw.removeClass('hlf-state--error');
                     },
                     beforeShowDay: function (date) {
+                        updateRange();
                         return getDayCfg(date);
                     },
                     beforeShow: function (e, i) {
@@ -1549,9 +1557,11 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $s = null, // summary
             $cc = null, // controls container
             $av = null, // adults value
+            $at = null, // adults title
             $ai = null, // adults increment control
             $ad = null, // adults decrement control
             $cv = null, // children value
+            $ct = null, // children title
             $ci = null, // children increment control
             $cd = null, // children decrement control
             $cl = null, // children list
@@ -1575,9 +1585,12 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             summary: function(adults, children) {
                 return (adults + children.length);
             },
-
-            adultsTitle: 'Adults',
-            childrenTitle: 'Children',
+            adultsTitle: function(adults) {
+                return 'Adults';
+            },
+            childrenTitle: function(children) {
+                return 'Children';
+            },
             childAge: 'Age',
             childHint: 'Check da age!',
             childrenListTitle: 'It is children list',
@@ -1670,6 +1683,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $s.html(config.summary(config.adults, config.children));
             $av.html(config.adults);
             $cv.html(config.children.length);
+            $at.html(config.adultsTitle(config.adults));
+            $ct.html(config.childrenTitle(config.children));
 
             if (config.children.length){
                 $cl.removeClass('hlf-state--empty')
@@ -1716,9 +1731,11 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $s = hlf.getEl($c, 'summary');
             $cc = hlf.getEl($c, 'controls');
             $av = hlf.getEl($c, 'adults-val');
+            $at = hlf.getEl($c, 'adults-title');
             $ad = hlf.getEl($c, 'adults-decrement');
             $ai = hlf.getEl($c, 'adults-increment');
             $cv = hlf.getEl($c, 'children-val');
+            $ct = hlf.getEl($c, 'children-title');
             $cd = hlf.getEl($c, 'children-decrement');
             $ci = hlf.getEl($c, 'children-increment');
             $cl = hlf.getEl($c, 'children-list');
