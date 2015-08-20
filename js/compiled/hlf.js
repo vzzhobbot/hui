@@ -524,9 +524,9 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                             value: item.fullname,
                             text: item.city,
                             latinLocationFullName: item.latinFullName,
-                            clar: (item.state ? item.state + ', ' : '') + item.country,
+                            clar: item.clar || '',
                             comment: config.translateHotelsCount(item.hotelsCount),
-                            photo: config.needLocationPhotos ? 'https://photo2.hotellook.com/static/cities/' + config.locationPhotoSize + '/' + item.id + '.auto' : false
+                            photo: config.needLocationPhotos ? 'https://photo.hotellook.com/static/cities/' + config.locationPhotoSize + '/' + item.id + '.auto' : false
                         }
                     });
                     if (!config.onlyLocations) {
