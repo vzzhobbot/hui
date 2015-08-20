@@ -15,7 +15,8 @@
             params: {},
             target: '_self',
             hash: null,
-            goalSubmit: {}
+            goalSubmit: {},
+            onSubmit: function() {}
         });
 
         var $f = $('[hlf-form="' + config.id +'"]'), // todo check availability
@@ -68,13 +69,17 @@
                     }
                 }
 
+                config.onSubmit();
+
                 p = _.merge(p, config.params);
 
-                _.each(p, function(val, key){
-                    if (!val || val == null || val == '') {
-                        delete p[key];
-                    }
-                });
+                //don't remember why :|
+
+                //_.each(p, function(val, key){
+                //    if (!val || val == null || val == '') {
+                //        delete p[key];
+                //    }
+                //});
 
                 // send required goals
                 hlf.goal(config.goalSubmit, {

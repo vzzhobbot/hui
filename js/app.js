@@ -5,7 +5,7 @@ window.maForm = hlf.form({
             id: 15542,
             type: 'location',
             text: 'Париж, Франция',
-            onlyLocations: true,
+            onlyLocations: false,
             needLocationPhotos: true,
             locationPhotoSize: '240x75',
             locale: 'ru-RU',
@@ -136,6 +136,9 @@ window.maForm = hlf.form({
     params: {
         language: 'es-ES',
         currency: 'rub'
+    },
+    onSubmit: function() {
+        console.log('submitiщееееее');
     },
     hash: 'asdsd=asdasds',
     goalSubmit: {
