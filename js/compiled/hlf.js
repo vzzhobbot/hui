@@ -513,7 +513,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                             type: 'location',
                             value: item.fullname,
                             text: item.city,
-                            clar: (item.state ? item.state + ', ' : '') + item.country,
+                            clar: item.clar || '',
                             comment: config.translateHotelsCount(item.hotelsCount)
                         }
                     });

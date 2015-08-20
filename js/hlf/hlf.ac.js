@@ -136,7 +136,7 @@
                             type: 'location',
                             value: item.fullname,
                             text: item.city,
-                            clar: (item.state ? item.state + ', ' : '') + item.country,
+                            clar: item.clar || '',
                             comment: config.translateHotelsCount(item.hotelsCount)
                         }
                     });
