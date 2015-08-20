@@ -236,7 +236,7 @@ this["hlf"]["jst"]["ac.samples.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":
   return "<div class=\"hlf-input--ac-samples\" hlf-role=\"samples\"><%= samplesText %></div>";
   },"useData":true};
 this["hlf"]["jst"]["ac.samplesLink.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  return "<a href=\"#\" hlf-role=\"samples-link\" data-type=\"<%= type %>\" data-id=\"<%= id %>\" data-text=\"<%= text %>\"><%= sample %></a>";
+  return "<a href=\"#\" hlf-role=\"samples-link\" data-type=\"<%= type %>\" <% if (typeof(latinLocationFullName) !== \"undefined\") { %> data-latinLocationFullName=\"<%= latinLocationFullName %>\"<% } %> data-id=\"<%= id %>\" data-text=\"<%= text %>\"><%= sample %></a>";
   },"useData":true};
 this["hlf"]["jst"]["calendar.head.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   return "<div class=\"ui-datepicker-head\"><%= head %></div>";
@@ -700,7 +700,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
                 $sl.on('click', function() {
                     var $this = $(this);
-                    select($this.data('type'), $this.data('id'), $this.data('text'));
+                    select($this.data('type'), $this.data('id'), $this.data('text'), $this.data('latinlocationfullname'));
                     hlf.goal(config.goalUseSamples);
                     $iw.addClass('hlf-state--no-empty');
                     return false;

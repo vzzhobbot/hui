@@ -1,1 +1,1 @@
-<a href="#" hlf-role="samples-link" data-type="<%= type %>" data-id="<%= id %>" data-text="<%= text %>"><%= sample %></a>
+<a href="#" hlf-role="samples-link" data-type="<%= type %>" <% if (typeof(latinLocationFullName) !== "undefined") { %> data-latinLocationFullName="<%= latinLocationFullName %>"<% } %> data-id="<%= id %>" data-text="<%= text %>"><%= sample %></a>

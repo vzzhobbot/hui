@@ -40,13 +40,15 @@ window.maForm = hlf.form({
                     id: 15542,
                     type: 'location',
                     text: 'Париж, Франция',
-                    sample: 'Париж'
+                    sample: 'Париж',
+                    latinLocationFullName: 'Paris, France'
                 },
                 {
                     id: 12153,
                     type: 'location',
                     text: 'Москва, Россия',
-                    sample: 'Москва'
+                    sample: 'Москва',
+                    latinLocationFullName: 'Moscow, Russia'
                 }
             ]
         }),

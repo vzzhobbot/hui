@@ -317,7 +317,7 @@
 
                 $sl.on('click', function() {
                     var $this = $(this);
-                    select($this.data('type'), $this.data('id'), $this.data('text'));
+                    select($this.data('type'), $this.data('id'), $this.data('text'), $this.data('latinlocationfullname'));
                     hlf.goal(config.goalUseSamples);
                     $iw.addClass('hlf-state--no-empty');
                     return false;
