@@ -7,6 +7,7 @@
         var $c = null, // container
             $iw = null, // input wrap
             $i = null, // input
+            $ia = null, // input alt
             $h = null, // hint
 
             controls = {},
@@ -400,6 +401,7 @@
 
             $iw = hlf.getEl($c, 'input-wrap');
             $i = hlf.getEl($c, 'input');
+            $ia = hlf.getEl($c, 'alt-input');
             $h = hlf.getEl($c, 'hint');
             config.className&&$iw.addClass(config.className);
             $pl = hlf.getEl($c, 'placeholder');
@@ -416,7 +418,9 @@
                 $i.datepicker({
                     minDate: config.min,
                     numberOfMonths: config.months,
+                    altField: $ia,
                     onSelect: function (date, e) {
+                        console.log($i.datepicker('getDate'));
                         relationAdjust();
                         relationAutoSet();
                         relationAutoShow( $.datepicker.formatDate(config.format, getDate()));
@@ -555,7 +559,8 @@
         dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
         dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
         dayStatus: 'Использовать DD как первый день недели', dateStatus: 'Выбрать DD, MM d',
-        dateFormat: 'D, d M', firstDay: 1,
+        dateFormat: 'D, d M yy', firstDay: 1,
+        altFormat: 'D, d M',
         initStatus: 'Выбрать дату', isRTL: false
     };
     $.datepicker.regional['en-US'] = {
@@ -571,7 +576,8 @@
         dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         dayNamesMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
         weekHeader: 'Wk',
-        dateFormat: 'D, MM d', firstDay: 0,
+        dateFormat: 'D, MM d yy', firstDay: 0,
+        altFormat: 'D, MM d',
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -593,7 +599,8 @@
         dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
         dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
         weekHeader: 'Sem.',
-        dateFormat: 'd M', firstDay: 1,
+        dateFormat: 'd M yy', firstDay: 1,
+        altFormat: 'd M',
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -611,7 +618,8 @@
         dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
         dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
         weekHeader: 'Sm',
-        dateFormat: 'd MM', firstDay: 1,
+        dateFormat: 'd MM yy', firstDay: 1,
+        altFormat: 'd MM',
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -629,7 +637,8 @@
         dayNamesShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
         dayNamesMin: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
         weekHeader: 'KW',
-        dateFormat: 'd MM', firstDay: 1,
+        dateFormat: 'd MM yy', firstDay: 1,
+        altFormat: 'd MM',
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -647,7 +656,8 @@
         dayNamesShort: ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'],
         dayNamesMin: ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'],
         weekHeader: 'Wk',
-        dateFormat: 'd MM', firstDay: 0,
+        dateFormat: 'd MM yy', firstDay: 0,
+        altFormat: 'd MM',
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -665,7 +675,8 @@
         dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'],
         dayNamesMin: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
         weekHeader: 'Sm',
-        dateFormat: 'd MM', firstDay: 1,
+        dateFormat: 'd MM yy', firstDay: 1,
+        altFormat: 'd MM',
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -683,7 +694,8 @@
         dayNamesShort: ['Nie', 'Pn', 'Wt', 'Śr', 'Czw', 'Pt', 'So'],
         dayNamesMin: ['N', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So'],
         weekHeader: 'Tydz',
-        dateFormat: 'd M', firstDay: 1,
+        dateFormat: 'd M yy', firstDay: 1,
+        altFormat: 'd M',
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -701,7 +713,8 @@
         dayNamesShort: ['Min','Sen','Sel','Rab','kam','Jum','Sab'],
         dayNamesMin: ['Mg','Sn','Sl','Rb','Km','jm','Sb'],
         weekHeader: 'Mg',
-        dateFormat: 'dd/mm',
+        dateFormat: 'dd/mm/yy',
+        altFormat: 'dd/mm',
         firstDay: 0,
         isRTL: false,
         showMonthAfterYear: false,

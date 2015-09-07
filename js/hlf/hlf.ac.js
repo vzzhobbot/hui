@@ -366,11 +366,12 @@
             });
         },
         _renderItem: function (ul, item) {
-            var label = '<span class="ui-menu-item-text">' + item.text + (item.clar ? ', <span class="ui-menu-item-clar">' + item.clar + '</span>' : '') + '</span>';
-            if (item.comment)
-                label += '<span class="ui-menu-item-comment">' + item.comment + '</span>';
+            var label = '';
             if (item.photo)
                 label += '<img src="' + item.photo + '" class="ui-menu-item-img" />';
+            label += '<span class="ui-menu-item-text">' + item.text + (item.clar ? ', <span class="ui-menu-item-clar">' + item.clar + '</span>' : '') + '</span>';
+            if (item.comment)
+                label += '<span class="ui-menu-item-comment">' + item.comment + '</span>';
             return $("<li>")
                 .append($("<a>").html(label))
                 .appendTo(ul);

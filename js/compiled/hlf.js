@@ -242,7 +242,7 @@ this["hlf"]["jst"]["calendar.head.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
   return "<div class=\"ui-datepicker-head\"><%= head %></div>";
   },"useData":true};
 this["hlf"]["jst"]["calendar.input.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  return "<div class=\"hlf-input hlf-input--calendar\" hlf-role=\"input-wrap\">\n    <% if (inline) { %>\n        <div hlf-role=\"input\" /></div>\n    <% } else { %>\n        <input type=\"text\" placeholder=\"<%= placeholder %>\" tabindex=\"<%= tabIndex %>\" hlf-role=\"input\" height=\"60\"  />\n    <% } %>\n    <div class=\"hint\" hlf-role=\"hint\"></div>\n    <div class=\"pseudo-placeholder\" hlf-role=\"placeholder\"><%= placeholder %></div>\n</div>";
+  return "<div class=\"hlf-input hlf-input--calendar\" hlf-role=\"input-wrap\">\n    <% if (inline) { %>\n        <div hlf-role=\"input\" /></div>\n        <input type=\"text\" hlf-role=\"alt-input\" />\n    <% } else { %>\n        <input type=\"text\" placeholder=\"<%= placeholder %>\" tabindex=\"<%= tabIndex %>\" hlf-role=\"alt-input\" height=\"60\"  />\n        <input type=\"text\" hlf-role=\"input\" />\n    <% } %>\n    <div class=\"hint\" hlf-role=\"hint\"></div>\n    <div class=\"pseudo-placeholder\" hlf-role=\"placeholder\"><%= placeholder %></div>\n</div>";
   },"useData":true};
 this["hlf"]["jst"]["calendar.legend.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   return "<div class=\"ui-datepicker-legend\">\n    <div class=\"ui-datepicker-legend-head\"><%= legend %></div>\n    <div class=\"ui-datepicker-legend-points\">\n        <div class=\"ui-datepicker-legend-points-line\"></div>\n        <ul class=\"ui-datepicker-legend-points-list\">\n            <% _.each(points, function(point, i) { %>\n            <li class=\"ui-datepicker-legend-points-item ui-datepicker-legend-points-item--<%= i %>\"><%= point %></li>\n            <% }); %>\n        </ul>\n    </div>\n</div>";
@@ -749,11 +749,12 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             });
         },
         _renderItem: function (ul, item) {
-            var label = '<span class="ui-menu-item-text">' + item.text + (item.clar ? ', <span class="ui-menu-item-clar">' + item.clar + '</span>' : '') + '</span>';
-            if (item.comment)
-                label += '<span class="ui-menu-item-comment">' + item.comment + '</span>';
+            var label = '';
             if (item.photo)
                 label += '<img src="' + item.photo + '" class="ui-menu-item-img" />';
+            label += '<span class="ui-menu-item-text">' + item.text + (item.clar ? ', <span class="ui-menu-item-clar">' + item.clar + '</span>' : '') + '</span>';
+            if (item.comment)
+                label += '<span class="ui-menu-item-comment">' + item.comment + '</span>';
             return $("<li>")
                 .append($("<a>").html(label))
                 .appendTo(ul);
@@ -770,6 +771,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         var $c = null, // container
             $iw = null, // input wrap
             $i = null, // input
+            $ia = null, // input alt
             $h = null, // hint
 
             controls = {},
@@ -1163,6 +1165,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
 
             $iw = hlf.getEl($c, 'input-wrap');
             $i = hlf.getEl($c, 'input');
+            $ia = hlf.getEl($c, 'alt-input');
             $h = hlf.getEl($c, 'hint');
             config.className&&$iw.addClass(config.className);
             $pl = hlf.getEl($c, 'placeholder');
@@ -1179,7 +1182,9 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 $i.datepicker({
                     minDate: config.min,
                     numberOfMonths: config.months,
+                    altField: $ia,
                     onSelect: function (date, e) {
+                        console.log($i.datepicker('getDate'));
                         relationAdjust();
                         relationAutoSet();
                         relationAutoShow( $.datepicker.formatDate(config.format, getDate()));
@@ -1318,7 +1323,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
         dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
         dayStatus: 'Использовать DD как первый день недели', dateStatus: 'Выбрать DD, MM d',
-        dateFormat: 'D, d M', firstDay: 1,
+        dateFormat: 'D, d M yy', firstDay: 1,
+        altFormat: 'D, d M',
         initStatus: 'Выбрать дату', isRTL: false
     };
     $.datepicker.regional['en-US'] = {
@@ -1334,7 +1340,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         dayNamesMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
         weekHeader: 'Wk',
-        dateFormat: 'D, MM d', firstDay: 0,
+        dateFormat: 'D, MM d yy', firstDay: 0,
+        altFormat: 'D, MM d',
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -1356,7 +1363,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
         dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
         weekHeader: 'Sem.',
-        dateFormat: 'd M', firstDay: 1,
+        dateFormat: 'd M yy', firstDay: 1,
+        altFormat: 'd M',
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -1374,7 +1382,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
         dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
         weekHeader: 'Sm',
-        dateFormat: 'd MM', firstDay: 1,
+        dateFormat: 'd MM yy', firstDay: 1,
+        altFormat: 'd MM',
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -1392,7 +1401,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         dayNamesShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
         dayNamesMin: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
         weekHeader: 'KW',
-        dateFormat: 'd MM', firstDay: 1,
+        dateFormat: 'd MM yy', firstDay: 1,
+        altFormat: 'd MM',
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -1410,7 +1420,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         dayNamesShort: ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'],
         dayNamesMin: ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'],
         weekHeader: 'Wk',
-        dateFormat: 'd MM', firstDay: 0,
+        dateFormat: 'd MM yy', firstDay: 0,
+        altFormat: 'd MM',
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -1428,7 +1439,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'],
         dayNamesMin: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
         weekHeader: 'Sm',
-        dateFormat: 'd MM', firstDay: 1,
+        dateFormat: 'd MM yy', firstDay: 1,
+        altFormat: 'd MM',
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -1446,7 +1458,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         dayNamesShort: ['Nie', 'Pn', 'Wt', 'Śr', 'Czw', 'Pt', 'So'],
         dayNamesMin: ['N', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So'],
         weekHeader: 'Tydz',
-        dateFormat: 'd M', firstDay: 1,
+        dateFormat: 'd M yy', firstDay: 1,
+        altFormat: 'd M',
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: ''
@@ -1464,7 +1477,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         dayNamesShort: ['Min','Sen','Sel','Rab','kam','Jum','Sab'],
         dayNamesMin: ['Mg','Sn','Sl','Rb','Km','jm','Sb'],
         weekHeader: 'Mg',
-        dateFormat: 'dd/mm',
+        dateFormat: 'dd/mm/yy',
+        altFormat: 'dd/mm',
         firstDay: 0,
         isRTL: false,
         showMonthAfterYear: false,
