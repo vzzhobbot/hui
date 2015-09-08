@@ -242,7 +242,7 @@ this["hlf"]["jst"]["calendar.head.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
   return "<div class=\"ui-datepicker-head\"><%= head %></div>";
   },"useData":true};
 this["hlf"]["jst"]["calendar.input.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  return "<div class=\"hlf-input hlf-input--calendar\" hlf-role=\"input-wrap\">\n    <% if (inline) { %>\n        <div hlf-role=\"input\" /></div>\n        <input type=\"text\" hlf-role=\"alt-input\" />\n    <% } else { %>\n        <input type=\"text\" placeholder=\"<%= placeholder %>\" tabindex=\"<%= tabIndex %>\" hlf-role=\"alt-input\" height=\"60\"  />\n        <input type=\"text\" hlf-role=\"input\" />\n    <% } %>\n    <div class=\"hint\" hlf-role=\"hint\"></div>\n    <div class=\"pseudo-placeholder\" hlf-role=\"placeholder\"><%= placeholder %></div>\n</div>";
+  return "<div class=\"hlf-input hlf-input--calendar\" hlf-role=\"input-wrap\">\n    <% if (inline) { %>\n        <div hlf-role=\"input\" /></div>\n        <input type=\"text\" hlf-role=\"alt-input\" class=\"datepicker-hidden\" />\n    <% } else { %>\n        <input type=\"text\" placeholder=\"<%= placeholder %>\" tabindex=\"<%= tabIndex %>\" hlf-role=\"alt-input\" height=\"60\"  />\n        <input type=\"text\" hlf-role=\"input\" class=\"datepicker-hidden\" />\n    <% } %>\n    <div class=\"hint\" hlf-role=\"hint\"></div>\n    <div class=\"pseudo-placeholder\" hlf-role=\"placeholder\"><%= placeholder %></div>\n</div>";
   },"useData":true};
 this["hlf"]["jst"]["calendar.legend.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   return "<div class=\"ui-datepicker-legend\">\n    <div class=\"ui-datepicker-legend-head\"><%= legend %></div>\n    <div class=\"ui-datepicker-legend-points\">\n        <div class=\"ui-datepicker-legend-points-line\"></div>\n        <ul class=\"ui-datepicker-legend-points-list\">\n            <% _.each(points, function(point, i) { %>\n            <li class=\"ui-datepicker-legend-points-item ui-datepicker-legend-points-item--<%= i %>\"><%= point %></li>\n            <% }); %>\n        </ul>\n    </div>\n</div>";
@@ -1184,7 +1184,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                     numberOfMonths: config.months,
                     altField: $ia,
                     onSelect: function (date, e) {
-                        console.log($i.datepicker('getDate'));
                         relationAdjust();
                         relationAutoSet();
                         relationAutoShow( $.datepicker.formatDate(config.format, getDate()));

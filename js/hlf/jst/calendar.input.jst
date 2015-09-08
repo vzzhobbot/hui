@@ -1,10 +1,10 @@
 <div class="hlf-input hlf-input--calendar" hlf-role="input-wrap">
     <% if (inline) { %>
         <div hlf-role="input" /></div>
-        <input type="text" hlf-role="alt-input" />
+        <input type="text" hlf-role="alt-input" class="datepicker-hidden" />
     <% } else { %>
         <input type="text" placeholder="<%= placeholder %>" tabindex="<%= tabIndex %>" hlf-role="alt-input" height="60"  />
-        <input type="text" hlf-role="input" />
+        <input type="text" hlf-role="input" class="datepicker-hidden" />
     <% } %>
     <div class="hint" hlf-role="hint"></div>
     <div class="pseudo-placeholder" hlf-role="placeholder"><%= placeholder %></div>

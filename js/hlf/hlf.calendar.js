@@ -420,7 +420,6 @@
                     numberOfMonths: config.months,
                     altField: $ia,
                     onSelect: function (date, e) {
-                        console.log($i.datepicker('getDate'));
                         relationAdjust();
                         relationAutoSet();
                         relationAutoShow( $.datepicker.formatDate(config.format, getDate()));
