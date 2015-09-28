@@ -89,14 +89,16 @@
          * Send goal to aviasales
          * @param goal 'goal-name'
          * @param d any json
+         * @param sync {boolean} sync || async event
          * @returns {boolean}
          */
-        function asGoal(goal, d) {
+        function asGoal(goal, d, sync) {
             if(_.isString(goal) && goal.length) {
                 $.ajax({
                     url: config.asGoalUrl,
                     type: 'get',
                     dataType: 'jsonp',
+                    async: !sync,
                     data: {
                         goal: goal,
                         data: JSON.stringify(d)
@@ -107,10 +109,10 @@
             return false;
         }
 
-        function goal(goals, data) {
+        function goal(goals, data, sync) {
             yamGoal(goals.yam || null);
             gaGoal(goals.ga ? goals.ga.split('.') : null);
-            asGoal(goals.as || null, data);
+            asGoal(goals.as || null, data, sync);
         }
 
         return {
