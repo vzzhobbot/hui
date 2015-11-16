@@ -463,9 +463,14 @@
             }
             // maybe set a default value?
             if (_.isDate(config.value)) {
-                // correct date by timezone offset
-                config.value.setTime(config.value.getTime() + config.value.getTimezoneOffset() * 60 * 1000);
-                $i.datepicker('setDate', config.value);
+              if ( config.mobileMode === true && $i[0]) {
+                $i[0].value =  dateToString(config.value || '');
+              } else {
+
+                  // correct date by timezone offset
+                  config.value.setTime(config.value.getTime() + config.value.getTimezoneOffset() * 60 * 1000);
+                  $i.datepicker('setDate', config.value);
+              }
             }
 
             // customize datepicker with locale, unfortunately only this method works well
