@@ -325,39 +325,38 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                     }
                 }
 
-                if(_.isUndefined(config.params.hls)) { // try to find hls in GET
+                // try to find hls in GET
+                if(_.isUndefined(config.params.hls)) {
                     var hls = hlf.GET('hls') || null;
                     if(hls) {
                         config.params.hls = hls;
                     }
                 }
 
+                // fore onSubmit function
                 config.onSubmit();
 
+                // additional params
                 p = _.merge(p, config.params);
-
-                //don't remember why :|
-
-                //_.each(p, function(val, key){
-                //    if (!val || val == null || val == '') {
-                //        delete p[key];
-                //    }
-                //});
 
                 // send required goals
                 hlf.goal(config.goalSubmit, {
                     params: p
                 });
 
-                var gaLinker = hlf.gaGetLinkerParam();
+                var action = $f.attr('action'),
+                    gaLinker = hlf.gaGetLinkerParam();
+
+                var l = document.createElement('a');
+                l.href = action;
 
                 window.open (
-                    //todo: $f.attr('target') || config.target
-                    $f.attr('action') + '/?' +
+                    action + '/?' +
                     $.param(p) + // controls params
-                    (gaLinker ? '&' + gaLinker : '') + // ga linker param
+                    (l.hostname !== location.hostname && gaLinker ? '&' + gaLinker : '') + // ga linker param
                     (config.hash ? '#' + config.hash : ''), $f.attr('target') || config.target); // hash and target (open in new window or not)
                 return false;
+
             }
             return result;
         });
@@ -1230,7 +1229,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             // maybe set a default value?
             if (_.isDate(config.value)) {
               if ( config.mobileMode === true && $i[0]) {
-                $i[0].value =  dateToString(config.value);
+                $i[0].value =  dateToString(config.value || '');
               } else {
 
                   // correct date by timezone offset

@@ -62,39 +62,38 @@
                     }
                 }
 
-                if(_.isUndefined(config.params.hls)) { // try to find hls in GET
+                // try to find hls in GET
+                if(_.isUndefined(config.params.hls)) {
                     var hls = hlf.GET('hls') || null;
                     if(hls) {
                         config.params.hls = hls;
                     }
                 }
 
+                // fore onSubmit function
                 config.onSubmit();
 
+                // additional params
                 p = _.merge(p, config.params);
-
-                //don't remember why :|
-
-                //_.each(p, function(val, key){
-                //    if (!val || val == null || val == '') {
-                //        delete p[key];
-                //    }
-                //});
 
                 // send required goals
                 hlf.goal(config.goalSubmit, {
                     params: p
                 });
 
-                var gaLinker = hlf.gaGetLinkerParam();
+                var action = $f.attr('action'),
+                    gaLinker = hlf.gaGetLinkerParam();
+
+                var l = document.createElement('a');
+                l.href = action;
 
                 window.open (
-                    //todo: $f.attr('target') || config.target
-                    $f.attr('action') + '/?' +
+                    action + '/?' +
                     $.param(p) + // controls params
-                    (gaLinker ? '&' + gaLinker : '') + // ga linker param
+                    (l.hostname !== location.hostname && gaLinker ? '&' + gaLinker : '') + // ga linker param
                     (config.hash ? '#' + config.hash : ''), $f.attr('target') || config.target); // hash and target (open in new window or not)
                 return false;
+
             }
             return result;
         });
