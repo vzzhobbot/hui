@@ -53,23 +53,20 @@
         }
 
         /**
-         * Its yandex metrika
+         * Its yandex metrika counters list
          * @type {object}
          */
-        var yam = null;
+        var yams = null;
 
         /**
          * Check yandex metrika exists on page
          * @returns {boolean}
          */
         function yamExists() {
-            if(!yam && typeof Ya !== 'undefined') {
-                _.each(Ya._metrika.counters, function(v){
-                    yam = v;
-                    return;
-                });
+            if(!yams && typeof Ya !== 'undefined') {
+                yams = Ya._metrika.counters;
             }
-            return !!yam;
+            return !!Object.keys(yams || {}).length;
         }
 
         /**
@@ -79,7 +76,11 @@
          */
         function yamGoal(goal) {
             if(yamExists() && _.isString(goal) && goal.length) {
-                yam.reachGoal(goal);
+                for (var k in yams) {
+                    if (yams.hasOwnProperty(k)) {
+                        yams[k].reachGoal(goal);
+                    }
+                }
                 return true;
             }
             return false;
