@@ -435,7 +435,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             onSelectShowCalendar: null,
             onReset: function() {}, // fires when you type something in autocomplete
                                     // and type & id values resets
-            avgPricesUrl: (location.protocol == 'file:' ? 'http:' : '') + '//yasen.hotellook.com/minprices/location_year/{id}.json',
+            avgPricesUrl: (location.protocol == 'file:' ? 'http:' : '') + '//yasen.hotellook.com/minprices/location_calendar/{id}.json?currency=USD&adults=2',
             avgPricesCalendars: [], // names if controls
             avgPricesFormatter: function(v) {
                 return '' + Math.round(v);
@@ -476,7 +476,15 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 var first = null;
                 _.each(config.avgPricesCalendars, function(name) {
                     if(!first) {
-                        controls[name].specifyDetails(data, config.avgPricesFormatter);
+                        controls[name].setDetails({
+                            dates: data.dates,
+                            points: [ // price points for legend
+                                data.points.cheap,
+                                data.points.regular,
+                                data.points.expensive
+                            ],
+                            formatter: config.avgPricesFormatter
+                        });
                         controls[name].refresh();
                         first = controls[name];
                     } else {
@@ -961,73 +969,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             return false;
         }
 
-        /**
-         * Process each date average price & calculate day details
-         * todo fix it strange logic
-         * @param data
-         * @param formatter function
-         */
-        function specifyDetails(data, formatter) {
-            if (!_.size(data))
-                return false;
-            var count = 0,
-                sum = 0,
-                min = 0,
-                max = 0;
-            _.each(data, function (v) {
-                if (!min || v < min)
-                    min = v;
-                if (!max || v > max)
-                    max = v;
-                sum += v;
-                count++;
-            });
-            // calculate average and diff with min & max
-            var average = sum / count,
-                diffMax = max - average,
-                diffMin = average - min,
-                dates = {};
-            _.each(data, function (v, date) {
-                // price more than average?
-                var diff = v - average,
-                    up = true;
-                if (diff < 0) {
-                    up = false;
-                    diff = Math.abs(diff);
-                }
-                // choose closest position
-                var percent = diff * 100 / (up ? diffMax : diffMin),
-                    rate = 2;
-                if (up) {
-                    if (percent > 20)
-                        rate = 3;
-                    if (percent > 60)
-                        rate = 4;
-                } else {
-                    if (percent > 20)
-                        rate = 1;
-                    if (percent > 60)
-                        rate = 0;
-                }
-                dates[date] = {
-                    'value': v, // average price
-                    'rate': rate // rate for this price (0 - cheap, 4 - expensive)
-                };
-            }, this);
-            setDetails({
-                dates: dates,
-                points: [ // price points for legend
-                        average - diffMin * 0.8,
-                    average,
-                        average + diffMax * 0.8
-                ],
-                formatter: formatter || function (v) {
-                    return v
-                }
-            });
-            return true;
-        }
-
         function setDetails(d) {
             $iw.addClass('hlf-state--detailed');
             details = d;
@@ -1055,7 +996,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             // fill cfg with date details
             if (!_.isUndefined(details.dates) && details.dates[dateAsStr]) {
                 cfg[1] += ' ui-datepicker-dayType ui-datepicker-dayType--' + details.dates[dateAsStr].rate; // cell class
-                cfg[2] = details.formatter(details.dates[dateAsStr].value);
+                cfg[2] = details.formatter(details.dates[dateAsStr].price);
             }
 
             // fill cfg with range details
@@ -1280,7 +1221,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 setDetails: setDetails,
                 getDetails: getDetails,
                 resetDetails: resetDetails,
-                specifyDetails: specifyDetails,
                 validate: validate
             };
 

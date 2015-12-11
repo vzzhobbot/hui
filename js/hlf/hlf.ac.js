@@ -50,7 +50,7 @@
             onSelectShowCalendar: null,
             onReset: function() {}, // fires when you type something in autocomplete
                                     // and type & id values resets
-            avgPricesUrl: (location.protocol == 'file:' ? 'http:' : '') + '//yasen.hotellook.com/minprices/location_year/{id}.json',
+            avgPricesUrl: (location.protocol == 'file:' ? 'http:' : '') + '//yasen.hotellook.com/minprices/location_calendar/{id}.json?currency=USD&adults=2',
             avgPricesCalendars: [], // names if controls
             avgPricesFormatter: function(v) {
                 return '' + Math.round(v);
@@ -91,7 +91,15 @@
                 var first = null;
                 _.each(config.avgPricesCalendars, function(name) {
                     if(!first) {
-                        controls[name].specifyDetails(data, config.avgPricesFormatter);
+                        controls[name].setDetails({
+                            dates: data.dates,
+                            points: [ // price points for legend
+                                data.points.cheap,
+                                data.points.regular,
+                                data.points.expensive
+                            ],
+                            formatter: config.avgPricesFormatter
+                        });
                         controls[name].refresh();
                         first = controls[name];
                     } else {
