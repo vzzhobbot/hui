@@ -75,13 +75,19 @@
          * @returns {boolean}
          */
         function yamGoal(goal) {
-            if(yamExists() && _.isString(goal) && goal.length) {
-                for (var k in yams) {
-                    if (yams.hasOwnProperty(k)) {
-                        yams[k].reachGoal(goal);
+            if(_.isString(goal) && goal.length) {
+                if (yamExists()) {
+                    for (var k in yams) {
+                        if (yams.hasOwnProperty(k)) {
+                            yams[k].reachGoal(goal);
+                        }
                     }
+                    return true;
+                } else {
+                    (window['yandex_metrika_callbacks'] = window['yandex_metrika_callbacks'] || []).push(function() {
+                        yamGoal(goal);
+                    });
                 }
-                return true;
             }
             return false;
         }
@@ -230,6 +236,7 @@
     context.hlf = hlf;
 
 })(jQuery, _, this);
+
 this["hlf"] = this["hlf"] || {};
 this["hlf"]["jst"] = this["hlf"]["jst"] || {};
 this["hlf"]["jst"]["ac.input.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
