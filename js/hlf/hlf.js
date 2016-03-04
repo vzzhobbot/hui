@@ -75,13 +75,19 @@
          * @returns {boolean}
          */
         function yamGoal(goal) {
-            if(yamExists() && _.isString(goal) && goal.length) {
-                for (var k in yams) {
-                    if (yams.hasOwnProperty(k)) {
-                        yams[k].reachGoal(goal);
+            if(_.isString(goal) && goal.length) {
+                if (yamExists()) {
+                    for (var k in yams) {
+                        if (yams.hasOwnProperty(k)) {
+                            yams[k].reachGoal(goal);
+                        }
                     }
+                    return true;
+                } else {
+                    (window['yandex_metrika_callbacks'] = window['yandex_metrika_callbacks'] || []).push(function() {
+                        yamGoal(goal);
+                    });
                 }
-                return true;
             }
             return false;
         }
