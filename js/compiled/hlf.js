@@ -595,6 +595,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             }
             if(text) {
                 $i.val(text);
+                config.text = text;
             }
             avgPricesRequest(id);
             config.onSelect(type, id);
@@ -638,7 +639,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $i.reachAutocomplete({
                 source: source,
                 select: function(ev, data) {
-                    select(data.item.type, data.item.id, '', data.item.latinLocationFullName);
+                    select(data.item.type, data.item.id, data.item.value, data.item.latinLocationFullName);
                     hlf.goal(config.goalAcSelect, data.item);
                     hlf.goal(config.goalAcSelectType, data.item.type);
                 },
@@ -779,6 +780,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
     });
 
 })(jQuery, _, hlf);
+
 ;
 (function ($, _, hlf) {
     'use strict';
@@ -1228,7 +1230,9 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 setDetails: setDetails,
                 getDetails: getDetails,
                 resetDetails: resetDetails,
-                validate: validate
+                validate: validate,
+                input: $i,
+                inputAlt: $ia
             };
 
         };
@@ -1691,6 +1695,10 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         }
 
         function update() {
+            $cl.empty();
+            _.each(config.children, function(v, key) {
+                drawChild(key);
+            });
             $s.html(config.summary(config.adults, config.children));
             $av.html(config.adults);
             $cv.html(config.children.length);
@@ -1752,9 +1760,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             $cl = hlf.getEl($c, 'children-list');
             $clt = hlf.getEl($c, 'children-list-title');
             config.className&&$g.addClass(config.className);
-            _.each(config.children, function(v, key) {
-                drawChild(key);
-            });
             update();
 
             $doc.on('click', function(ev) { // todo check if this own block (multi controls problem)
@@ -1831,12 +1836,14 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             return {
                 config: config,
                 getParams: getParams,
+                update: update
             };
 
         };
 
     };
 })(jQuery, _, hlf);
+
 ;(function ($, _, hlf) {
     'use strict';
 

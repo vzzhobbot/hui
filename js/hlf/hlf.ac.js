@@ -203,6 +203,7 @@
             }
             if(text) {
                 $i.val(text);
+                config.text = text;
             }
             avgPricesRequest(id);
             config.onSelect(type, id);
@@ -246,7 +247,7 @@
             $i.reachAutocomplete({
                 source: source,
                 select: function(ev, data) {
-                    select(data.item.type, data.item.id, '', data.item.latinLocationFullName);
+                    select(data.item.type, data.item.id, data.item.value, data.item.latinLocationFullName);
                     hlf.goal(config.goalAcSelect, data.item);
                     hlf.goal(config.goalAcSelectType, data.item.type);
                 },

@@ -131,6 +131,10 @@
         }
 
         function update() {
+            $cl.empty();
+            _.each(config.children, function(v, key) {
+                drawChild(key);
+            });
             $s.html(config.summary(config.adults, config.children));
             $av.html(config.adults);
             $cv.html(config.children.length);
@@ -192,9 +196,6 @@
             $cl = hlf.getEl($c, 'children-list');
             $clt = hlf.getEl($c, 'children-list-title');
             config.className&&$g.addClass(config.className);
-            _.each(config.children, function(v, key) {
-                drawChild(key);
-            });
             update();
 
             $doc.on('click', function(ev) { // todo check if this own block (multi controls problem)
@@ -271,6 +272,7 @@
             return {
                 config: config,
                 getParams: getParams,
+                update: update
             };
 
         };

@@ -447,7 +447,9 @@
                 setDetails: setDetails,
                 getDetails: getDetails,
                 resetDetails: resetDetails,
-                validate: validate
+                validate: validate,
+                input: $i,
+                inputAlt: $ia
             };
 
         };
