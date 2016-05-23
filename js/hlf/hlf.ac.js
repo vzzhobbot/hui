@@ -218,7 +218,9 @@
             if(_.size(getParams())) {
                 return true;
             }
-            $i.focus();
+            if (!config.mobileMode) {
+              $i.focus();
+            }
             $iw.addClass('hlf-state--error');
             return false;
         }
@@ -251,6 +253,12 @@
                     hlf.goal(config.goalAcSelect, data.item);
                     hlf.goal(config.goalAcSelectType, data.item.type);
                 },
+                open: function(event, ui) {
+                    //hack for touch events on iOS
+                    if (config.mobileMode) {
+                      $('.ui-autocomplete').off('menufocus hover mouseover mouseenter');
+                    }
+                },
                 minLength: 3
             });
 
@@ -280,6 +288,7 @@
             });
 
             $i.on('focus', function() {
+                $(this).select();
                 $c.addClass('hlf-state--focus');
                 $iw.addClass('hlf-state--focus');
                 $iw.removeClass('hlf-state--error');

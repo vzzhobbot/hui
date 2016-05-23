@@ -398,6 +398,7 @@
             if (_.isDate(config.value)) {
               if ( config.mobileMode === true && $i[0]) {
                 $i[0].value =  dateToString(config.value || '');
+                $pl.addClass('hidden');
               } else {
 
                   // correct date by timezone offset

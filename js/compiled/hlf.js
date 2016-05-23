@@ -610,7 +610,9 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             if(_.size(getParams())) {
                 return true;
             }
-            $i.focus();
+            if (!config.mobileMode) {
+              $i.focus();
+            }
             $iw.addClass('hlf-state--error');
             return false;
         }
@@ -643,6 +645,12 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                     hlf.goal(config.goalAcSelect, data.item);
                     hlf.goal(config.goalAcSelectType, data.item.type);
                 },
+                open: function(event, ui) {
+                    //hack for touch events on iOS
+                    if (config.mobileMode) {
+                      $('.ui-autocomplete').off('menufocus hover mouseover mouseenter');
+                    }
+                },
                 minLength: 3
             });
 
@@ -672,6 +680,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             });
 
             $i.on('focus', function() {
+                $(this).select();
                 $c.addClass('hlf-state--focus');
                 $iw.addClass('hlf-state--focus');
                 $iw.removeClass('hlf-state--error');
@@ -1181,6 +1190,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             if (_.isDate(config.value)) {
               if ( config.mobileMode === true && $i[0]) {
                 $i[0].value =  dateToString(config.value || '');
+                $pl.addClass('hidden');
               } else {
 
                   // correct date by timezone offset
