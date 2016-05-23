@@ -450,7 +450,8 @@
                 resetDetails: resetDetails,
                 validate: validate,
                 input: $i,
-                inputAlt: $ia
+                inputAlt: $ia,
+                placeholder: $pl
             };
 
         };

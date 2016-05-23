@@ -1242,7 +1242,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                 resetDetails: resetDetails,
                 validate: validate,
                 input: $i,
-                inputAlt: $ia
+                inputAlt: $ia,
+                placeholder: $pl
             };
 
         };
