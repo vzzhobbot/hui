@@ -93,6 +93,19 @@
         }
 
         /**
+         * Send goal to mamka
+         * @param goal 'goal-name'
+         * @param d any json
+         * @returns {boolean}
+         */
+        function mamkaGoal(goal, d) {
+            if(_.isString(goal) && goal.length && typeof mamka == 'function') {
+                mamka('send_event', {'name': goal, 'meta': d});
+            }
+            return false;
+        }
+
+        /**
          * Send goal to aviasales
          * @param goal 'goal-name'
          * @param d any json
@@ -120,6 +133,7 @@
             yamGoal(goals.yam || null);
             gaGoal(goals.ga ? goals.ga.split('.') : null);
             asGoal(goals.as || null, data, sync);
+            mamkaGoal(goals.mamka || null, data);
         }
 
         return {

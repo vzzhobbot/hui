@@ -12,7 +12,8 @@ window.maForm = hlf.form({
             goalUseInput: {
                 ga: 'form111.goalUseInput',
                 yam: 'form111-goalUseInput',
-                as: 'hlf-form111-goalUseInput'
+                as: 'hlf-form111-goalUseInput',
+                mamka: 'hlf-form111-goalUseInput'
             },
             goalAcSelect: {
                 ga: 'form111.goalAcSelect',
