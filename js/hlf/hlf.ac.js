@@ -55,6 +55,10 @@
             avgPricesFormatter: function(v) {
                 return '' + Math.round(v);
             },
+            avgPricesFormatterLegend: function(v) {
+                return '' + Math.round(v);
+            },
+
 
             samplesText: 'For example: {list}',
             samplesList: [], // e.g.:
@@ -98,7 +102,8 @@
                                 data.points.regular,
                                 data.points.expensive
                             ],
-                            formatter: config.avgPricesFormatter
+                            formatter: config.avgPricesFormatter,
+                            formatterLegend: config.avgPricesFormatterLegend
                         });
                         controls[name].refresh();
                         first = controls[name];

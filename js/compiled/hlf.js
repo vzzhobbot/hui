@@ -461,6 +461,10 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
             avgPricesFormatter: function(v) {
                 return '' + Math.round(v);
             },
+            avgPricesFormatterLegend: function(v) {
+                return '' + Math.round(v);
+            },
+
 
             samplesText: 'For example: {list}',
             samplesList: [], // e.g.:
@@ -504,7 +508,8 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                                 data.points.regular,
                                 data.points.expensive
                             ],
-                            formatter: config.avgPricesFormatter
+                            formatter: config.avgPricesFormatter,
+                            formatterLegend: config.avgPricesFormatterLegend
                         });
                         controls[name].refresh();
                         first = controls[name];
@@ -1184,7 +1189,7 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                             $(i.dpDiv).append(
                                 config.tplLegend({
                                     'legend': config.legend,
-                                    'points': _.map(details.points, details.formatter)
+                                    'points': _.map(details.points, details.formatterLegend)
                                 })
                             );
                         }

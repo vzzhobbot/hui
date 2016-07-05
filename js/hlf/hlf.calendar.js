@@ -378,7 +378,7 @@
                             $(i.dpDiv).append(
                                 config.tplLegend({
                                     'legend': config.legend,
-                                    'points': _.map(details.points, details.formatter)
+                                    'points': _.map(details.points, details.formatterLegend)
                                 })
                             );
                         }
