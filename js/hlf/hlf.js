@@ -63,7 +63,7 @@
          * @returns {boolean}
          */
         function yamExists() {
-            if(!yams && typeof Ya !== 'undefined') {
+            if(!yams && typeof Ya !== 'undefined' && typeof Ya._metrika !== 'undefined' && typeof Ya._metrika.counters !== 'undefined') {
                 yams = Ya._metrika.counters;
             }
             return !!Object.keys(yams || {}).length;
