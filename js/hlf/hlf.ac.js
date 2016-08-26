@@ -73,6 +73,8 @@
 
         });
 
+        selectAutocomplete = !(config.term && config.term.length > 0);
+
         function avgPricesRequest (id) {
             if(config.avgPricesCalendars.length) {
                 _.each(config.avgPricesCalendars, function(name) {
@@ -264,7 +266,14 @@
                       $('.ui-autocomplete').off('menufocus hover mouseover mouseenter');
                     }
                 },
-                minLength: 3
+                minLength: 3,
+                create: function (e, ui) {
+                  if (config.term) {
+                    var $input = $(this);
+                    $input.val(config.term);
+                    $input.reachAutocomplete("search", config.term);
+                  }
+                }
             });
 
             $i.on('keyup', function() {
@@ -293,11 +302,14 @@
             });
 
             $i.on('focus', function() {
-                $(this).select();
+                if (selectAutocomplete) {
+                  $(this).select();
+                }
                 $c.addClass('hlf-state--focus');
                 $iw.addClass('hlf-state--focus');
                 $iw.removeClass('hlf-state--error');
                 goalUseInputSent = false;
+                selectAutocomplete = true;
             });
 
             $i.on('blur', function() {
