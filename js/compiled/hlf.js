@@ -552,7 +552,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
                     limit: config.limit,
                     term: request.term
                 },
-                jsonpCallback: 'hlf_ac_callback',
                 success: function(data) {
                     var cities = _.map(data.cities, function(item) {
                         return {
@@ -778,9 +777,6 @@ this["hlf"]["jst"]["submit.button.jst"] = {"compiler":[6,">= 2.0.0-beta.1"],"mai
         };
 
     };
-
-    // jsonp callback cheat
-    function hlf_ac_callback() {}
 
     /**
      * Extension for jQuery.ui.autocomplete
