@@ -146,7 +146,6 @@
                     limit: config.limit,
                     term: request.term
                 },
-                jsonpCallback: 'hlf_ac_callback',
                 success: function(data) {
                     var cities = _.map(data.cities, function(item) {
                         return {
@@ -372,9 +371,6 @@
         };
 
     };
-
-    // jsonp callback cheat
-    function hlf_ac_callback() {}
 
     /**
      * Extension for jQuery.ui.autocomplete
